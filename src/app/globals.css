@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  /* custom font */
+  --font-clash-display: "Clash Display", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+
+  /* custom colors */
+  --color-green: #16A34A;
+  --color-blue: #0F172A;
+}
