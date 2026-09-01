@@ -6,7 +6,7 @@ import "./globals.css";
 const clashDisplay = localFont({
   src: [
     {
-      path: "../../public/fonts/ClashDisplay-ExtraLight.otf",
+      path: "../../public/fonts/ClashDisplay-Extralight.otf",
       weight: "200",
       style: "normal",
     },
@@ -26,7 +26,7 @@ const clashDisplay = localFont({
       style: "normal",
     },
     {
-      path: "../../public/fonts/ClashDisplay-SemiBold.otf",
+      path: "../../public/fonts/ClashDisplay-Semibold.otf",
       weight: "600",
       style: "normal",
     },
