@@ -24,9 +24,10 @@ const About = () => {
             </StaggerItem>
             
             <StaggerItem>
-              <h2 className="font-clash-display text-blue text-5xl font-bold mt-8">
+              <h2 className="font-clash-display text-blue hidden md:block text-5xl font-bold mt-8">
                 We combine cutting-edge technology with decades of expertise to deliver precise geospatial solutions.
               </h2>
+              <h2 className="md:hidden text-3xl font-bold mt-8 text-blue font-clash-display">Precision Meets Experts</h2>
             </StaggerItem>
             
             <StaggerItem>

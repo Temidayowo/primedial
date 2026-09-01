@@ -4,7 +4,7 @@ import { FaArrowRight } from "react-icons/fa6";
 
 const Hero = () => {
   return (
-    <section className="relative w-full overflow-hidden">
+    <section className="relative h-screen w-full overflow-hidden">
       {/* Layer 1: Hero bg (z-0) */}
       <Image
         src="/images/hero-img.jpg"
@@ -19,22 +19,22 @@ const Hero = () => {
 
       {/* Layer 3: Content (relative z-20) */}
       <div className="relative z-20 mx-auto grid h-full max-w-7xl grid-cols-1 gap-20 px-6 py-32 md:grid-cols-2 md:px-8 lg:px-12">
-        <div className="flex flex-col items-start justify-center space-y-6">
-          <h2 className="text-5xl font-bold font-clash-display text-blue">
+        <div className="flex flex-col items-start justify-center space-y-1 md:space-y-6">
+          <h2 className=" text-3xl md:text-5xl font-bold font-clash-display text-blue">
             Precision, Innovation, Excellence in Geospatial Solutions
           </h2>
-          <p className="mt-4 text-normal text-gray-800 font-poppins">
+          <p className="mt-2 md:mt-4 text-normal text-gray-800 font-poppins">
             We offer innovative surveying, mapping, and geospatial services
             tailored for various sectors, including construction, oil and gas,
             and real estate projects.
           </p>
-          <div className="flex space-x-4">
-            <button className="bg-green hover:bg-blue transition-colors duration-300 text-white px-8 py-3 rounded-full hover:bg-green-hover">
-              <Link href="" className="flex items-center">
+          <div className="flex space-x-4 mt-2">
+            <button className="bg-green hover:bg-blue transition-colors duration-300 text-white px-6 md:px-8 py-2 md:py-3 rounded-full hover:bg-green-hover">
+              <Link href="" className="flex items-center font-medium">
                 Services <FaArrowRight className="ml-2" />
               </Link>
             </button>
-            <button className="border border-blue transition-colors duration-300 text-blue px-8 py-3 rounded-full hover:bg-blue hover:text-white">
+            <button className="border font-medium border-blue transition-colors duration-300 text-blue px-6 md:px-8 py-2 md:py-3 rounded-full hover:bg-blue hover:text-white">
               <Link href="">Shop Now</Link>
             </button>
           </div>
