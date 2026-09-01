@@ -14,7 +14,7 @@ const Category = () => {
     // Added 'w-full overflow-hidden' here to stop the horizontal bleed
     <section className="mx-auto lg:mx-10 w-full max-w-7xl overflow-hidden px-6 py-12 md:px-12 md:py-16 lg:px-20 lg:py-20">
       <div className="flex items-center justify-between mb-6 md:mb-8">
-        <h3 className="font-clash-display text-2xl md:text-3xl lg:text-4xl text-blue font-bold">
+        <h3 className="font-clash-display text-2xl md:text-3xl lg:text-3xl text-blue font-bold">
           Shop by Category
         </h3>
       </div>

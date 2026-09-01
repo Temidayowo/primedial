@@ -10,8 +10,8 @@
   --font-poppins: "Poppins", sans-serif;
 
   /* custom colors */
-  --color-green: #16A34A;
-  --color-blue: #0F172A;
+  --color-green: #16a34a;
+  --color-blue: #0f172a;
 }
 
 @theme inline {
@@ -126,6 +126,15 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -135,5 +144,11 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .animate-marquee {
+    animation: marquee 20s linear infinite;
   }
 }

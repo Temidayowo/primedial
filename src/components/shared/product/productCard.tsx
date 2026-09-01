@@ -1,17 +1,13 @@
 import Image from "next/image";
-
 import Link from "next/link";
-
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
-import { SurveyingProduct } from "@/data/products"; // Don't forget to import the type
+import { SurveyingProduct } from "@/data/products"; 
 import { Button } from "@base-ui/react";
-
-// Properly destructure { product } from the props object
 
 const ProductCard = ({ product }: { product: SurveyingProduct }) => {
   return (
-    <Card className="bg-[#F8FAFC] ring-0 rounded-lg shadow hover:shadow-lg duration-300 transition-transform ease-in-out hover:scale-102 mx-0">
+    // 1. Added `h-full flex flex-col` so the card spans the full grid height and stacks contents
+    <Card className="bg-[#F8FAFC] ring-0 rounded-lg shadow hover:shadow-lg duration-300 transition-transform ease-in-out hover:scale-102 mx-0 h-full flex flex-col">
       <CardHeader>
         <Link href={`/products/${product.slug}`} className="block">
           <Image
@@ -19,13 +15,13 @@ const ProductCard = ({ product }: { product: SurveyingProduct }) => {
             alt={product.name}
             width={300}
             height={200}
-            // Added w-full and h-[200px] below
-
             className="w-full h-50 object-cover object-center"
           />
         </Link>
       </CardHeader>
-      <CardContent className="mt-2">
+      
+      {/* 2. Added `flex flex-col flex-grow` to allow the content area to fill all empty space */}
+      <CardContent className="mt-2 flex flex-col flex-grow">
         <Link href={`/products/${product.slug}`} className="block">
           <h3 className="font-clash-display text-base font-medium text-blue">
             {product.name}
@@ -35,14 +31,13 @@ const ProductCard = ({ product }: { product: SurveyingProduct }) => {
           </p>
         </Link>
 
-        <div className="mt-4 flex items-center justify-between">
-          {/* Check inStock to toggle Price vs "Out of Order" */}
+        {/* 3. Replaced `mt-4` with `mt-auto pt-4`. `mt-auto` pushes this div to the very bottom. */}
+        <div className="mt-auto pt-4 flex items-center justify-between">
           <p className="text-lg font-poppins font-bold text-blue">
             {product.inStock ? `₦${product.price.toFixed(2)}` : "Out of Order"}
           </p>
 
           <Button className="font-poppins text-sm bg-green hover:bg-blue transition-colors duration-300 text-white px-4 py-2 rounded-full">
-            {/* Check inStock to toggle button text */}
             {product.inStock ? "Add to Cart" : "Get Quote"}
           </Button>
         </div>

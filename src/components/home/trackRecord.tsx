@@ -23,7 +23,7 @@ const TrackRecord = () => {
               className="flex flex-col items-center justify-center space-y-3"
             >
               {/* Massive, bold, dark numbers */}
-              <div className="text-5xl font-extrabold text-[#111827] sm:text-6xl tracking-tight">
+              <div className="text-5xl font-extrabold text-[#111827] sm:text-6xl tracking-tight font-clash-display">
                 <AnimatedCounter
                   target={stat.target}
                   suffix={stat.suffix}
@@ -32,7 +32,7 @@ const TrackRecord = () => {
               </div>
 
               {/* Small, uppercase, gray labels with wide letter spacing */}
-              <p className="text-sm font-semibold tracking-widest text-gray-500 uppercase">
+              <p className="text-sm font-semibold tracking-widest text-gray-500 uppercase font-poppins">
                 {stat.label}
               </p>
             </AnimateOnScroll>

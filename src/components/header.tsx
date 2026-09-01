@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { FaCartShopping, FaUser } from "react-icons/fa6";
 
 const Header = () => {
@@ -17,16 +18,27 @@ const Header = () => {
           ===================================================== */}
       <header className="hidden lg:block border-b border-gray-200">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:px-8 lg:px-12">
-          <h1 className="text-3xl font-bold font-clash-display text-blue">
-            Primedial
-          </h1>
+          
+          {/* Desktop Logo - Increased size */}
+          <Link href="/">
+            <Image 
+              src="/images/logo/primedial-logo.png"
+              alt="Primedial Logo" 
+              width={300} 
+              height={90} 
+              className="w-auto h-10 xl:h-14"
+              priority 
+            />
+          </Link>
+
           <nav className="space-x-5 font-clash-display font-medium text-blue">
-            <Link href="">Home</Link>
-            <Link href="">About</Link>
-            <Link href="">Shop</Link>
-            <Link href="">Projects</Link>
-            <Link href="">Contact</Link>
+            <Link href="/">Home</Link>
+            <Link href="/about">About</Link>
+            <Link href="/shop">Shop</Link>
+            <Link href="/projects">Projects</Link>
+            <Link href="/contact">Contact</Link>
           </nav>
+          
           <div className="flex items-center space-x-4">
             <div className="relative">
               <FaCartShopping className="text-blue size-5" />
@@ -44,10 +56,18 @@ const Header = () => {
           ===================================================== */}
       <header className="block lg:hidden border-b border-gray-200 relative bg-white">
         <div className="flex items-center justify-between px-6 py-4">
-          {/* Logo */}
-          <h1 className="text-2xl font-bold font-clash-display text-blue">
-            Primedial
-          </h1>
+          
+          {/* Mobile Logo - Increased size */}
+          <Link href="/">
+            <Image 
+              src="/images/logo/primedial-logo.png"
+              alt="Primedial Logo" 
+              width={200} 
+              height={60} 
+              className="w-auto h-10 sm:h-12" // Increased from h-8 to h-10 (and h-12 on slightly larger mobile screens)
+              priority 
+            />
+          </Link>
 
           {/* Right side: Cart & Hamburger Toggle */}
           <div className="flex items-center space-x-5">

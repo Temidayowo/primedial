@@ -4,6 +4,9 @@ import About from "@/components/home/about";
 import TrackRecord from "@/components/home/trackRecord";
 import FeaturedProducts from "@/components/home/featuredProducts";
 import Category from "@/components/home/category";
+import Slider from "@/components/home/partners";
+import Testimonials from "@/components/home/testimonials";
+import Footer from "@/components/footer";
 
 export default function Home() {
   return (
@@ -14,6 +17,9 @@ export default function Home() {
       <TrackRecord />
       <Category />
       <FeaturedProducts />
+      <Slider />
+      <Testimonials />
+      <Footer />
     </>
   );
 }
