@@ -1,4 +1,8 @@
+"use client";
+
+import { useRef } from "react";
 import Link from "next/link";
+import Autoplay from "embla-carousel-autoplay";
 import { productCategories } from "@/data/products";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -10,8 +14,12 @@ import {
 } from "@/components/ui/carousel";
 
 const Category = () => {
+  // Initialize the autoplay plugin (scrolls every 3 seconds)
+  const plugin = useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  );
+
   return (
-    // Added 'w-full overflow-hidden' here to stop the horizontal bleed
     <section className="mx-auto lg:mx-10 w-full max-w-7xl overflow-hidden px-6 py-12 md:px-12 md:py-16 lg:px-20 lg:py-20">
       <div className="flex items-center justify-between mb-6 md:mb-8">
         <h3 className="font-clash-display text-2xl md:text-3xl lg:text-3xl text-blue font-bold">
@@ -24,7 +32,10 @@ const Category = () => {
           align: "start",
           loop: true,
         }}
+        plugins={[plugin.current]}
         className="w-full relative py-4"
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
       >
         <CarouselContent className="-ml-4">
           {productCategories.map((category, index) => {

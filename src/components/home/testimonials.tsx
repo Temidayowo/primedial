@@ -1,4 +1,8 @@
+"use client";
+
 import * as React from "react";
+// Ensure this import path points to where you saved your animation utilities
+import { StaggerContainer, StaggerItem, TextReveal } from "@/components/ui/MotionWrapper";
 
 const testimonials = [
   {
@@ -44,47 +48,53 @@ const StarRating = ({ rating }: { rating: number }) => {
 
 export default function Testimonials() {
   return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+    <section className="py-16 md:py-24 bg-white overflow-hidden">
+      <StaggerContainer staggerDelay={0.15} className="mx-auto max-w-7xl px-6 lg:px-10">
+        
         <div className="text-center mb-12">
-          <h2 className="font-clash-display text-2xl md:text-3xl lg:text-4xl font-bold text-blue">
-            What Our Clients Say
-          </h2>
-          <p className="mt-4 text-gray-500 font-poppins text-sm md:text-base max-w-2xl mx-auto">
-            Trusted by industry professionals, civil engineers, and GIS specialists to deliver high-precision surveying equipment on time.
-          </p>
+          <StaggerItem>
+            <h2 className="font-clash-display text-2xl md:text-3xl lg:text-4xl font-bold text-blue">
+              <TextReveal text="What Our Clients Say" />
+            </h2>
+          </StaggerItem>
+          
+          <StaggerItem>
+            <p className="mt-4 text-gray-500 font-poppins text-sm md:text-base max-w-2xl mx-auto">
+              Trusted by industry professionals, civil engineers, and GIS specialists to deliver high-precision surveying equipment on time.
+            </p>
+          </StaggerItem>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial) => (
-            <div
-              key={testimonial.id}
-              className="flex flex-col justify-between bg-[#F8FAFC] p-8 rounded-2xl shadow-sm border border-gray-100 transition-all hover:shadow-md"
-            >
-              <div>
-                <StarRating rating={testimonial.rating} />
-                <p className="text-gray-600 italic font-poppins text-sm leading-relaxed mb-6">
-                  "{testimonial.content}"
-                </p>
-              </div>
-              
-              <div className="flex items-center gap-4 mt-auto border-t border-gray-200 pt-4">
-                <div className="h-10 w-10 flex items-center justify-center rounded-full bg-blue text-white font-bold font-clash-display">
-                  {testimonial.name.charAt(0)}
-                </div>
+            <StaggerItem key={testimonial.id} className="h-full">
+              <div className="flex h-full flex-col justify-between bg-[#F8FAFC] p-8 rounded-2xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
                 <div>
-                  <h4 className="text-sm font-bold text-blue font-poppins">
-                    {testimonial.name}
-                  </h4>
-                  <p className="text-[11px] text-gray-500 font-poppins">
-                    {testimonial.role}
+                  <StarRating rating={testimonial.rating} />
+                  <p className="text-gray-600 italic font-poppins text-sm leading-relaxed mb-6">
+                    "{testimonial.content}"
                   </p>
                 </div>
+                
+                <div className="flex items-center gap-4 mt-auto border-t border-gray-200 pt-4">
+                  <div className="h-10 w-10 flex items-center justify-center rounded-full bg-blue text-white font-bold font-clash-display">
+                    {testimonial.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-blue font-poppins">
+                      {testimonial.name}
+                    </h4>
+                    <p className="text-[11px] text-gray-500 font-poppins">
+                      {testimonial.role}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
+            </StaggerItem>
           ))}
         </div>
-      </div>
+        
+      </StaggerContainer>
     </section>
   );
 }
