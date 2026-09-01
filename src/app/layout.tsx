@@ -6,32 +6,32 @@ import "./globals.css";
 const clashDisplay = localFont({
   src: [
     {
-      path: "./fonts/ClashDisplay-ExtraLight.otf",
+      path: "../../public/fonts/ClashDisplay-ExtraLight.otf",
       weight: "200",
       style: "normal",
     },
     {
-      path: "./fonts/ClashDisplay-Light.otf",
+      path: "../../public/fonts/ClashDisplay-Light.otf",
       weight: "300",
       style: "normal",
     },
     {
-      path: "./fonts/ClashDisplay-Regular.otf",
+      path: "../../public/fonts/ClashDisplay-Regular.otf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/ClashDisplay-Medium.otf",
+      path: "../../public/fonts/ClashDisplay-Medium.otf",
       weight: "500",
       style: "normal",
     },
     {
-      path: "./fonts/ClashDisplay-SemiBold.otf",
+      path: "../../public/fonts/ClashDisplay-SemiBold.otf",
       weight: "600",
       style: "normal",
     },
     {
-      path: "./fonts/ClashDisplay-Bold.otf",
+      path: "../../public/fonts/ClashDisplay-Bold.otf",
       weight: "700",
       style: "normal",
     }
