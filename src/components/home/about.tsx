@@ -10,8 +10,8 @@ import {
 
 const About = () => {
   return (
-    <section className="py-32 overflow-hidden">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-20 px-6 md:grid-cols-5 md:px-8 lg:px-12">
+    <section className="section-container py-16 md:py-20">
+      <div className="grid grid-cols-1 gap-20 md:grid-cols-5">
         
         {/* TEXT COLUMN (Animated with StaggerContainer so elements fade up one by one) */}
         <div className="md:col-span-3">
