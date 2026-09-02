@@ -3,13 +3,16 @@
 import { surveyingProducts } from "@/data/products";
 import ProductList from "../shared/product/productList";
 // Adjust the import path below to match where you saved your animation components
-import { StaggerContainer, StaggerItem, TextReveal } from "@/components/ui/MotionWrapper";  
+import {
+  StaggerContainer,
+  StaggerItem,
+  TextReveal,
+} from "@/components/ui/MotionWrapper";
 
 const FeaturedProducts = () => {
   return (
-    <section className="mx-auto lg:mx-12 max-w-7xl px-6 py-12 md:px-12 md:py-16 lg:px-20 lg:py-20 overflow-hidden">
+    <section className="section-container overflow-hidden">
       <StaggerContainer staggerDelay={0.2}>
-        
         {/* Animated Title */}
         <StaggerItem>
           <h2 className="font-clash-display text-2xl md:text-3xl lg:text-3xl text-blue font-bold mb-6 md:mb-8">
@@ -21,7 +24,6 @@ const FeaturedProducts = () => {
         <StaggerItem>
           <ProductList data={surveyingProducts} limit={4} />
         </StaggerItem>
-        
       </StaggerContainer>
     </section>
   );

@@ -2,28 +2,35 @@
 
 import * as React from "react";
 // Ensure this import path points to where you saved your animation utilities
-import { StaggerContainer, StaggerItem, TextReveal } from "@/components/ui/MotionWrapper";
+import {
+  StaggerContainer,
+  StaggerItem,
+  TextReveal,
+} from "@/components/ui/MotionWrapper";
 
 const testimonials = [
   {
     id: 1,
     name: "Oluwaseun Adebayo",
     role: "Chief Surveyor, Meridian Geo-Systems",
-    content: "The Trimble R12i we procured has completely transformed our workflow. The accuracy in challenging canopy environments is unmatched, and the customer support was exceptional.",
+    content:
+      "The Trimble R12i we procured has completely transformed our workflow. The accuracy in challenging canopy environments is unmatched, and the customer support was exceptional.",
     rating: 5,
   },
   {
     id: 2,
     name: "Emeka Nnamdi",
     role: "Project Manager, CT EDGE Construction",
-    content: "Fast delivery and highly reliable equipment. We have been sourcing our Leica Total Stations here for over two years, and the calibration is always spot-on right out of the box.",
+    content:
+      "Fast delivery and highly reliable equipment. We have been sourcing our Leica Total Stations here for over two years, and the calibration is always spot-on right out of the box.",
     rating: 5,
   },
   {
     id: 3,
     name: "Aisha Bello",
     role: "GIS Specialist, BHL Real Estate",
-    content: "Excellent service! They helped us transition to newer RTK GPS systems effortlessly. Their technical advice saved us both time and money on our latest mapping project.",
+    content:
+      "Excellent service! They helped us transition to newer RTK GPS systems effortlessly. Their technical advice saved us both time and money on our latest mapping project.",
     rating: 5,
   },
 ];
@@ -48,19 +55,19 @@ const StarRating = ({ rating }: { rating: number }) => {
 
 export default function Testimonials() {
   return (
-    <section className="py-16 md:py-24 bg-white overflow-hidden">
-      <StaggerContainer staggerDelay={0.15} className="mx-auto max-w-7xl px-6 lg:px-10">
-        
+    <section className="section-container bg-white overflow-hidden">
+      <StaggerContainer staggerDelay={0.15}>
         <div className="text-center mb-12">
           <StaggerItem>
             <h2 className="font-clash-display text-2xl md:text-3xl lg:text-4xl font-bold text-blue">
               <TextReveal text="What Our Clients Say" />
             </h2>
           </StaggerItem>
-          
+
           <StaggerItem>
             <p className="mt-4 text-gray-500 font-poppins text-sm md:text-base max-w-2xl mx-auto">
-              Trusted by industry professionals, civil engineers, and GIS specialists to deliver high-precision surveying equipment on time.
+              Trusted by industry professionals, civil engineers, and GIS
+              specialists to deliver high-precision surveying equipment on time.
             </p>
           </StaggerItem>
         </div>
@@ -75,7 +82,7 @@ export default function Testimonials() {
                     "{testimonial.content}"
                   </p>
                 </div>
-                
+
                 <div className="flex items-center gap-4 mt-auto border-t border-gray-200 pt-4">
                   <div className="h-10 w-10 flex items-center justify-center rounded-full bg-blue text-white font-bold font-clash-display">
                     {testimonial.name.charAt(0)}
@@ -93,7 +100,6 @@ export default function Testimonials() {
             </StaggerItem>
           ))}
         </div>
-        
       </StaggerContainer>
     </section>
   );

@@ -12,8 +12,8 @@ const stats = [
 
 const TrackRecord = () => {
   return (
-    <section className="bg-gray-50 py-20 border-y border-gray-200">
-      <div className="container mx-auto px-4 max-w-7xl">
+    <section className="border-y border-gray-200 bg-gray-50">
+      <div className="section-container">
         <div className="grid grid-cols-1 gap-12 text-center md:grid-cols-4 md:gap-8">
           {stats.map((stat, i) => (
             <AnimateOnScroll
@@ -41,6 +41,6 @@ const TrackRecord = () => {
       </div>
     </section>
   );
-}
+};
 
 export default TrackRecord;

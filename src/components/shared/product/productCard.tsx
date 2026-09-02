@@ -21,7 +21,7 @@ const ProductCard = ({ product }: { product: SurveyingProduct }) => {
       </CardHeader>
       
       {/* 2. Added `flex flex-col flex-grow` to allow the content area to fill all empty space */}
-      <CardContent className="mt-2 flex flex-col flex-grow">
+      <CardContent className="mt-2 flex flex-col grow">
         <Link href={`/products/${product.slug}`} className="block">
           <h3 className="font-clash-display text-base font-medium text-blue">
             {product.name}
