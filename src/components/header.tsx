@@ -11,6 +11,9 @@ const Header = () => {
   // Helper function to close menu when a link is clicked
   const closeMenu = () => setIsMobileMenuOpen(false);
 
+  const animatedLinkClasses =
+    "relative inline-block pb-1 text-blue transition-colors hover:text-blue/80 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-blue after:transition-all after:duration-300 after:content-[''] hover:after:w-full";
+
   return (
     <>
       {/* ===================================================== 
@@ -18,27 +21,36 @@ const Header = () => {
           ===================================================== */}
       <header className="hidden lg:block border-b border-gray-200">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:px-8 lg:px-12">
-          
           {/* Desktop Logo - Increased size */}
           <Link href="/">
-            <Image 
+            <Image
               src="/images/logo/primedial-logo.png"
-              alt="Primedial Logo" 
-              width={300} 
-              height={90} 
+              alt="Primedial Logo"
+              width={300}
+              height={90}
               className="w-auto h-10 xl:h-14"
-              priority 
+              priority
             />
           </Link>
 
           <nav className="space-x-5 font-clash-display font-medium text-blue">
-            <Link href="/">Home</Link>
-            <Link href="/about">About</Link>
-            <Link href="/shop">Shop</Link>
-            <Link href="/projects">Projects</Link>
-            <Link href="/contact">Contact</Link>
+            <Link href="/" className={animatedLinkClasses}>
+              Home
+            </Link>
+            <Link href="/about" className={animatedLinkClasses}>
+              About
+            </Link>
+            <Link href="/shop" className={animatedLinkClasses}>
+              Shop
+            </Link>
+            <Link href="/projects" className={animatedLinkClasses}>
+              Projects
+            </Link>
+            <Link href="/contact" className={animatedLinkClasses}>
+              Contact
+            </Link>
           </nav>
-          
+
           <div className="flex items-center space-x-4">
             <div className="relative">
               <FaCartShopping className="text-blue size-5" />
@@ -56,16 +68,15 @@ const Header = () => {
           ===================================================== */}
       <header className="block lg:hidden border-b border-gray-200 relative bg-white">
         <div className="flex items-center justify-between px-6 py-4">
-          
           {/* Mobile Logo - Increased size */}
           <Link href="/">
-            <Image 
+            <Image
               src="/images/logo/primedial-logo.png"
-              alt="Primedial Logo" 
-              width={200} 
-              height={60} 
+              alt="Primedial Logo"
+              width={200}
+              height={60}
               className="w-auto h-10 sm:h-12" // Increased from h-8 to h-10 (and h-12 on slightly larger mobile screens)
-              priority 
+              priority
             />
           </Link>
 
@@ -114,23 +125,41 @@ const Header = () => {
         {/* Mobile Dropdown Menu */}
         <div
           className={`absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-xl z-50 overflow-hidden transition-all duration-300 ease-in-out ${
-            isMobileMenuOpen ? "max-h-100 opacity-100" : "max-h-0 opacity-0 border-transparent shadow-none"
+            isMobileMenuOpen
+              ? "max-h-100 opacity-100"
+              : "max-h-0 opacity-0 border-transparent shadow-none"
           }`}
         >
           <nav className="flex flex-col space-y-4 px-6 py-6 font-clash-display font-medium text-blue">
-            <Link href="/" onClick={closeMenu}>
+            <Link href="/" onClick={closeMenu} className={animatedLinkClasses}>
               Home
             </Link>
-            <Link href="/about" onClick={closeMenu}>
+            <Link
+              href="/about"
+              onClick={closeMenu}
+              className={animatedLinkClasses}
+            >
               About
             </Link>
-            <Link href="/shop" onClick={closeMenu}>
+            <Link
+              href="/shop"
+              onClick={closeMenu}
+              className={animatedLinkClasses}
+            >
               Shop
             </Link>
-            <Link href="/projects" onClick={closeMenu}>
+            <Link
+              href="/projects"
+              onClick={closeMenu}
+              className={animatedLinkClasses}
+            >
               Projects
             </Link>
-            <Link href="/contact" onClick={closeMenu}>
+            <Link
+              href="/contact"
+              onClick={closeMenu}
+              className={animatedLinkClasses}
+            >
               Contact
             </Link>
 
