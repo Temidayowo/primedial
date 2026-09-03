@@ -19,6 +19,7 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
 
   const isDark = theme === "dark";
   const textColorClass = isDark ? "text-white" : "text-blue";
+  const iconBackgroundClass = isDark ? "bg-white" : "bg-blue";
   const textHoverClass = isDark ? "hover:text-white/80" : "hover:text-blue/80";
   const underlineClass = isDark ? "after:bg-white" : "after:bg-blue";
 
@@ -111,7 +112,7 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
               <FaCartShopping
                 className={cn(
                   "size-5 transition-colors duration-300",
-                  isMobileMenuOpen ? "text-blue" : "text-white",
+                  isMobileMenuOpen ? "text-blue" : textColorClass,
                 )}
               />
               <div className="absolute -top-2 -right-2 bg-green text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-medium">
@@ -126,13 +127,13 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
             >
               <div className="relative w-6 h-5">
                 <span
-                  className={`absolute left-0 h-0.5 w-full transform transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "bg-blue top-2 rotate-45" : "bg-white top-0"}`}
+                  className={`absolute left-0 h-0.5 w-full transform transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "bg-blue top-2 rotate-45" : `${iconBackgroundClass} top-0`}`}
                 ></span>
                 <span
-                  className={`absolute left-0 top-2 h-0.5 w-full transform transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "bg-blue opacity-0 translate-x-5" : "bg-white opacity-100"}`}
+                  className={`absolute left-0 top-2 h-0.5 w-full transform transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "bg-blue opacity-0 translate-x-5" : `${iconBackgroundClass} opacity-100`}`}
                 ></span>
                 <span
-                  className={`absolute left-0 h-0.5 w-full transform transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "bg-blue top-2 -rotate-45" : "bg-white top-4"}`}
+                  className={`absolute left-0 h-0.5 w-full transform transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "bg-blue top-2 -rotate-45" : `${iconBackgroundClass} top-4`}`}
                 ></span>
               </div>
             </button>

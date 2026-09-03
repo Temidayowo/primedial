@@ -11,7 +11,11 @@ import Footer from "@/components/footer";
 export default function Home() {
   return (
     <>
-      <Header theme="light" />
+      <Header
+        theme="light"
+        className="bg-transparent absolute"
+        mobileClassName="absolute top-0 left-0 z-50 w-full bg-transparent border-b-0"
+      />
       <Hero />
       <About />
       <TrackRecord />
