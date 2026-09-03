@@ -1,37 +1,16 @@
 "use client";
 
-import { Fragment } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils"; // Import your cn utility here
 
 interface PageHeroProps {
   heading: string;
   subheading: string;
   breadcrumb: string;
   backgroundImage?: string;
-}
-
-function renderHeading(text: string) {
-  // Supports {highlight}text{/highlight} syntax for gradient-colored text
-  const parts = text.split(/\{highlight\}|\{\/highlight\}/);
-  if (parts.length === 1) return <>{text}</>;
-
-  return (
-    <>
-      {parts.map((part, i) =>
-        i % 2 === 1 ? (
-          <span
-            key={i}
-            className="bg-linear-to-r from-electric to-cyan bg-clip-text text-transparent"
-          >
-            {part}
-          </span>
-        ) : (
-          <Fragment key={i}>{part}</Fragment>
-        ),
-      )}
-    </>
-  );
+  className?: string; // Allows custom padding, margins, or background overrides
+  align?: "left" | "center" | "right"; // Controls text alignment and auto-margins
 }
 
 export function PageHero({
@@ -39,10 +18,19 @@ export function PageHero({
   subheading,
   breadcrumb,
   backgroundImage,
+  className,
+  align = "center", // Defaults to center if not provided
 }: PageHeroProps) {
   return (
     <section
-      className={`relative overflow-hidden py-20 md:py-16 text-center ${!backgroundImage ? "page-hero" : ""}`}
+      className={cn(
+        "relative overflow-hidden py-32", // Default padding
+        align === "center" && "text-center",
+        align === "left" && "text-left",
+        align === "right" && "text-right",
+        !backgroundImage && "page-hero",
+        className // User-passed styles merge and override defaults here
+      )}
     >
       {backgroundImage && (
         <>
@@ -53,9 +41,7 @@ export function PageHero({
             className="object-cover"
             priority
             sizes="100vw"
-            /* Removed the style/filter prop entirely */
           />
-          {/* Replaced the old bg-midnight div with your exact hex and a blend mode */}
           <div className="absolute inset-0 bg-blue mix-blend-multiply opacity-80" />
         </>
       )}
@@ -63,23 +49,37 @@ export function PageHero({
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="font-poppins font-medium text-white text-xs uppercase tracking-widest text-electric mb-1"
+          className={cn(
+            "font-poppins font-medium text-white text-xs uppercase tracking-widest mb-1",
+            align === "center" && "mx-auto",
+            align === "right" && "ml-auto"
+          )}
         >
           {breadcrumb}
         </motion.p>
+        
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mx-auto max-w-3xl font-clash-display text-3xl font-bold text-white sm:text-4xl md:text-5xl"
+          className={cn(
+            "max-w-3xl font-clash-display text-3xl font-bold text-white sm:text-4xl md:text-5xl",
+            align === "center" && "mx-auto",
+            align === "right" && "ml-auto"
+          )}
         >
-          {renderHeading(heading)}
+          {heading}
         </motion.h1>
+        
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="mx-auto font-poppins text-gray-300 mt-4 max-w-2xl text-navy-200"
+          className={cn(
+            "font-poppins text-gray-400 mt-4 max-w-2xl",
+            align === "center" && "mx-auto",
+            align === "right" && "ml-auto"
+          )}
         >
           {subheading}
         </motion.p>
