@@ -16,13 +16,33 @@ model Product {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String
   slug        String   @unique(map: "product_slug_key")
-  category    String
   images      String[]
   description String
   inStock     Boolean  @default(true)
   features    String[]
-  brand       String
   price       Decimal  @default(0.0) @db.Decimal(12, 2)
   isFeatured  Boolean  @default(false)
   createdAt   DateTime @default(now())
+
+  categoryId String   @db.Uuid
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  brandId String @db.Uuid
+  brand   Brand  @relation(fields: [brandId], references: [id])
+}
+
+model Category {
+  id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name     String    @unique
+  slug     String    @unique
+  icon     String? // for the icon in "Shop by Category" cards
+  products Product[]
+}
+
+model Brand {
+  id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name     String    @unique
+  slug     String    @unique
+  logo     String?
+  products Product[]
 }

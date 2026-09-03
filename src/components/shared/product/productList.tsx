@@ -25,7 +25,7 @@ const ProductList = ({
   const featuredProducts = limit ? data.slice(0, limit) : data;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
       {featuredProducts.length > 0 ? (
         featuredProducts.map((product) => (
           // Added the key prop here
