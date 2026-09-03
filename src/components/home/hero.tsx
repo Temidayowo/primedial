@@ -18,10 +18,10 @@ const Hero = () => {
       />
 
       {/* Layer 2: White overlay (z-10) */}
-      <div className="hidden md:block absolute inset-0 z-10 bg-linear-to-r from-white from-25% to-transparent" />
+      {/* <div className="hidden md:block absolute inset-0 z-10 bg-linear-to-r from-white from-25% to-transparent" /> */}
 
       {/* Layer 3: Content (relative z-20) */}
-      <div className="relative z-20 mx-auto grid h-full max-w-7xl grid-cols-1 gap-20 px-6 py-32 md:grid-cols-2 md:px-8 lg:px-12">
+      <div className="relative z-20 mx-auto grid h-full max-w-7xl grid-cols-1 gap-20 px-6 py-48 md:grid-cols-2 md:px-8 lg:px-12">
         
         {/* Replace the content div with StaggerContainer */}
         <StaggerContainer staggerDelay={0.15} className="flex flex-col items-start justify-center space-y-4 md:space-y-6">
