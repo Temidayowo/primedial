@@ -76,7 +76,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${clashDisplay.variable} ${poppins.variable} h-full antialiased`}
+      className={`${clashDisplay.variable} font-poppins ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

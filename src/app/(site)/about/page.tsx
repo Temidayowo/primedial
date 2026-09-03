@@ -10,7 +10,10 @@ export const metadata: Metadata = {
 const AboutPage = () => {
   return (
     <>
-      <Header theme="dark" />
+      <Header
+        theme="dark"
+        mobileClassName="absolute top-0 left-0 z-50 w-full bg-transparent  border-b-0"
+      />
       <AboutContent />
     </>
   );

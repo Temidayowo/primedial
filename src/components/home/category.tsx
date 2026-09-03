@@ -15,9 +15,7 @@ import {
 
 const Category = () => {
   // Initialize the autoplay plugin (scrolls every 3 seconds)
-  const plugin = useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true })
-  );
+  const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
 
   return (
     <section className="section-container py-16 md:py-20 overflow-hidden">
@@ -39,18 +37,19 @@ const Category = () => {
       >
         <CarouselContent className="-ml-4">
           {productCategories.map((category, index) => {
-            const categorySlug = category.toLowerCase().replace(/\s+/g, '-');
-
             return (
-              <CarouselItem 
-                key={index} 
+              <CarouselItem
+                key={index}
                 className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 ring-0 my-4"
               >
-                <Link href={`/categories/${categorySlug}`} className="block h-full">
+                <Link
+                  href={`/categories/${category.slug}`}
+                  className="block h-full"
+                >
                   <Card className="bg-[#F8FAFC] ring-0 shadow-sm hover:shadow-md transition-shadow h-full">
                     <CardContent className="flex flex-col items-center justify-center p-6 h-28 md:h-32">
                       <h4 className="font-clash-display text-base md:text-lg font-semibold text-blue text-center">
-                        {category}
+                        {category.name}
                       </h4>
                     </CardContent>
                   </Card>
@@ -59,7 +58,7 @@ const Category = () => {
             );
           })}
         </CarouselContent>
-        
+
         <CarouselPrevious className="left-2 lg:left-4 z-10 h-8 w-8 md:h-10 md:w-10 bg-white/90 backdrop-blur hover:bg-white border shadow-md" />
         <CarouselNext className="right-2 lg:right-4 z-10 h-8 w-8 md:h-10 md:w-10 bg-white/90 backdrop-blur hover:bg-white border shadow-md" />
       </Carousel>
