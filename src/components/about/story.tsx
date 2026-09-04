@@ -9,7 +9,7 @@ const Story = () => {
       {/* Left Column: Staggered Text Animations */}
       <StaggerContainer className="flex flex-col gap-4 order-2 md:order-1">
         <StaggerItem>
-          <h3 className="font-poppins text-base font-bold text-green uppercase">
+          <h3 className="font-poppins text-base font-semibold text-green uppercase">
             Our Story
           </h3>
         </StaggerItem>
