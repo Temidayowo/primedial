@@ -53,7 +53,7 @@ const Footer = () => {
                 <Link href="/shop" className={animatedLinkClasses}>Shop</Link>
               </li>
               <li>
-                <Link href="/projects" className={animatedLinkClasses}>Projects</Link>
+                <Link href="/Services" className={animatedLinkClasses}>Services</Link>
               </li>
             </ul>
           </div>

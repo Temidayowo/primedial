@@ -42,7 +42,7 @@ const ShopContent = async ({ searchParams }: ShopContentProps) => {
       <PageHero
         heading="Surveying Equipment"
         subheading="Precision instruments engineered for the field, backed by expert support and industry-leading warranties."
-        breadcrumb="Home/Shop"
+        breadcrumb="Home / Shop"
         backgroundImage="/images/shop-section.jpg"
         align="center"
       />

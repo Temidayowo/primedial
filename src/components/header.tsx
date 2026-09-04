@@ -39,7 +39,7 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
       */}
       <header
         className={cn(
-          "hidden lg:block w-full z-50 top-0 left-0 bg-transparent absolute",
+          "hidden lg:block w-full z-[100] top-0 left-0 bg-transparent absolute",
           className,
         )}
       >
@@ -51,6 +51,7 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
               width={300}
               height={90}
               className="w-auto h-10 xl:h-14"
+              fetchPriority="high"
               priority
             />
           </Link>
@@ -65,8 +66,8 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
             <Link href="/shop" className={animatedLinkClasses}>
               Shop
             </Link>
-            <Link href="/projects" className={animatedLinkClasses}>
-              Projects
+            <Link href="/services" className={animatedLinkClasses}>
+              Services
             </Link>
             <Link href="/contact" className={animatedLinkClasses}>
               Contact
@@ -90,7 +91,7 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
           ===================================================== */}
       <header
         className={cn(
-          "block lg:hidden border-b border-gray-200 bg-white relative",
+          "block lg:hidden border-b border-gray-200 bg-white relative z-[100]",
           mobileClassName,
           isMobileMenuOpen && "bg-white",
         )}
@@ -104,6 +105,7 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
               height={60}
               className="w-auto h-10 sm:h-12"
               priority
+              fetchPriority="high"
             />
           </Link>
 
@@ -166,11 +168,11 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
               Shop
             </Link>
             <Link
-              href="/projects"
+              href="/services"
               onClick={closeMenu}
               className={mobileLinkClasses}
             >
-              Projects
+              Services
             </Link>
             <Link
               href="/contact"

@@ -75,6 +75,7 @@ const About = () => {
               src="/images/about-section-img.png"
               alt="About Image"
               fill
+              loading="eager"
               sizes="(min-width: 768px) 40vw, 100vw"
               className="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-105"
             />
