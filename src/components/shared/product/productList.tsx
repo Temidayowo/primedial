@@ -10,6 +10,7 @@ export interface FeaturedProduct {
   description: string;
   inStock: boolean;
   features: string[];
+  specSheetUrl?: string;
   price: number;
   isFeatured: boolean;
   createdAt: Date;
