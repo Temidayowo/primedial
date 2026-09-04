@@ -1,5 +1,9 @@
 import { PageHero } from "@/components/ui/pageHero";
 import WhatWeOffer from "@/components/services/whatWeOffer";
+import WhatWeService from "@/components/services/whatWeService";
+import RequestService from "@/components/services/requestService";
+import ExpertiseInAction from "@/components/services/expertiseInAction";
+import CtaBanner from "@/components/services/ctaBanner";
 
 const ServicesContent = () => {
   return (
@@ -11,6 +15,10 @@ const ServicesContent = () => {
         backgroundImage="/images/services-page-header.jpg"
       />
       <WhatWeOffer />
+      <WhatWeService />
+      <RequestService />
+      <ExpertiseInAction />
+      <CtaBanner />
     </>
   );
 };
