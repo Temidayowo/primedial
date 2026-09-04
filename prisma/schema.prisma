@@ -13,16 +13,17 @@ datasource db {
 }
 
 model Product {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String
-  slug        String   @unique(map: "product_slug_key")
-  images      String[]
-  description String
-  inStock     Boolean  @default(true)
-  features    String[]
-  price       Decimal  @default(0.0) @db.Decimal(12, 2)
-  isFeatured  Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  slug         String   @unique(map: "product_slug_key")
+  images       String[]
+  description  String
+  inStock      Boolean  @default(true)
+  features     String[]
+  specSheetUrl String?
+  price        Decimal  @default(0.0) @db.Decimal(12, 2)
+  isFeatured   Boolean  @default(false)
+  createdAt    DateTime @default(now())
 
   categoryId String   @db.Uuid
   category   Category @relation(fields: [categoryId], references: [id])

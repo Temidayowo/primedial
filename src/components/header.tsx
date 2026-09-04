@@ -48,8 +48,8 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
             <Image
               src="/images/logo/primedial-logo.png"
               alt="Primedial Logo"
-              width={300}
-              height={90}
+              width={359}
+              height={247}
               className="w-auto h-10 xl:h-14"
               fetchPriority="high"
               priority
@@ -101,8 +101,8 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
             <Image
               src="/images/logo/primedial-logo.png"
               alt="Primedial Logo"
-              width={200}
-              height={60}
+              width={359}
+              height={247}
               className="w-auto h-10 sm:h-12"
               priority
               fetchPriority="high"

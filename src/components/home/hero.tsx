@@ -16,8 +16,8 @@ const Hero = () => {
       <Image
         src="/images/hero-img.jpg"
         alt="Hero Image"
-        height={359}
-        width={247}
+        height={810}
+        width={1440}
         className="absolute inset-0 z-0 h-full w-full object-cover object-center opacity-75"
         priority
       />

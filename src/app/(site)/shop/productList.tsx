@@ -12,6 +12,7 @@ export interface Product {
   price: number;
   images: string[];
   features: string[];
+  specSheetURl?: string;
   inStock: boolean;
   isFeatured: boolean;
   createdAt: Date;
