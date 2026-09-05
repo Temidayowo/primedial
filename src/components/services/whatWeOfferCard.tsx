@@ -17,7 +17,7 @@ const WhatWeOfferCard = ({ header, text, icon }: WhatWeOffer) => {
         )}
       </div>
 
-      <h3 className="mt-5 font-clash-display text-lg font-semibold text-blue">
+      <h3 className="mt-5 text-lg font-semibold font-clash-display text-blue">
         {header}
       </h3>
       <p className="mt-2 font-poppins text-sm text-gray-700">{text}</p>

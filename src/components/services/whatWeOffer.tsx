@@ -59,7 +59,7 @@ const WhatWeOffer = () => {
         <h4 className="text-green uppercase text-center text-sm font-semibold">
           What We Offer
         </h4>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue text-center">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold font-clash-display text-blue text-center">
           Full-Spectrum Geospatial Services
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-8">
