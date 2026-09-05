@@ -35,7 +35,7 @@ const WhatWeService = () => {
         <h4 className="text-green uppercase text-center text-sm font-semibold">
           What We Service
         </h4>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue text-center">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue text-center font-clash-display">
           Equipment We Repair & Calibrate
         </h2>
         <p className="text-gray-400 text-sm text-center mt-3">

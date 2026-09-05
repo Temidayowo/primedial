@@ -1,12 +1,14 @@
-import { getCategories } from "@/lib/actions/products.action";
-import { Button } from "@/components/ui/button";
+import { FaPaperPlane } from "react-icons/fa6";
+import { Button } from "../ui/button";
 
-const RequestServiceForm = async () => {
-  const categories = await getCategories();
-
+const MessageForm = () => {
   return (
-    <div className="border-[0.1px] border-gray-200 p-6 rounded-xl bg-gray-50">
-      <form action="">
+    <div className="flex h-full flex-col rounded-xl border-[0.1px] border-gray-300 bg-gray-100 px-5 py-8">
+      <h2 className="font-clash-display text-2xl font-semibold lg:text-3xl">Send us a message</h2>
+      <p className="font-poppins text-sm mt-1 mb-4">
+        Fill out the form and a member of our team will get back to you shortly.
+      </p>
+      <form action="" className="flex h-full flex-col">
         <div className="grid gap-5 grid-cols-1 md:grid-cols-2">
           <div className="flex flex-col gap-2">
             <label
@@ -46,79 +48,44 @@ const RequestServiceForm = async () => {
               Phone Number
             </label>
             <input
-              type="text"
-              className="bg-gray-100 border-[0.1px] border-gray-300 ouliine-blue rounded px-3 py-1.5"
+              type="number"
+              className="bg-gray-100 border-[0.1px] border-gray-300 ouliine-blue rounded px-3 py-1.5 no-spinner"
               placeholder="+234 800 000 0000"
             />
           </div>
           <div>
             <div className="flex flex-col gap-2">
               <label
-                htmlFor="company"
+                htmlFor="subject"
                 className="uppercase text-blue text-sm font-medium"
               >
-                Company Name
+                Subject
               </label>
               <input
                 type="text"
                 className="bg-gray-100 border-[0.1px] border-gray-300 ouliine-blue rounded px-3 py-1.5"
-                placeholder="Company Ltd."
-              />
-            </div>
-          </div>
-        </div>
-        <div className="grid gap-5 grid-cols-1 md:grid-cols-2 mt-4">
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="equipment"
-              className="uppercase text-blue text-sm font-medium"
-            >
-              Equipment Type
-            </label>
-            <select
-              name="equipment"
-              id="equipment-select"
-              className="bg-gray-100 py-1.5 px-3 border-gray-300 outline-blue rounded"
-            >
-              {categories.map((category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="model"
-                className="uppercase text-blue text-sm font-medium"
-              >
-                Email
-              </label>
-              <input
-                type="model"
-                className="bg-gray-100 border-[0.1px] border-gray-300 ouliine-blue rounded px-3 py-1.5"
-                placeholder="e.g. Meridian SuperBase"
+                placeholder="john@example.com"
               />
             </div>
           </div>
         </div>
         <div className="mt-4 flex flex-col gap-2">
-          <label htmlFor="description">Issue Description</label>
+          <label htmlFor="message">Message</label>
           <textarea
-            name="description"
-            id="issue-description"
+            name="message"
+            id="message"
             className="bg-gray-100 border-gray-300 border-[0.1px] outline-blue px-3 py-1.5 rounded resize-none"
             placeholder="Describe the issue or calibration needed"
             rows={4}
           ></textarea>
         </div>
-        <Button className="bg-green rounded-4xl py-6 uppercase w-full mt-4 text-white text-base font-semibold">
+        <Button className="bg-green rounded-4xl py-6 uppercase w-full mt-4 text-white text-base font-semibold flex  items-center gap-3 cursor-pointer">
           Submit Request
+          <FaPaperPlane className="text-base" />
         </Button>
       </form>
     </div>
   );
 };
 
-export default RequestServiceForm;
+export default MessageForm;
