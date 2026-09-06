@@ -30,6 +30,7 @@ export async function getFeaturedProducts() {
       description: true,
       inStock: true,
       features: true,
+      specSheetUrl: true,
       price: true,
       isFeatured: true,
       createdAt: true,
@@ -39,6 +40,7 @@ export async function getFeaturedProducts() {
     ...product,
     brand: product.brand.name,
     category: product.category.slug,
+    specSheetUrl: product.specSheetUrl ?? undefined,
     price: Number(product.price),
   }));
 }
@@ -97,6 +99,7 @@ export async function getProducts(
       description: true,
       inStock: true,
       features: true,
+      specSheetUrl: true,
       price: true,
       isFeatured: true,
       createdAt: true,
@@ -107,6 +110,38 @@ export async function getProducts(
     ...product,
     brand: product.brand.name,
     category: product.category.slug,
+    specSheetUrl: product.specSheetUrl ?? undefined,
     price: Number(product.price),
   }));
+}
+
+export async function getProductsBySlug(slug: string) {
+  const product = await prisma.product.findFirst({
+    where: { slug: slug },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      brand: { select: { name: true } },
+      category: { select: { slug: true } },
+      images: true,
+      description: true,
+      inStock: true,
+      features: true,
+      specSheetUrl: true,
+      price: true,
+      isFeatured: true,
+      createdAt: true,
+    },
+  });
+
+  if (!product) return null;
+
+  return {
+    ...product,
+    brand: product.brand.name,
+    category: product.category.slug,
+    specSheetUrl: product.specSheetUrl ?? undefined,
+    price: Number(product.price),
+  };
 }

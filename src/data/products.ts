@@ -6,6 +6,7 @@ export interface SurveyingProduct {
   description: string;
   price: number; // Use 0 if you want to display "Contact for Quote"
   images: string[];
+  specSheetUrl?: string;
   features: string[];
   inStock: boolean;
   isFeatured?: boolean;
@@ -38,6 +39,7 @@ export const productBrands: ProductBrand[] = [
   { name: "DJI", slug: "dji" },
   { name: "FARO", slug: "faro" },
   { name: "Seco", slug: "seco" },
+  { name: "Meridian", slug: "meridian" },
 ];
 
 export const surveyingProducts: SurveyingProduct[] = [
@@ -164,5 +166,31 @@ export const surveyingProducts: SurveyingProduct[] = [
       "Graduated in cm and tenths",
     ],
     inStock: true,
+  },
+  {
+    name: "Meridian M20L Laser GNSS RTK",
+    slug: "meridian-m20l-laser-gnss-rtk",
+    brand: "meridian",
+    category: "gnss-receivers",
+    description:
+      "The Meridian M20L is a high-precision RTK system designed for professional surveying. It combines a 1408-channel multi-constellation receiver with 120° calibration-free IMU tilt compensation. Additionally, it features integrated green laser technology, enabling accurate rodless visual alignment up to 100 meters in challenging environments.",
+    price: 0, // 0 triggers the "Contact for Quote" display as requested
+    images: [
+      "/images/products/meridian-m20l-main.jpg",
+      "/images/products/meridian-m20l-laser.jpg",
+      "/images/products/meridian-m20l-side.jpg",
+    ],
+    specSheetUrl: "/docs/meridian-m20l-datasheet.pdf.jpg",
+    features: [
+      "1408-channel multi-constellation GNSS tracking (GPS, GLONASS, BeiDou, GALILEO, QZSS, IRNSS, L-Band)",
+      "Integrated green laser technology for visual alignment up to 100 meters",
+      "120° calibration-free IMU tilt sensor for flexible, rodless measurements",
+      "High-capacity 7.4V 7000mAh lithium-ion battery providing up to 26 hours of operation",
+      "Ultra-lightweight, palm-sized design weighing only 699g",
+      "Rugged IP67-rated housing for extreme dust and water resistance",
+      "Built-in GSM mode (45-50 km range) and 8 km radius range for local RTK communication",
+    ],
+    inStock: true,
+    isFeatured: true,
   },
 ];
