@@ -44,6 +44,7 @@ async function main() {
         price: product.price,
         images: product.images,
         features: product.features,
+        specSheetUrl: product.specSheetUrl,
         inStock: product.inStock,
         isFeatured: product.isFeatured ?? false,
         categoryId: category.id,
