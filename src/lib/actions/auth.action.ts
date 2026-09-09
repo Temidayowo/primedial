@@ -3,8 +3,9 @@
 import * as z from "zod";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
-import { signIn } from "@/auth";
+import { signIn, EmailNotVerifiedError } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { sendVerificationEmail } from "@/lib/actions/verify-email.action";
 
 export type LoginContext = "user" | "admin";
 
@@ -22,6 +23,9 @@ export async function authenticate(
       redirectTo: context === "admin" ? "/admin" : "/",
     });
   } catch (error) {
+    if (error instanceof EmailNotVerifiedError) {
+      return "Please verify your email before logging in - check your inbox for the verification link.";
+    }
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
@@ -66,6 +70,7 @@ export type SignupState =
         terms?: string[];
       };
       message?: string;
+      verificationSent?: boolean;
     }
   | undefined;
 
@@ -99,12 +104,7 @@ export async function signup(
     data: { name, email, password: hashedPassword },
   });
 
-  try {
-    await signIn("credentials", { email, password, redirectTo: "/" });
-  } catch (error) {
-    if (error instanceof AuthError) {
-      return { message: "Account created, but sign in failed. Please log in." };
-    }
-    throw error;
-  }
+  await sendVerificationEmail(email);
+
+  return { verificationSent: true };
 }

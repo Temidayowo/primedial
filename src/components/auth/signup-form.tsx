@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, Lock, Mail, User as UserIcon } from "lucide-react";
 import { signup, signInWithGoogle } from "@/lib/actions/auth.action";
+import { resendVerificationEmail } from "@/lib/actions/verify-email.action";
 
 function GoogleIcon() {
   return (
@@ -32,6 +33,45 @@ export function SignupForm() {
   const [state, formAction, isPending] = useActionState(signup, undefined);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [resendState, resendAction, isResending] = useActionState(
+    resendVerificationEmail,
+    undefined,
+  );
+
+  if (state?.verificationSent) {
+    return (
+      <div className="w-full max-w-sm">
+        <h1 className="font-clash-display text-3xl font-bold text-blue">
+          Check your email
+        </h1>
+        <p className="mt-4 text-sm text-slate-500">
+          We sent a verification link to <strong>{email}</strong>. Click it
+          to activate your account, then log in.
+        </p>
+
+        <form action={resendAction} className="mt-6">
+          <input type="hidden" name="email" value={email} />
+          <button
+            type="submit"
+            disabled={isResending}
+            className="text-sm text-blue-600 hover:text-blue-500 disabled:opacity-60"
+          >
+            {isResending ? "Sending..." : "Didn't get it? Resend"}
+          </button>
+          {resendState?.message && (
+            <p className="mt-2 text-xs text-slate-400">{resendState.message}</p>
+          )}
+        </form>
+
+        <p className="mt-6 text-center text-sm text-slate-500">
+          <Link href="/login" className="text-blue-600 hover:text-blue-500">
+            Back to log in
+          </Link>
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-sm">
@@ -85,6 +125,8 @@ export function SignupForm() {
               type="email"
               placeholder="you@company.com"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-3 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
             />
           </div>
