@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { prisma } from "../src/lib/prisma";
 import {
   productBrands,
@@ -5,7 +6,40 @@ import {
   surveyingProducts,
 } from "@/data/products";
 
+const seedUsers = [
+  {
+    name: "Admin",
+    email: "admin@primedialsolutions.com",
+    password: "Admin123!",
+    role: "ADMIN" as const,
+  },
+  {
+    name: "Test User",
+    email: "user@primedialsolutions.com",
+    password: "User123!",
+    role: "USER" as const,
+  },
+];
+
 async function main() {
+  console.log("Deleting Users...");
+  await prisma.user.deleteMany();
+
+  console.log("Seeding users...");
+  for (const user of seedUsers) {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    await prisma.user.upsert({
+      where: { email: user.email },
+      update: {},
+      create: {
+        name: user.name,
+        email: user.email,
+        password: hashedPassword,
+        role: user.role,
+      },
+    });
+  }
+
   console.log("Clearing existing products...");
   await prisma.product.deleteMany();
 
