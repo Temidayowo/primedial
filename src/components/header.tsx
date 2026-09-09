@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils"; // Adjust this import path to where your cn fu
 
 interface HeaderProps {
   theme: "light" | "dark";
-  className?: string; // Used to pass bg and position for Desktop
-  mobileClassName?: string; // Used to pass bg and position for Mobile
+  className?: string;
+  mobileClassName?: string; 
 }
 
 const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
@@ -39,7 +39,7 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
       */}
       <header
         className={cn(
-          "hidden lg:block w-full z-[100] top-0 left-0 bg-transparent absolute",
+          "hidden lg:block w-full z-100 top-0 left-0 bg-transparent absolute",
           className,
         )}
       >
