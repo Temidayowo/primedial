@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -21,6 +21,15 @@ const credentialsSchema = z.object({
 // that reads the session (proxy.ts, dal.ts) treats a session past that
 // cutoff as logged out, via isSessionExpired() in @/lib/session.
 const SHORT_SESSION_MS = 24 * 60 * 60 * 1000;
+
+// Thrown from authorize() when the password is correct but the account
+// hasn't clicked its verification link yet - lets the calling code
+// (src/lib/actions/auth.action.ts) show a distinct message via `.code`,
+// while `.type` still reads "CredentialsSignin" for anything not
+// specifically checking for it.
+export class EmailNotVerifiedError extends CredentialsSignin {
+  code = "email_not_verified";
+}
 
 export const {
   handlers: { GET, POST },
@@ -62,6 +71,10 @@ export const {
 
         if (!passwordsMatch) {
           return null;
+        }
+
+        if (!user.emailVerified) {
+          throw new EmailNotVerifiedError();
         }
 
         // The admin login form sets loginType: "admin" - reject anyone

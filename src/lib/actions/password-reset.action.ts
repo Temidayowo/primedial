@@ -1,11 +1,11 @@
 "use server";
 
 import { randomBytes } from "crypto";
-import { headers } from "next/headers";
 import * as z from "zod";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { EMAIL_FROM, getResendClient, isEmailConfigured } from "@/lib/resend";
+import { getBaseUrl } from "@/lib/url";
 
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
 
@@ -48,10 +48,7 @@ export async function requestPasswordReset(
       },
     });
 
-    const headersList = await headers();
-    const host = headersList.get("host");
-    const protocol = host?.startsWith("localhost") ? "http" : "https";
-    const resetLink = `${protocol}://${host}/reset-password/${token}`;
+    const resetLink = `${await getBaseUrl()}/reset-password/${token}`;
 
     if (isEmailConfigured()) {
       const { error } = await getResendClient().emails.send({
