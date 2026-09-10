@@ -5,6 +5,8 @@ import * as z from "zod";
 import { prisma } from "@/lib/prisma";
 import { EMAIL_FROM, getResendClient, isEmailConfigured } from "@/lib/resend";
 import { getBaseUrl } from "@/lib/url";
+import { sendWelcomeEmail } from "@/lib/actions/welcome-email";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const VERIFY_TOKEN_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
@@ -81,12 +83,14 @@ export async function verifyEmail(token: string): Promise<VerifyEmailResult> {
     };
   }
 
-  await prisma.user.update({
+  const user = await prisma.user.update({
     where: { email: verificationToken.identifier },
     data: { emailVerified: new Date() },
   });
 
   await prisma.verificationToken.delete({ where: { token } });
+
+  await sendWelcomeEmail(user.email, user.name);
 
   return { success: true, message: "Your email has been verified." };
 }
@@ -114,9 +118,15 @@ export async function resendVerificationEmail(
   }
 
   const { email } = validatedFields.data;
+
+  const allowed = await checkRateLimit(`resend-verify:${email}`, 3, 60 * 60 * 1000);
+  if (!allowed) {
+    return { message: genericMessage };
+  }
+
   const user = await prisma.user.findUnique({ where: { email } });
 
-  if (user && user.password && !user.emailVerified) {
+  if (user && !user.emailVerified) {
     await sendVerificationEmail(email);
   }
 

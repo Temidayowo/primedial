@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { Role } from "@/generated/prisma/enums";
 import { isSessionExpired } from "@/lib/session";
 
-export async function verifySession() {
+export const verifySession = cache(async () => {
   const session = await auth();
 
   if (!session?.user || isSessionExpired(session)) {
@@ -14,7 +14,7 @@ export async function verifySession() {
   }
 
   return session;
-}
+});
 
 // Re-checks the role against the database rather than trusting the JWT
 // claim, so a demoted admin loses access immediately instead of waiting

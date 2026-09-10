@@ -1,0 +1,35 @@
+import type { Metadata } from "next";
+import { verifySession } from "@/lib/dal";
+import { prisma } from "@/lib/prisma";
+import { ProfileSettingsForm } from "@/components/account/profile-settings-form";
+
+export const metadata: Metadata = {
+  title: "Profile Settings",
+};
+
+export default async function ProfileSettingsPage() {
+  const session = await verifySession();
+  const user = await prisma.user.findUniqueOrThrow({
+    where: { id: session.user.id },
+    select: { name: true, email: true, password: true },
+  });
+
+  return (
+    <div>
+      <h1 className="font-clash-display text-2xl font-bold text-white md:text-3xl">
+        Profile Settings
+      </h1>
+      <p className="mt-1 text-sm text-slate-400">
+        Manage your account details.
+      </p>
+
+      <div className="mt-6">
+        <ProfileSettingsForm
+          name={user.name}
+          email={user.email}
+          hasPassword={!!user.password}
+        />
+      </div>
+    </div>
+  );
+}

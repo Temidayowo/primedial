@@ -1,0 +1,118 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import { verifySession } from "@/lib/dal";
+import { getOrderById } from "@/lib/actions/orders.action";
+import { StatusBadge } from "@/components/account/status-badge";
+
+export const metadata: Metadata = {
+  title: "Order Details",
+};
+
+export default async function OrderDetailPage(props: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await props.params;
+  const session = await verifySession();
+  const order = await getOrderById(session.user.id, id);
+
+  if (!order) notFound();
+
+  return (
+    <div className="max-w-3xl">
+      <Link
+        href="/account/orders"
+        className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white"
+      >
+        <ArrowLeft className="size-4" />
+        Back to orders
+      </Link>
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="font-clash-display text-2xl font-bold text-white">
+            {order.orderNumber}
+          </h1>
+          <p className="mt-1 text-sm text-slate-400">
+            Placed on{" "}
+            {order.createdAt.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+        </div>
+        <StatusBadge status={order.status} />
+      </div>
+
+      <div className="mt-8 rounded-xl border border-white/10 bg-white/5">
+        <div className="divide-y divide-white/10">
+          {order.items.map((item) => (
+            <div key={item.id} className="flex items-center gap-4 p-4">
+              <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white/10">
+                {item.product.images[0] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.product.images[0]}
+                    alt={item.product.name}
+                    className="size-full object-cover"
+                  />
+                ) : null}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-white">
+                  {item.product.name}
+                </p>
+                <p className="text-xs text-slate-400">Qty {item.quantity}</p>
+              </div>
+              <p className="text-sm font-medium text-white">
+                {Number(item.price).toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-between border-t border-white/10 p-4">
+          <p className="text-sm font-medium text-slate-300">Total</p>
+          <p className="font-clash-display text-lg font-bold text-white">
+            {Number(order.total).toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
+          </p>
+        </div>
+      </div>
+
+      {order.shippingAddress && (
+        <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4">
+          <h2 className="text-sm font-semibold text-white">
+            Shipping Address
+          </h2>
+          <p className="mt-2 text-sm text-slate-400">
+            {order.shippingAddress.fullName}
+            <br />
+            {order.shippingAddress.line1}
+            {order.shippingAddress.line2 && (
+              <>
+                <br />
+                {order.shippingAddress.line2}
+              </>
+            )}
+            <br />
+            {order.shippingAddress.city}
+            {order.shippingAddress.state
+              ? `, ${order.shippingAddress.state}`
+              : ""}{" "}
+            {order.shippingAddress.postalCode}
+            <br />
+            {order.shippingAddress.country}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}

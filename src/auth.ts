@@ -6,6 +6,8 @@ import bcrypt from "bcryptjs";
 import * as z from "zod";
 import { prisma } from "@/lib/prisma";
 import { Role } from "@/generated/prisma/enums";
+import { sendVerificationEmail } from "@/lib/actions/verify-email.action";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const credentialsSchema = z.object({
   email: z.email(),
@@ -18,8 +20,18 @@ const credentialsSchema = z.object({
 // of what's returned here - there's no per-sign-in hook to shorten the
 // cookie itself. So "Remember me" unchecked doesn't shrink the cookie;
 // instead it stamps the token with an earlier cutoff, and every place
-// that reads the session (proxy.ts, dal.ts) treats a session past that
-// cutoff as logged out, via isSessionExpired() in @/lib/session.
+// that reads the session (proxy.ts, dal.ts, and client components via
+// useSession()) treats a session past that cutoff as logged out, via
+// isSessionExpired() in @/lib/session.
+//
+// Tried making the session() callback below return null once expired,
+// so every consumer would agree for free - but next-auth's server-side
+// auth() helper (next-auth/lib/index.js) wraps this callback and
+// silently substitutes its own fallback session whenever it returns
+// anything falsy, so proxy.ts/dal.ts never actually saw it as logged
+// out. Confirmed live: shrinking this to 3s and hitting /admin after
+// the cutoff still redirected as if logged in. Reverted - each
+// consumer checks isSessionExpired() explicitly instead.
 const SHORT_SESSION_MS = 24 * 60 * 60 * 1000;
 
 // Thrown from authorize() when the password is correct but the account
@@ -29,6 +41,16 @@ const SHORT_SESSION_MS = 24 * 60 * 60 * 1000;
 // specifically checking for it.
 export class EmailNotVerifiedError extends CredentialsSignin {
   code = "email_not_verified";
+}
+
+// Thrown from authorize() when too many login attempts have been made
+// for this email. Lives here (not in the authenticate() action) because
+// Auth.js exposes /api/auth/callback/credentials directly - a request
+// straight to that route would skip a rate-limit check placed only in
+// the action, so this is the one choke point every login attempt
+// actually passes through regardless of how it got there.
+export class RateLimitedError extends CredentialsSignin {
+  code = "rate_limited";
 }
 
 export const {
@@ -60,6 +82,11 @@ export const {
         }
 
         const { email, password, loginType, remember } = validatedFields.data;
+
+        const allowed = await checkRateLimit(`login:${email}`, 5, 5 * 60 * 1000);
+        if (!allowed) {
+          throw new RateLimitedError();
+        }
 
         const user = await prisma.user.findUnique({ where: { email } });
 
@@ -94,6 +121,21 @@ export const {
       },
     }),
   ],
+  events: {
+    // Fires once when the adapter creates a brand-new user - only
+    // happens on a first-time OAuth (Google) sign-in, since credentials
+    // signups create their User row directly and never go through here.
+    // Auth.js's core always sets emailVerified: null for a new OAuth
+    // user (see handleLoginOrRegister in @auth/core), so Google sign-ups
+    // go through the same verify-email step as credentials signups -
+    // the welcome email fires later, from verifyEmail() in
+    // verify-email.action.ts, once they click the link.
+    async createUser({ user }) {
+      if (user.email) {
+        await sendVerificationEmail(user.email);
+      }
+    },
+  },
   callbacks: {
     jwt({ token, user }) {
       if (user) {
@@ -110,8 +152,8 @@ export const {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as Role;
-        session.rememberUntil = token.rememberUntil as number | undefined;
       }
+      session.rememberUntil = token.rememberUntil as number | undefined;
       return session;
     },
   },

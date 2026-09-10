@@ -3,8 +3,183 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession, signOut } from "next-auth/react";
 import { FaCartShopping, FaUser } from "react-icons/fa6";
 import { cn } from "@/lib/utils"; // Adjust this import path to where your cn function lives
+import { isSessionExpired } from "@/lib/session";
+
+function Avatar({
+  name,
+  image,
+  size = 32,
+}: {
+  name?: string | null;
+  image?: string | null;
+  size?: number;
+}) {
+  if (image) {
+    return (
+      <Image
+        src={image}
+        alt={name ?? "Account"}
+        width={size}
+        height={size}
+        className="shrink-0 rounded-full object-cover"
+        style={{ width: size, height: size }}
+      />
+    );
+  }
+
+  const initials =
+    name
+      ?.trim()
+      .split(/\s+/)
+      .map((part) => part[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "?";
+
+  return (
+    <div
+      className="flex shrink-0 items-center justify-center rounded-full bg-blue font-semibold text-white"
+      style={{ width: size, height: size, fontSize: size * 0.4 }}
+    >
+      {initials}
+    </div>
+  );
+}
+
+function AccountMenu({ textColorClass }: { textColorClass: string }) {
+  const { data: session, status } = useSession();
+  const [open, setOpen] = useState(false);
+
+  if (status === "loading") {
+    return <FaUser className={`${textColorClass} size-5`} />;
+  }
+
+  if (!session?.user || isSessionExpired(session)) {
+    return (
+      <Link href="/login" aria-label="Log in">
+        <FaUser className={`${textColorClass} size-5 cursor-pointer`} />
+      </Link>
+    );
+  }
+
+  const firstName = session.user.name?.split(" ")[0] ?? "Account";
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        aria-label="Account menu"
+        className={`flex items-center gap-2 ${textColorClass}`}
+      >
+        <Avatar name={session.user.name} image={session.user.image} size={28} />
+        <span className="text-sm font-medium">{firstName}</span>
+      </button>
+
+      {open && (
+        <>
+          <button
+            aria-label="Close menu"
+            className="fixed inset-0 z-40 cursor-default"
+            onClick={() => setOpen(false)}
+          />
+          <div className="absolute top-full right-0 z-50 mt-3 w-56 rounded-lg border border-gray-100 bg-white py-2 text-blue shadow-xl">
+            <p className="truncate px-4 py-2 text-xs text-slate-400">
+              Signed in as {session.user.email}
+            </p>
+            <hr className="my-1 border-gray-100" />
+            <Link
+              href="/account"
+              onClick={() => setOpen(false)}
+              className="block px-4 py-2 text-sm hover:bg-gray-50"
+            >
+              My Account
+            </Link>
+            {session.user.role === "ADMIN" && (
+              <Link
+                href="/admin"
+                onClick={() => setOpen(false)}
+                className="block px-4 py-2 text-sm hover:bg-gray-50"
+              >
+                Admin Dashboard
+              </Link>
+            )}
+            <button
+              onClick={() => {
+                setOpen(false);
+                signOut({ redirectTo: "/" });
+              }}
+              className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
+            >
+              Log out
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function MobileAccountLink({ closeMenu }: { closeMenu: () => void }) {
+  const { data: session, status } = useSession();
+
+  if (status !== "authenticated" || !session.user || isSessionExpired(session)) {
+    return (
+      <Link
+        href="/login"
+        onClick={closeMenu}
+        className="flex items-center space-x-3 pt-2 text-left text-blue"
+      >
+        <FaUser className="size-5" />
+        <span>Log In</span>
+      </Link>
+    );
+  }
+
+  return (
+    <div className="pt-2">
+      <div className="flex items-center gap-3">
+        <Avatar name={session.user.name} image={session.user.image} />
+        <div className="min-w-0">
+          <p className="truncate text-sm font-medium text-blue">
+            {session.user.name ?? "Account"}
+          </p>
+          <p className="truncate text-xs text-slate-400">
+            {session.user.email}
+          </p>
+        </div>
+      </div>
+      <Link
+        href="/account"
+        onClick={closeMenu}
+        className="mt-3 flex items-center space-x-3 text-left text-blue"
+      >
+        <span>My Account</span>
+      </Link>
+      {session.user.role === "ADMIN" && (
+        <Link
+          href="/admin"
+          onClick={closeMenu}
+          className="mt-3 flex items-center space-x-3 text-left text-blue"
+        >
+          <span>Admin Dashboard</span>
+        </Link>
+      )}
+      <button
+        onClick={() => {
+          closeMenu();
+          signOut({ redirectTo: "/" });
+        }}
+        className="mt-3 flex items-center space-x-3 text-left text-blue"
+      >
+        <FaUser className="size-5" />
+        <span>Log out</span>
+      </button>
+    </div>
+  );
+}
 
 interface HeaderProps {
   theme: "light" | "dark";
@@ -81,7 +256,7 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
                 3
               </div>
             </div>
-            <FaUser className={`${textColorClass} size-5 cursor-pointer`} />
+            <AccountMenu textColorClass={textColorClass} />
           </div>
         </div>
       </header>
@@ -182,13 +357,7 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
               Contact
             </Link>
             <hr className="border-gray-100 my-2" />
-            <button
-              onClick={closeMenu}
-              className="flex items-center space-x-3 pt-2 text-blue text-left"
-            >
-              <FaUser className="size-5" />
-              <span>My Account</span>
-            </button>
+            <MobileAccountLink closeMenu={closeMenu} />
           </nav>
         </div>
       </header>
