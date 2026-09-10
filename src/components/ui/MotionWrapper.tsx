@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, type Variants } from "framer-motion";
 
 export const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -23,7 +23,7 @@ type MotionWrapperProps = {
   className?: string;
   delay?: number;
   duration?: number;
-  variants?: Record<string, any>;
+  variants?: Variants;
 };
 
 export function AnimateOnScroll({

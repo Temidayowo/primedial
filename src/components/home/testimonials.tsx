@@ -79,7 +79,7 @@ export default function Testimonials() {
                 <div>
                   <StarRating rating={testimonial.rating} />
                   <p className="text-gray-600 italic font-poppins text-sm leading-relaxed mb-6">
-                    "{testimonial.content}"
+                    &ldquo;{testimonial.content}&rdquo;
                   </p>
                 </div>
 

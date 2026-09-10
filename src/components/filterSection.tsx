@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-interface FilterSectionProps {
+export interface FilterSectionProps {
   categories: {
     id: string;
     name: string;
@@ -17,9 +17,12 @@ interface FilterSectionProps {
     slug: string;
     _count: { products: number };
   }[];
+  // Called after filters are applied or cleared - lets a parent (e.g. the
+  // mobile bottom sheet) close itself once the action is done.
+  onDone?: () => void;
 }
 
-const FilterSection = ({ brands, categories }: FilterSectionProps) => {
+const FilterSection = ({ brands, categories, onDone }: FilterSectionProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const filterFormRef = useRef<HTMLFormElement>(null);
@@ -49,6 +52,7 @@ const FilterSection = ({ brands, categories }: FilterSectionProps) => {
 
     // Update the URL. { scroll: false } prevents the page from jumping to the top
     router.push(`?${params.toString()}`, { scroll: false });
+    onDone?.();
   };
 
   const handleClearAll = () => {
@@ -58,8 +62,9 @@ const FilterSection = ({ brands, categories }: FilterSectionProps) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("category");
     params.delete("brand");
-    
+
     router.push(`?${params.toString()}`, { scroll: false });
+    onDone?.();
   };
 
   return (

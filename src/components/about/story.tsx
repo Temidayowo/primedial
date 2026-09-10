@@ -23,7 +23,7 @@ const Story = () => {
         <StaggerItem>
           <p className="font-poppins text-gray-700 text-sm">
             Prime Dial Solutions was founded in 2020 by a team of licensed
-            surveyors frustrated with equipment that couldn't keep up with the
+            surveyors frustrated with equipment that couldn&apos;t keep up with the
             demands of modern job sites. What started as a small calibration
             workshop has grown into a trusted supplier of GNSS, robotic, and
             imaging systems for surveying professionals across the globe. <br />

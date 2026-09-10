@@ -5,7 +5,6 @@ import {
   StaggerContainer,
   StaggerItem,
   scaleIn,
-  fadeUp,
 } from "@/components/ui/MotionWrapper"; // Adjust path to match your project
 
 const About = () => {

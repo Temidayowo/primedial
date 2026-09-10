@@ -53,6 +53,14 @@ export class RateLimitedError extends CredentialsSignin {
   code = "rate_limited";
 }
 
+// Thrown from authorize() when an ADMIN-role account tries to sign in
+// anywhere other than the admin login form. Admin accounts are kept
+// fully separate from the customer-facing site - they can't hold a cart,
+// place orders, or otherwise act as a "user" account.
+export class AdminAccountError extends CredentialsSignin {
+  code = "admin_account";
+}
+
 export const {
   handlers: { GET, POST },
   auth,
@@ -110,6 +118,13 @@ export const {
           return null;
         }
 
+        // And the reverse: an ADMIN account can only sign in through the
+        // admin login form, never the customer one - otherwise it would
+        // end up with a normal user session (cart, orders, account page).
+        if (loginType !== "admin" && user.role === Role.ADMIN) {
+          throw new AdminAccountError();
+        }
+
         return {
           id: user.id,
           name: user.name,
@@ -137,6 +152,24 @@ export const {
     },
   },
   callbacks: {
+    // Google sign-in is only offered on the customer login page, but
+    // nothing stops an admin's email from also having a Google account -
+    // block it here so an admin can never end up with a customer session
+    // that way either. Looks the user up fresh rather than trusting the
+    // `user` argument, since its `role` isn't reliably populated yet for
+    // a brand-new OAuth sign-in.
+    async signIn({ user, account }) {
+      if (account?.provider === "google" && user.email) {
+        const existing = await prisma.user.findUnique({
+          where: { email: user.email },
+          select: { role: true },
+        });
+        if (existing?.role === Role.ADMIN) {
+          return false;
+        }
+      }
+      return true;
+    },
     jwt({ token, user }) {
       if (user) {
         token.id = user.id;

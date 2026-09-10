@@ -183,13 +183,6 @@ async function main() {
     });
   }
 
-  console.log("Seeding promo codes...");
-  await prisma.promoCode.upsert({
-    where: { code: "SURVEY10" },
-    update: {},
-    create: { code: "SURVEY10", percentOff: 10 },
-  });
-
   console.log("Seeding complete.");
 }
 

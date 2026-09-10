@@ -5,6 +5,7 @@ import {
 } from "@/lib/actions/products.action";
 import { PageHero } from "@/components/ui/pageHero";
 import FilterSection from "@/components/filterSection";
+import MobileFilterSheet from "@/components/mobileFilterSheet";
 import ProductList from "@/app/(site)/shop/productList";
 
 interface ShopContentProps {
@@ -35,8 +36,6 @@ const ShopContent = async ({ searchParams }: ShopContentProps) => {
     getProducts(categoryParams, brandParams, sort),
   ]);
 
-  console.log(products);
-
   return (
     <>
       <PageHero
@@ -50,13 +49,17 @@ const ShopContent = async ({ searchParams }: ShopContentProps) => {
       <section className="bg-gray-100">
         {/* Added gap-8 so the sidebar and product grid don't touch */}
         <main className="section-container py-16 grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Sidebar */}
-          <aside className="border-[0.1px] border-blue rounded-xl bg-white py-8 px-4 col-span-1 lg:col-span-3 h-fit">
+          {/* Sidebar (desktop only - mobile uses the bottom sheet below) */}
+          <aside className="hidden lg:col-span-3 lg:block h-fit rounded-xl border-[0.1px] border-blue bg-white px-4 py-8">
             <FilterSection categories={categories} brands={brands} />
           </aside>
 
           {/* Main Product Grid */}
           <div className="col-span-1 lg:col-span-9">
+            <div className="mb-6 lg:hidden">
+              <MobileFilterSheet categories={categories} brands={brands} />
+            </div>
+
             {products.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-gray-200">
                 <h3 className="text-xl font-semibold text-gray-700">

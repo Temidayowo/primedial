@@ -81,23 +81,7 @@ export async function removeCartItem(cartItemId: string) {
   revalidatePath("/cart");
 }
 
-export type PromoResult =
-  | { valid: true; code: string; percentOff: number }
-  | { valid: false; message: string };
-
-export async function applyPromoCode(code: string): Promise<PromoResult> {
-  const promo = await prisma.promoCode.findUnique({
-    where: { code: code.trim().toUpperCase() },
-  });
-
-  if (!promo || !promo.active) {
-    return { valid: false, message: "That promo code isn't valid." };
-  }
-
-  return { valid: true, code: promo.code, percentOff: promo.percentOff };
-}
-
-export async function checkout(promoCode?: string) {
+export async function checkout() {
   const session = await verifySession();
   const { items, subtotal } = await getCart(session.user.id);
 
@@ -105,17 +89,8 @@ export async function checkout(promoCode?: string) {
     redirect("/cart");
   }
 
-  let percentOff = 0;
-  if (promoCode) {
-    const promo = await applyPromoCode(promoCode);
-    if (promo.valid) {
-      percentOff = promo.percentOff;
-    }
-  }
-
-  const discount = (subtotal * percentOff) / 100;
-  const tax = (subtotal - discount) * TAX_RATE;
-  const total = subtotal - discount + tax + FLAT_SHIPPING;
+  const tax = subtotal * TAX_RATE;
+  const total = subtotal + tax + FLAT_SHIPPING;
 
   const defaultAddress = await prisma.address.findFirst({
     where: { userId: session.user.id, isDefault: true },
