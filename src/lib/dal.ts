@@ -6,10 +6,27 @@ import { prisma } from "@/lib/prisma";
 import { Role } from "@/generated/prisma/enums";
 import { isSessionExpired } from "@/lib/session";
 
+// Re-checks that the user still exists in the database, not just that
+// the JWT is validly signed and unexpired - a session can outlive its
+// user (e.g. the row was deleted, or this database got reseeded, which
+// wipes and recreates every user with fresh ids). Every mutation that
+// trusts session.user.id as a foreign key (cart, addresses, payment
+// methods, profile) goes through this, so this is the one place that
+// needs to catch it instead of each of those throwing an unhandled
+// foreign-key-constraint crash.
 export const verifySession = cache(async () => {
   const session = await auth();
 
   if (!session?.user || isSessionExpired(session)) {
+    redirect("/login");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { id: true },
+  });
+
+  if (!user) {
     redirect("/login");
   }
 
