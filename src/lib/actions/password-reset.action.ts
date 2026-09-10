@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { EMAIL_FROM, getResendClient, isEmailConfigured } from "@/lib/resend";
 import { getBaseUrl } from "@/lib/url";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
 
@@ -33,6 +34,18 @@ export async function requestPasswordReset(
   // so this form can't be used to enumerate registered emails.
   const genericMessage =
     "If an account exists for that email, a password reset link has been sent.";
+
+  const allowed = await checkRateLimit(
+    `password-reset:${email}`,
+    3,
+    60 * 60 * 1000,
+  );
+  if (!allowed) {
+    // Same generic message as success - a rate-limit-specific message
+    // would itself leak whether the email is registered (since it can
+    // only trigger after enough real send attempts).
+    return { message: genericMessage };
+  }
 
   const user = await prisma.user.findUnique({ where: { email } });
 

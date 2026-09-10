@@ -6,6 +6,8 @@ import { AuthError } from "next-auth";
 import { signIn, EmailNotVerifiedError } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { sendVerificationEmail } from "@/lib/actions/verify-email.action";
+import { RateLimitedError } from "@/auth";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export type LoginContext = "user" | "admin";
 
@@ -26,6 +28,9 @@ export async function authenticate(
     if (error instanceof EmailNotVerifiedError) {
       return "Please verify your email before logging in - check your inbox for the verification link.";
     }
+    if (error instanceof RateLimitedError) {
+      return "Too many login attempts. Please wait a few minutes and try again.";
+    }
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
@@ -38,8 +43,23 @@ export async function authenticate(
   }
 }
 
-export async function signInWithGoogle() {
-  await signIn("google", { redirectTo: "/" });
+export async function signInWithGoogle(prevState: string | undefined) {
+  try {
+    // Route through a gate page instead of "/" directly - it checks
+    // whether this account is verified yet and sends unverified Google
+    // sign-ups to the "check your email" page instead of straight home.
+    await signIn("google", { redirectTo: "/auth/post-signin" });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "OAuthAccountNotLinked":
+          return "An account already exists with this email. Log in with your password instead, or use 'Forgot password' if you don't remember it.";
+        default:
+          return "Something went wrong signing in with Google. Please try again.";
+      }
+    }
+    throw error;
+  }
 }
 
 const signupSchema = z
@@ -91,6 +111,11 @@ export async function signup(
   }
 
   const { name, email, password } = validatedFields.data;
+
+  const allowed = await checkRateLimit(`signup:${email}`, 3, 60 * 60 * 1000);
+  if (!allowed) {
+    return { message: "Too many attempts. Please try again later." };
+  }
 
   const existingUser = await prisma.user.findUnique({ where: { email } });
 

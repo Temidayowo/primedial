@@ -17,6 +17,13 @@ enum Role {
   ADMIN
 }
 
+enum OrderStatus {
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
 model Product {
   id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name         String
@@ -35,6 +42,8 @@ model Product {
 
   brandId String @db.Uuid
   brand   Brand  @relation(fields: [brandId], references: [id])
+
+  orderItems OrderItem[]
 }
 
 model Category {
@@ -63,8 +72,11 @@ model User {
   role          Role      @default(USER)
   createdAt     DateTime  @default(now())
 
-  accounts Account[]
-  sessions Session[]
+  accounts       Account[]
+  sessions       Session[]
+  orders         Order[]
+  addresses      Address[]
+  paymentMethods PaymentMethod[]
 }
 
 model Account {
@@ -101,4 +113,82 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// Backs a simple fixed-window rate limiter (see src/lib/rate-limit.ts).
+// `key` encodes both the action and the thing being limited, e.g.
+// "login:someone@example.com".
+model RateLimitAttempt {
+  key     String   @id
+  count   Int      @default(1)
+  resetAt DateTime
+}
+
+model Address {
+  id         String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  label      String? // e.g. "Home", "Office"
+  fullName   String
+  line1      String
+  line2      String?
+  city       String
+  state      String?
+  postalCode String
+  country    String
+  phone      String?
+  isDefault  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  orders Order[]
+}
+
+// Deliberately does not store real card numbers - there is no payment
+// processor (e.g. Stripe) wired up yet, and this app should never hold
+// raw card data itself. This only tracks the display-safe fields you'd
+// get back from a real vault (brand, last 4 digits, expiry) so the UI
+// has something to show; wire up a real processor before trusting this
+// for actual payments.
+model PaymentMethod {
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  brand       String // e.g. "Visa", "Mastercard"
+  last4       String
+  expiryMonth Int
+  expiryYear  Int
+  isDefault   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderNumber String      @unique
+  status      OrderStatus @default(PROCESSING)
+  total       Decimal     @db.Decimal(12, 2)
+  createdAt   DateTime    @default(now())
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  shippingAddressId String?  @db.Uuid
+  shippingAddress   Address? @relation(fields: [shippingAddressId], references: [id], onDelete: SetNull)
+
+  items OrderItem[]
+}
+
+model OrderItem {
+  id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  quantity Int
+  price    Decimal @db.Decimal(12, 2) // product price at the time of order
+
+  orderId String @db.Uuid
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String  @db.Uuid
+  product   Product @relation(fields: [productId], references: [id])
 }

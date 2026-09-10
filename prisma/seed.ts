@@ -88,6 +88,84 @@ async function main() {
     });
   }
 
+  console.log("Seeding account dashboard demo data...");
+  const testUser = await prisma.user.findUniqueOrThrow({
+    where: { email: "user@primedialsolutions.com" },
+  });
+
+  const homeAddress = await prisma.address.create({
+    data: {
+      userId: testUser.id,
+      label: "Office",
+      fullName: "Test User",
+      line1: "42 Surveyor's Row",
+      city: "Lagos",
+      state: "Lagos",
+      postalCode: "100001",
+      country: "Nigeria",
+      phone: "+234 800 000 0000",
+      isDefault: true,
+    },
+  });
+
+  await prisma.paymentMethod.create({
+    data: {
+      userId: testUser.id,
+      brand: "Visa",
+      last4: "4242",
+      expiryMonth: 11,
+      expiryYear: 2028,
+      isDefault: true,
+    },
+  });
+
+  const demoOrders: {
+    daysAgo: number;
+    status: "DELIVERED" | "SHIPPED" | "PROCESSING";
+    productSlugs: string[];
+  }[] = [
+    { daysAgo: 21, status: "DELIVERED", productSlugs: ["leica-ls15-digital-level"] },
+    { daysAgo: 6, status: "SHIPPED", productSlugs: ["trimble-r12i-gnss"] },
+    {
+      daysAgo: 1,
+      status: "PROCESSING",
+      productSlugs: ["dji-matrice-350-rtk", "faro-focus-premium"],
+    },
+  ];
+
+  for (const [index, demoOrder] of demoOrders.entries()) {
+    const products = await prisma.product.findMany({
+      where: { slug: { in: demoOrder.productSlugs } },
+    });
+
+    const total = products.reduce(
+      (sum, product) => sum + Number(product.price),
+      0,
+    );
+
+    const createdAt = new Date(
+      Date.now() - demoOrder.daysAgo * 24 * 60 * 60 * 1000,
+    );
+
+    await prisma.order.create({
+      data: {
+        orderNumber: `PDS-${createdAt.getFullYear()}-${String(index + 1).padStart(5, "0")}`,
+        status: demoOrder.status,
+        total,
+        createdAt,
+        userId: testUser.id,
+        shippingAddressId: homeAddress.id,
+        items: {
+          create: products.map((product) => ({
+            productId: product.id,
+            quantity: 1,
+            price: product.price,
+          })),
+        },
+      },
+    });
+  }
+
   console.log("Seeding complete.");
 }
 
