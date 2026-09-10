@@ -2,9 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { SurveyingProduct } from "@/data/products";
-import { Button } from "@base-ui/react";
+import { AddToCartButton } from "@/components/shared/product/add-to-cart-button";
 
-const ProductCard = ({ product }: { product: SurveyingProduct }) => {
+const ProductCard = ({
+  product,
+}: {
+  product: SurveyingProduct & { id: string };
+}) => {
   return (
     // 1. Added `h-full flex flex-col` so the card spans the full grid height and stacks contents
     <Card className="bg-[#F8FAFC] ring-0 rounded-lg shadow hover:shadow-lg duration-300 transition-transform ease-in-out hover:scale-102 mx-0 h-full flex flex-col">
@@ -41,9 +45,20 @@ const ProductCard = ({ product }: { product: SurveyingProduct }) => {
             {product.inStock ? `₦${product.price.toFixed(2)}` : "Out of Stock"}
           </p>
 
-          <Button className="font-poppins text-sm bg-green hover:bg-blue transition-colors duration-300 text-white px-4 py-2 rounded-full">
-            {product.inStock ? "Add to Cart" : "Get Quote"}
-          </Button>
+          {product.inStock ? (
+            <AddToCartButton
+              productId={product.id}
+              inStock={product.inStock}
+              className="font-poppins"
+            />
+          ) : (
+            <Link
+              href="/contact"
+              className="rounded-full bg-green px-4 py-2 font-poppins text-sm text-white transition-colors duration-300 hover:bg-blue"
+            >
+              Get Quote
+            </Link>
+          )}
         </div>
       </CardContent>
     </Card>

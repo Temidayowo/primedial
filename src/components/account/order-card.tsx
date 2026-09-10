@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { StatusBadge } from "@/components/account/status-badge";
 import { OrderStatus } from "@/generated/prisma/enums";
+import { formatCurrency } from "@/lib/utils";
 
 interface OrderCardProps {
   id: string;
@@ -41,10 +42,7 @@ export function OrderCard({
 
       <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
         <p className="text-sm font-medium text-blue">
-          {total.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-          })}
+          {formatCurrency(total)}
         </p>
         <Link
           href={`/account/orders/${id}`}

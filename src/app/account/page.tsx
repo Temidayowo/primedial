@@ -4,6 +4,7 @@ import { Package, Wallet, Truck } from "lucide-react";
 import { verifySession } from "@/lib/dal";
 import { getOrderStats, getRecentOrders } from "@/lib/actions/orders.action";
 import { OrderCard } from "@/components/account/order-card";
+import { formatCurrency } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "My Account",
@@ -52,10 +53,7 @@ export default async function AccountDashboardPage() {
             <div>
               <p className="text-xs text-slate-500">Total Spent</p>
               <p className="font-clash-display text-xl font-bold text-blue">
-                {stats.totalSpent.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })}
+                {formatCurrency(stats.totalSpent)}
               </p>
             </div>
           </div>

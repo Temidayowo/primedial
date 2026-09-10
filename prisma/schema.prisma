@@ -44,6 +44,7 @@ model Product {
   brand   Brand  @relation(fields: [brandId], references: [id])
 
   orderItems OrderItem[]
+  cartItems  CartItem[]
 }
 
 model Category {
@@ -77,6 +78,7 @@ model User {
   orders         Order[]
   addresses      Address[]
   paymentMethods PaymentMethod[]
+  cartItems      CartItem[]
 }
 
 model Account {
@@ -191,4 +193,26 @@ model OrderItem {
 
   productId String  @db.Uuid
   product   Product @relation(fields: [productId], references: [id])
+}
+
+model CartItem {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  productId String  @db.Uuid
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+model PromoCode {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code       String   @unique
+  percentOff Int
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
 }

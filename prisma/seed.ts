@@ -166,6 +166,30 @@ async function main() {
     });
   }
 
+  console.log("Seeding cart demo data...");
+  const cartProductSlugs: { slug: string; quantity: number }[] = [
+    { slug: "leica-ts16-robotic-total-station", quantity: 1 },
+    { slug: "heavy-duty-wood-tripod", quantity: 2 },
+  ];
+
+  for (const { slug, quantity } of cartProductSlugs) {
+    const product = await prisma.product.findUnique({ where: { slug } });
+    if (!product) continue;
+
+    await prisma.cartItem.upsert({
+      where: { userId_productId: { userId: testUser.id, productId: product.id } },
+      update: { quantity },
+      create: { userId: testUser.id, productId: product.id, quantity },
+    });
+  }
+
+  console.log("Seeding promo codes...");
+  await prisma.promoCode.upsert({
+    where: { code: "SURVEY10" },
+    update: {},
+    create: { code: "SURVEY10", percentOff: 10 },
+  });
+
   console.log("Seeding complete.");
 }
 
