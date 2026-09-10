@@ -13,10 +13,10 @@ export default async function AddressesPage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="font-clash-display text-2xl font-bold text-white md:text-3xl">
+      <h1 className="font-clash-display text-2xl font-bold text-blue md:text-3xl">
         Saved Addresses
       </h1>
-      <p className="mt-1 text-sm text-slate-400">
+      <p className="mt-1 text-sm text-slate-500">
         Manage the shipping addresses on your account.
       </p>
 

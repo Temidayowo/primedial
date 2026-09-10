@@ -4,8 +4,8 @@ import { useActionState, useEffect } from "react";
 import { createPaymentMethod } from "@/lib/actions/payment-methods.action";
 
 const inputClasses =
-  "w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none";
-const labelClasses = "text-xs font-medium tracking-wide text-slate-400 uppercase";
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none";
+const labelClasses = "text-xs font-medium tracking-wide text-slate-500 uppercase";
 
 export function PaymentMethodForm({ onDone }: { onDone?: () => void }) {
   const [state, formAction, isPending] = useActionState(
@@ -31,7 +31,7 @@ export function PaymentMethodForm({ onDone }: { onDone?: () => void }) {
           className={`mt-1.5 ${inputClasses}`}
         />
         {state?.errors?.brand && (
-          <p className="mt-1 text-xs text-red-400">{state.errors.brand[0]}</p>
+          <p className="mt-1 text-xs text-red-500">{state.errors.brand[0]}</p>
         )}
       </div>
 
@@ -45,7 +45,7 @@ export function PaymentMethodForm({ onDone }: { onDone?: () => void }) {
           className={`mt-1.5 ${inputClasses}`}
         />
         {state?.errors?.last4 && (
-          <p className="mt-1 text-xs text-red-400">{state.errors.last4[0]}</p>
+          <p className="mt-1 text-xs text-red-500">{state.errors.last4[0]}</p>
         )}
       </div>
 

@@ -13,16 +13,16 @@ export default async function OrderHistoryPage() {
 
   return (
     <div className="max-w-4xl">
-      <h1 className="font-clash-display text-2xl font-bold text-white md:text-3xl">
+      <h1 className="font-clash-display text-2xl font-bold text-blue md:text-3xl">
         Order History
       </h1>
-      <p className="mt-1 text-sm text-slate-400">
+      <p className="mt-1 text-sm text-slate-500">
         {orders.length} {orders.length === 1 ? "order" : "orders"} total.
       </p>
 
       {orders.length === 0 ? (
-        <div className="mt-6 rounded-xl border border-dashed border-white/10 p-8 text-center">
-          <p className="text-sm text-slate-400">
+        <div className="mt-6 rounded-xl border border-dashed border-slate-200 p-8 text-center">
+          <p className="text-sm text-slate-500">
             You haven&apos;t placed any orders yet.
           </p>
         </div>

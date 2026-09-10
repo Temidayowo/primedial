@@ -38,7 +38,7 @@ export function AccountSidebar() {
               "flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
               isActive
                 ? "bg-blue-500 text-white"
-                : "text-slate-300 hover:bg-white/5 hover:text-white",
+                : "text-slate-500 hover:bg-slate-100 hover:text-blue",
             )}
           >
             <Icon className="size-4 shrink-0" />
@@ -47,11 +47,11 @@ export function AccountSidebar() {
         );
       })}
 
-      <div className="my-2 border-t border-white/10" />
+      <div className="my-2 border-t border-slate-200" />
 
       <button
         onClick={() => signOut({ redirectTo: "/" })}
-        className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-left text-sm font-medium text-slate-300 transition-colors hover:bg-white/5 hover:text-white"
+        className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-left text-sm font-medium text-slate-500 transition-colors hover:bg-slate-100 hover:text-blue"
       >
         <LogOut className="size-4 shrink-0" />
         Log Out
