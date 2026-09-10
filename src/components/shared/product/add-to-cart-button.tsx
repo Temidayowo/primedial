@@ -44,7 +44,13 @@ export function AddToCartButton({
   }
 
   const handleClick = () => {
-    if (status !== "authenticated") {
+    // Only redirect once we're sure - "loading" (the brief window on
+    // every fresh page load before the client-side session check
+    // resolves) is not the same as "unauthenticated", and treating it
+    // that way sent genuinely logged-in users to /login if they clicked
+    // fast. The button is disabled during "loading" below, so this only
+    // ever fires once status has actually settled.
+    if (status === "unauthenticated") {
       router.push("/login");
       return;
     }
@@ -61,7 +67,7 @@ export function AddToCartButton({
     <button
       type="button"
       onClick={handleClick}
-      disabled={isPending}
+      disabled={isPending || status === "loading"}
       className={cn(
         "rounded-full bg-green px-4 py-2 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue disabled:opacity-60",
         className,
