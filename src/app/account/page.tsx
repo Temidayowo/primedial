@@ -30,7 +30,7 @@ export default async function AccountDashboardPage() {
       </p>
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
+        <div className="rounded-xl border border-gray-100 bg-white p-5">
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-blue-50">
               <Package className="size-5 text-blue-500" />
@@ -44,7 +44,7 @@ export default async function AccountDashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
+        <div className="rounded-xl border border-gray-100 bg-white p-5">
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-orange-50">
               <Wallet className="size-5 text-orange-500" />
@@ -97,7 +97,7 @@ export default async function AccountDashboardPage() {
         </div>
 
         {recentOrders.length === 0 ? (
-          <div className="mt-4 rounded-xl border border-dashed border-slate-200 p-8 text-center">
+          <div className="mt-4 rounded-xl border border-dashed border-gray-100 p-8 text-center">
             <p className="text-sm text-slate-500">
               You haven&apos;t placed any orders yet.
             </p>

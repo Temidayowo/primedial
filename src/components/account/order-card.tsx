@@ -20,7 +20,7 @@ export function OrderCard({
   itemSummary,
 }: OrderCardProps) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5">
+    <div className="rounded-xl border border-gray-100 bg-white p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="font-clash-display font-semibold text-blue">
@@ -39,7 +39,7 @@ export function OrderCard({
 
       <p className="mt-3 truncate text-sm text-slate-500">{itemSummary}</p>
 
-      <div className="mt-4 flex items-center justify-between border-t border-slate-200 pt-4">
+      <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
         <p className="text-sm font-medium text-blue">
           {total.toLocaleString("en-US", {
             style: "currency",

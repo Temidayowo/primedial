@@ -46,11 +46,11 @@ export default async function OrderDetailPage(props: {
         <StatusBadge status={order.status} />
       </div>
 
-      <div className="mt-8 rounded-xl border border-slate-200 bg-white">
-        <div className="divide-y divide-slate-200">
+      <div className="mt-8 rounded-xl border border-gray-100 bg-white">
+        <div className="divide-y divide-gray-100">
           {order.items.map((item) => (
             <div key={item.id} className="flex items-center gap-4 p-4">
-              <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-100">
+              <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-100">
                 {item.product.images[0] ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -76,7 +76,7 @@ export default async function OrderDetailPage(props: {
           ))}
         </div>
 
-        <div className="flex items-center justify-between border-t border-slate-200 p-4">
+        <div className="flex items-center justify-between border-t border-gray-100 p-4">
           <p className="text-sm font-medium text-slate-500">Total</p>
           <p className="font-clash-display text-lg font-bold text-blue">
             {Number(order.total).toLocaleString("en-US", {
@@ -88,7 +88,7 @@ export default async function OrderDetailPage(props: {
       </div>
 
       {order.shippingAddress && (
-        <div className="mt-6 rounded-xl border border-slate-200 bg-white p-4">
+        <div className="mt-6 rounded-xl border border-gray-100 bg-white p-4">
           <h2 className="text-sm font-semibold text-blue">
             Shipping Address
           </h2>
