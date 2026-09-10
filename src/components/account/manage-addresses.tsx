@@ -31,20 +31,20 @@ export function ManageAddresses({ addresses }: { addresses: Address[] }) {
         {addresses.map((address) => (
           <div
             key={address.id}
-            className="flex items-start justify-between gap-4 rounded-xl border border-white/10 bg-white/5 p-4"
+            className="flex items-start justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4"
           >
             <div>
               <div className="flex items-center gap-2">
-                <p className="text-sm font-semibold text-white">
+                <p className="text-sm font-semibold text-blue">
                   {address.label || "Address"}
                 </p>
                 {address.isDefault && (
-                  <span className="rounded-full bg-blue-500/15 px-2 py-0.5 text-[10px] font-medium text-blue-400">
+                  <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-medium text-blue-600">
                     Default
                   </span>
                 )}
               </div>
-              <p className="mt-1 text-sm text-slate-400">
+              <p className="mt-1 text-sm text-slate-500">
                 {address.fullName} &middot; {address.line1}
                 {address.line2 ? `, ${address.line2}` : ""}, {address.city}
                 {address.state ? `, ${address.state}` : ""}{" "}
@@ -60,7 +60,7 @@ export function ManageAddresses({ addresses }: { addresses: Address[] }) {
                     startTransition(() => setDefaultAddress(address.id))
                   }
                   aria-label="Set as default"
-                  className="text-slate-400 hover:text-blue-400 disabled:opacity-50"
+                  className="text-slate-400 hover:text-blue-600 disabled:opacity-50"
                 >
                   <Star className="size-4" />
                 </button>
@@ -70,7 +70,7 @@ export function ManageAddresses({ addresses }: { addresses: Address[] }) {
                 disabled={isPending}
                 onClick={() => startTransition(() => deleteAddress(address.id))}
                 aria-label="Delete address"
-                className="text-slate-400 hover:text-red-400 disabled:opacity-50"
+                className="text-slate-400 hover:text-red-500 disabled:opacity-50"
               >
                 <Trash2 className="size-4" />
               </button>
@@ -80,8 +80,8 @@ export function ManageAddresses({ addresses }: { addresses: Address[] }) {
       </div>
 
       {showForm ? (
-        <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-5">
-          <h2 className="mb-4 text-sm font-semibold text-white">
+        <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5">
+          <h2 className="mb-4 text-sm font-semibold text-blue">
             Add New Address
           </h2>
           <AddressForm onDone={() => setShowForm(false)} />
@@ -90,7 +90,7 @@ export function ManageAddresses({ addresses }: { addresses: Address[] }) {
         <button
           type="button"
           onClick={() => setShowForm(true)}
-          className="mt-6 flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300"
+          className="mt-6 flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-500"
         >
           <Plus className="size-4" />
           Add New Address

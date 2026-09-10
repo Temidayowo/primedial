@@ -9,12 +9,12 @@ export default function AccountError({
   reset: () => void;
 }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-blue px-6">
+    <div className="flex min-h-screen items-center justify-center bg-white px-6">
       <div className="w-full max-w-sm text-center">
-        <h1 className="font-clash-display text-2xl font-bold text-white">
+        <h1 className="font-clash-display text-2xl font-bold text-blue">
           Something went wrong
         </h1>
-        <p className="mt-3 text-sm text-slate-400">
+        <p className="mt-3 text-sm text-slate-500">
           We couldn&apos;t load your account. This is usually temporary.
         </p>
 
@@ -27,7 +27,7 @@ export default function AccountError({
           </button>
           <Link
             href="/login"
-            className="text-sm text-slate-400 hover:text-white"
+            className="text-sm text-slate-500 hover:text-blue"
           >
             Log out and sign in again
           </Link>

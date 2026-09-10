@@ -28,19 +28,19 @@ export function ManagePaymentMethods({
         {paymentMethods.map((method) => (
           <div
             key={method.id}
-            className="flex items-center justify-between gap-4 rounded-xl border border-white/10 bg-white/5 p-4"
+            className="flex items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4"
           >
             <div className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-lg bg-white/10">
-                <CreditCard className="size-5 text-slate-300" />
+              <div className="flex size-10 items-center justify-center rounded-lg bg-slate-100">
+                <CreditCard className="size-5 text-slate-500" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-semibold text-white">
+                  <p className="text-sm font-semibold text-blue">
                     {method.brand} &bull;&bull;&bull;&bull; {method.last4}
                   </p>
                   {method.isDefault && (
-                    <span className="rounded-full bg-blue-500/15 px-2 py-0.5 text-[10px] font-medium text-blue-400">
+                    <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-medium text-blue-600">
                       Default
                     </span>
                   )}
@@ -58,7 +58,7 @@ export function ManagePaymentMethods({
                 startTransition(() => deletePaymentMethod(method.id))
               }
               aria-label="Remove payment method"
-              className="text-slate-400 hover:text-red-400 disabled:opacity-50"
+              className="text-slate-400 hover:text-red-500 disabled:opacity-50"
             >
               <Trash2 className="size-4" />
             </button>
@@ -67,8 +67,8 @@ export function ManagePaymentMethods({
       </div>
 
       {showForm ? (
-        <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-5">
-          <h2 className="mb-4 text-sm font-semibold text-white">
+        <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5">
+          <h2 className="mb-4 text-sm font-semibold text-blue">
             Add Payment Method
           </h2>
           <PaymentMethodForm onDone={() => setShowForm(false)} />
@@ -77,7 +77,7 @@ export function ManagePaymentMethods({
         <button
           type="button"
           onClick={() => setShowForm(true)}
-          className="mt-6 flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300"
+          className="mt-6 flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-500"
         >
           <Plus className="size-4" />
           Add Payment Method

@@ -4,8 +4,8 @@ import { useActionState, useEffect } from "react";
 import { createAddress } from "@/lib/actions/addresses.action";
 
 const inputClasses =
-  "w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none";
-const labelClasses = "text-xs font-medium tracking-wide text-slate-400 uppercase";
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none";
+const labelClasses = "text-xs font-medium tracking-wide text-slate-500 uppercase";
 
 export function AddressForm({ onDone }: { onDone?: () => void }) {
   const [state, formAction, isPending] = useActionState(
@@ -35,7 +35,7 @@ export function AddressForm({ onDone }: { onDone?: () => void }) {
         <label className={labelClasses}>Full Name</label>
         <input name="fullName" required className={`mt-1.5 ${inputClasses}`} />
         {state?.errors?.fullName && (
-          <p className="mt-1 text-xs text-red-400">{state.errors.fullName[0]}</p>
+          <p className="mt-1 text-xs text-red-500">{state.errors.fullName[0]}</p>
         )}
       </div>
 
@@ -43,7 +43,7 @@ export function AddressForm({ onDone }: { onDone?: () => void }) {
         <label className={labelClasses}>Address Line 1</label>
         <input name="line1" required className={`mt-1.5 ${inputClasses}`} />
         {state?.errors?.line1 && (
-          <p className="mt-1 text-xs text-red-400">{state.errors.line1[0]}</p>
+          <p className="mt-1 text-xs text-red-500">{state.errors.line1[0]}</p>
         )}
       </div>
 
@@ -57,7 +57,7 @@ export function AddressForm({ onDone }: { onDone?: () => void }) {
           <label className={labelClasses}>City</label>
           <input name="city" required className={`mt-1.5 ${inputClasses}`} />
           {state?.errors?.city && (
-            <p className="mt-1 text-xs text-red-400">{state.errors.city[0]}</p>
+            <p className="mt-1 text-xs text-red-500">{state.errors.city[0]}</p>
           )}
         </div>
         <div>
@@ -75,7 +75,7 @@ export function AddressForm({ onDone }: { onDone?: () => void }) {
             className={`mt-1.5 ${inputClasses}`}
           />
           {state?.errors?.postalCode && (
-            <p className="mt-1 text-xs text-red-400">
+            <p className="mt-1 text-xs text-red-500">
               {state.errors.postalCode[0]}
             </p>
           )}
@@ -84,7 +84,7 @@ export function AddressForm({ onDone }: { onDone?: () => void }) {
           <label className={labelClasses}>Country</label>
           <input name="country" required className={`mt-1.5 ${inputClasses}`} />
           {state?.errors?.country && (
-            <p className="mt-1 text-xs text-red-400">
+            <p className="mt-1 text-xs text-red-500">
               {state.errors.country[0]}
             </p>
           )}

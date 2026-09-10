@@ -24,10 +24,10 @@ export default async function ProfileSettingsPage() {
 
   return (
     <div>
-      <h1 className="font-clash-display text-2xl font-bold text-white md:text-3xl">
+      <h1 className="font-clash-display text-2xl font-bold text-blue md:text-3xl">
         Profile Settings
       </h1>
-      <p className="mt-1 text-sm text-slate-400">
+      <p className="mt-1 text-sm text-slate-500">
         Manage your account details.
       </p>
 

@@ -22,36 +22,36 @@ export default async function AccountDashboardPage() {
 
   return (
     <div className="max-w-4xl">
-      <h1 className="font-clash-display text-2xl font-bold text-white md:text-3xl">
+      <h1 className="font-clash-display text-2xl font-bold text-blue md:text-3xl">
         Welcome back, {firstName}
       </h1>
-      <p className="mt-1 text-sm text-slate-400">
+      <p className="mt-1 text-sm text-slate-500">
         Here&apos;s what&apos;s happening with your account.
       </p>
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-white/10 bg-white/5 p-5">
+        <div className="rounded-xl border border-slate-200 bg-white p-5">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-blue-500/15">
-              <Package className="size-5 text-blue-400" />
+            <div className="flex size-10 items-center justify-center rounded-lg bg-blue-50">
+              <Package className="size-5 text-blue-500" />
             </div>
             <div>
-              <p className="text-xs text-slate-400">Total Orders</p>
-              <p className="font-clash-display text-xl font-bold text-white">
+              <p className="text-xs text-slate-500">Total Orders</p>
+              <p className="font-clash-display text-xl font-bold text-blue">
                 {stats.totalOrders}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-white/10 bg-white/5 p-5">
+        <div className="rounded-xl border border-slate-200 bg-white p-5">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-orange-500/15">
-              <Wallet className="size-5 text-orange-400" />
+            <div className="flex size-10 items-center justify-center rounded-lg bg-orange-50">
+              <Wallet className="size-5 text-orange-500" />
             </div>
             <div>
-              <p className="text-xs text-slate-400">Total Spent</p>
-              <p className="font-clash-display text-xl font-bold text-white">
+              <p className="text-xs text-slate-500">Total Spent</p>
+              <p className="font-clash-display text-xl font-bold text-blue">
                 {stats.totalSpent.toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
@@ -85,25 +85,25 @@ export default async function AccountDashboardPage() {
 
       <div className="mt-10">
         <div className="flex items-center justify-between">
-          <h2 className="font-clash-display text-lg font-bold text-white">
+          <h2 className="font-clash-display text-lg font-bold text-blue">
             Recent Orders
           </h2>
           <Link
             href="/account/orders"
-            className="text-sm font-medium text-blue-400 hover:text-blue-300"
+            className="text-sm font-medium text-blue-600 hover:text-blue-500"
           >
             View all
           </Link>
         </div>
 
         {recentOrders.length === 0 ? (
-          <div className="mt-4 rounded-xl border border-dashed border-white/10 p-8 text-center">
-            <p className="text-sm text-slate-400">
+          <div className="mt-4 rounded-xl border border-dashed border-slate-200 p-8 text-center">
+            <p className="text-sm text-slate-500">
               You haven&apos;t placed any orders yet.
             </p>
             <Link
               href="/shop"
-              className="mt-3 inline-block text-sm font-medium text-blue-400 hover:text-blue-300"
+              className="mt-3 inline-block text-sm font-medium text-blue-600 hover:text-blue-500"
             >
               Browse equipment
             </Link>

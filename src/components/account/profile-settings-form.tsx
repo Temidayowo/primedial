@@ -4,8 +4,8 @@ import { useActionState } from "react";
 import { updateName, changePassword } from "@/lib/actions/profile.action";
 
 const inputClasses =
-  "w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none";
-const labelClasses = "text-xs font-medium tracking-wide text-slate-400 uppercase";
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none";
+const labelClasses = "text-xs font-medium tracking-wide text-slate-500 uppercase";
 
 export function ProfileSettingsForm({
   name,
@@ -27,8 +27,8 @@ export function ProfileSettingsForm({
 
   return (
     <div className="max-w-lg space-y-8">
-      <section className="rounded-xl border border-white/10 bg-white/5 p-5">
-        <h2 className="text-sm font-semibold text-white">Basic Info</h2>
+      <section className="rounded-xl border border-slate-200 bg-white p-5">
+        <h2 className="text-sm font-semibold text-blue">Basic Info</h2>
 
         <div className="mt-4">
           <label className={labelClasses}>Email</label>
@@ -48,7 +48,7 @@ export function ProfileSettingsForm({
             className={`mt-1.5 ${inputClasses}`}
           />
           {nameState?.error && (
-            <p className="mt-1 text-xs text-red-400">{nameState.error}</p>
+            <p className="mt-1 text-xs text-red-500">{nameState.error}</p>
           )}
           {nameState?.message && (
             <p className="mt-1 text-xs text-green">{nameState.message}</p>
@@ -63,11 +63,11 @@ export function ProfileSettingsForm({
         </form>
       </section>
 
-      <section className="rounded-xl border border-white/10 bg-white/5 p-5">
-        <h2 className="text-sm font-semibold text-white">Password</h2>
+      <section className="rounded-xl border border-slate-200 bg-white p-5">
+        <h2 className="text-sm font-semibold text-blue">Password</h2>
 
         {!hasPassword ? (
-          <p className="mt-2 text-sm text-slate-400">
+          <p className="mt-2 text-sm text-slate-500">
             This account signed up with Google and doesn&apos;t have a
             password.
           </p>
@@ -82,7 +82,7 @@ export function ProfileSettingsForm({
                 className={`mt-1.5 ${inputClasses}`}
               />
               {passwordState?.errors?.currentPassword && (
-                <p className="mt-1 text-xs text-red-400">
+                <p className="mt-1 text-xs text-red-500">
                   {passwordState.errors.currentPassword[0]}
                 </p>
               )}
@@ -96,7 +96,7 @@ export function ProfileSettingsForm({
                 className={`mt-1.5 ${inputClasses}`}
               />
               {passwordState?.errors?.newPassword ? (
-                <ul className="mt-1 space-y-0.5 text-xs text-red-400">
+                <ul className="mt-1 space-y-0.5 text-xs text-red-500">
                   {passwordState.errors.newPassword.map((error) => (
                     <li key={error}>{error}</li>
                   ))}
@@ -117,14 +117,14 @@ export function ProfileSettingsForm({
                 className={`mt-1.5 ${inputClasses}`}
               />
               {passwordState?.errors?.confirmPassword && (
-                <p className="mt-1 text-xs text-red-400">
+                <p className="mt-1 text-xs text-red-500">
                   {passwordState.errors.confirmPassword[0]}
                 </p>
               )}
             </div>
 
             {passwordState?.error && (
-              <p className="text-sm text-red-400">{passwordState.error}</p>
+              <p className="text-sm text-red-500">{passwordState.error}</p>
             )}
             {passwordState?.message && (
               <p className="text-sm text-green">{passwordState.message}</p>

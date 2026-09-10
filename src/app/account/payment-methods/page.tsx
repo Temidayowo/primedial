@@ -13,10 +13,10 @@ export default async function PaymentMethodsPage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="font-clash-display text-2xl font-bold text-white md:text-3xl">
+      <h1 className="font-clash-display text-2xl font-bold text-blue md:text-3xl">
         Payment Methods
       </h1>
-      <p className="mt-1 text-sm text-slate-400">
+      <p className="mt-1 text-sm text-slate-500">
         No online checkout is set up yet, so this only stores a label for
         your records - never a full card number.
       </p>
