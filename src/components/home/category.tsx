@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
 import { productCategories } from "@/data/products";
@@ -14,8 +14,12 @@ import {
 } from "@/components/ui/carousel";
 
 const Category = () => {
-  // Initialize the autoplay plugin (scrolls every 3 seconds)
-  const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
+  // Initialize the autoplay plugin (scrolls every 3 seconds). Lazily
+  // created via useState (not useRef) so it isn't read during render -
+  // the React Compiler forbids accessing ref.current at render time.
+  const [plugin] = useState(() =>
+    Autoplay({ delay: 3000, stopOnInteraction: true }),
+  );
 
   return (
     <section className="section-container py-16 md:py-20 overflow-hidden">
@@ -30,10 +34,10 @@ const Category = () => {
           align: "start",
           loop: true,
         }}
-        plugins={[plugin.current]}
+        plugins={[plugin]}
         className="w-full relative py-4"
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
+        onMouseEnter={() => plugin.stop()}
+        onMouseLeave={() => plugin.reset()}
       >
         <CarouselContent className="-ml-4">
           {productCategories.map((category, index) => {

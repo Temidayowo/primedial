@@ -23,11 +23,19 @@ export const verifySession = cache(async () => {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { id: true },
+    select: { id: true, role: true },
   });
 
   if (!user) {
     redirect("/login");
+  }
+
+  // Admin accounts are kept fully separate from the customer-facing site
+  // (see AdminAccountError in auth.ts, which stops this from happening on
+  // a fresh sign-in) - this catches any session issued before that
+  // existed, so an admin can't use the cart/account pages either.
+  if (user.role === Role.ADMIN) {
+    redirect("/admin");
   }
 
   return session;

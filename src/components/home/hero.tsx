@@ -18,12 +18,13 @@ const Hero = () => {
         alt="Hero Image"
         height={810}
         width={1440}
-        className="absolute inset-0 z-0 h-full w-full object-cover object-center opacity-75"
+        className="absolute inset-0 z-0 h-full w-full object-cover object-center"
         priority
       />
 
-      {/* Layer 2: White overlay (z-10) */}
-      {/* <div className="hidden md:block absolute inset-0 z-10 bg-linear-to-r from-white from-25% to-transparent" /> */}
+      {/* Layer 2: Light scrim so dark text stays readable over the photo (z-10) */}
+      {/* <div className="absolute inset-0 z-10 bg-white/70" /> */}
+      <div className="absolute inset-0 z-10 hidden bg-linear-to-r from-white from-30% via-white/75 via-70% to-transparent md:block" />
 
       {/* Layer 3: Content (relative z-20) */}
       <div className="relative z-20 mx-auto grid h-full max-w-7xl grid-cols-1 gap-20 px-6 py-48 md:grid-cols-2 md:px-8 lg:px-12">
@@ -32,14 +33,14 @@ const Hero = () => {
           staggerDelay={0.15}
           className="flex flex-col items-start justify-center space-y-4 md:space-y-6"
         >
-          <StaggerItem>
+          <StaggerItem>a
             <h2 className="text-3xl md:text-5xl font-bold font-clash-display text-blue">
               <TextReveal text="Precision, Innovation, Excellence in Geospatial Solutions" />
             </h2>
           </StaggerItem>
 
           <StaggerItem>
-            <p className="mt-2 md:mt-4 text-normal text-gray-800 font-poppins">
+            <p className="mt-2 md:mt-4 text-normal text-gray-900 font-poppins">
               We offer innovative surveying, mapping, and geospatial services
               tailored for various sectors, including construction, oil and gas,
               and real estate projects.

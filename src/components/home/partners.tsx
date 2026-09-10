@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Marquee } from "@/components/shadcn-space/animations/marquee";
 
 type BrandList = {
@@ -53,16 +54,20 @@ export default function MarqueeBrandsDemo() {
         <Marquee className="[--duration:20s] px-4 md:px-10" pauseOnHover>
           {brandList.map((brand, index) => (
             <div key={index} className="flex items-center justify-center">
-              <img
+              <Image
                 src={brand.image}
                 alt={brand.name}
+                width={144}
+                height={48}
                 // 3. Made width responsive (w-24 on mobile, w-36 on desktop)
                 // 4. Fixed mismatched margins between light/dark mode
                 className="w-24 md:w-32 lg:w-36 h-auto mr-8 md:mr-12 lg:mr-20 dark:hidden object-contain"
               />
-              <img
+              <Image
                 src={brand.lightimg}
                 alt={brand.name}
+                width={144}
+                height={48}
                 className="hidden dark:block w-24 md:w-32 lg:w-36 h-auto mr-8 md:mr-12 lg:mr-20 object-contain"
               />
             </div>

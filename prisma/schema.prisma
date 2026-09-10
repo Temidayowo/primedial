@@ -208,11 +208,3 @@ model CartItem {
 
   @@unique([userId, productId])
 }
-
-model PromoCode {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  code       String   @unique
-  percentOff Int
-  active     Boolean  @default(true)
-  createdAt  DateTime @default(now())
-}

@@ -150,12 +150,19 @@ export async function resetPassword(
 
   const hashedPassword = await bcrypt.hash(validatedFields.data.password, 10);
 
-  await prisma.user.update({
+  // updateMany (not update) so this can't throw if the account was
+  // deleted between requesting and using the reset link - it just
+  // updates zero rows instead of crashing.
+  const { count } = await prisma.user.updateMany({
     where: { email: verificationToken.identifier },
     data: { password: hashedPassword },
   });
 
   await prisma.verificationToken.delete({ where: { token } });
+
+  if (count === 0) {
+    return { error: "This reset link is invalid or has expired." };
+  }
 
   return { success: true };
 }

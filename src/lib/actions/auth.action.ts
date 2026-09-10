@@ -3,7 +3,7 @@
 import * as z from "zod";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
-import { signIn, EmailNotVerifiedError } from "@/auth";
+import { signIn, EmailNotVerifiedError, AdminAccountError } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { sendVerificationEmail } from "@/lib/actions/verify-email.action";
 import { RateLimitedError } from "@/auth";
@@ -31,6 +31,9 @@ export async function authenticate(
     if (error instanceof RateLimitedError) {
       return "Too many login attempts. Please wait a few minutes and try again.";
     }
+    if (error instanceof AdminAccountError) {
+      return "This is an administrator account. Please sign in from the admin login page instead.";
+    }
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
@@ -43,6 +46,9 @@ export async function authenticate(
   }
 }
 
+// prevState is required by useActionState's (state, formData) signature
+// even though this action doesn't need it.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function signInWithGoogle(prevState: string | undefined) {
   try {
     // Route through a gate page instead of "/" directly - it checks
@@ -54,6 +60,8 @@ export async function signInWithGoogle(prevState: string | undefined) {
       switch (error.type) {
         case "OAuthAccountNotLinked":
           return "An account already exists with this email. Log in with your password instead, or use 'Forgot password' if you don't remember it.";
+        case "AccessDenied":
+          return "This account is an administrator account and can't be used to sign in here. Please use the admin login instead.";
         default:
           return "Something went wrong signing in with Google. Please try again.";
       }
