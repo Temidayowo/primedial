@@ -41,13 +41,13 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
   };
 
   return (
-    <div className="h-fit rounded-xl border border-white/10 bg-white/5 p-6">
-      <h2 className="font-clash-display text-lg font-bold text-white">
+    <div className="h-fit rounded-xl border border-gray-100 bg-white p-6">
+      <h2 className="font-clash-display text-lg font-bold text-blue">
         Order Summary
       </h2>
 
       <div className="mt-4 space-y-2 text-sm">
-        <div className="flex justify-between text-slate-300">
+        <div className="flex justify-between text-slate-500">
           <span>Subtotal</span>
           <span>{formatCurrency(subtotal)}</span>
         </div>
@@ -57,19 +57,19 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
             <span>-{formatCurrency(discount)}</span>
           </div>
         )}
-        <div className="flex justify-between text-slate-300">
+        <div className="flex justify-between text-slate-500">
           <span>Estimated Tax</span>
           <span>{formatCurrency(tax)}</span>
         </div>
-        <div className="flex justify-between text-slate-300">
+        <div className="flex justify-between text-slate-500">
           <span>Estimated Shipping</span>
           <span>{formatCurrency(FLAT_SHIPPING)}</span>
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
-        <span className="font-semibold text-white">Total</span>
-        <span className="font-clash-display text-xl font-bold text-white">
+      <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
+        <span className="font-semibold text-blue">Total</span>
+        <span className="font-clash-display text-xl font-bold text-blue">
           {formatCurrency(total)}
         </span>
       </div>
@@ -77,7 +77,7 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
       <div className="mt-5">
         <label
           htmlFor="promo"
-          className="text-xs font-medium tracking-wide text-slate-400 uppercase"
+          className="text-xs font-medium tracking-wide text-slate-500 uppercase"
         >
           Promo Code
         </label>
@@ -87,19 +87,19 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
             value={code}
             onChange={(e) => setCode(e.target.value)}
             placeholder="Enter code"
-            className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
           />
           <button
             type="button"
             onClick={handleApplyPromo}
             disabled={isApplying}
-            className="shrink-0 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10 disabled:opacity-60"
+            className="shrink-0 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-blue transition-colors hover:bg-slate-50 disabled:opacity-60"
           >
             {isApplying ? "..." : "Apply"}
           </button>
         </div>
         {promoError && (
-          <p className="mt-1.5 text-xs text-red-400">{promoError}</p>
+          <p className="mt-1.5 text-xs text-red-500">{promoError}</p>
         )}
         {applied && (
           <p className="mt-1.5 text-xs text-green">
