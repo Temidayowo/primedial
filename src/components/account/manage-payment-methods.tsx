@@ -28,10 +28,10 @@ export function ManagePaymentMethods({
         {paymentMethods.map((method) => (
           <div
             key={method.id}
-            className="flex items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4"
+            className="flex items-center justify-between gap-4 rounded-xl border border-gray-100 bg-white p-4"
           >
             <div className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-lg bg-slate-100">
+              <div className="flex size-10 items-center justify-center rounded-lg bg-gray-100">
                 <CreditCard className="size-5 text-slate-500" />
               </div>
               <div>
@@ -67,7 +67,7 @@ export function ManagePaymentMethods({
       </div>
 
       {showForm ? (
-        <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5">
+        <div className="mt-6 rounded-xl border border-gray-100 bg-white p-5">
           <h2 className="mb-4 text-sm font-semibold text-blue">
             Add Payment Method
           </h2>

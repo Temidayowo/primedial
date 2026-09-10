@@ -31,7 +31,7 @@ export function ManageAddresses({ addresses }: { addresses: Address[] }) {
         {addresses.map((address) => (
           <div
             key={address.id}
-            className="flex items-start justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4"
+            className="flex items-start justify-between gap-4 rounded-xl border border-gray-100 bg-white p-4"
           >
             <div>
               <div className="flex items-center gap-2">
@@ -80,7 +80,7 @@ export function ManageAddresses({ addresses }: { addresses: Address[] }) {
       </div>
 
       {showForm ? (
-        <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5">
+        <div className="mt-6 rounded-xl border border-gray-100 bg-white p-5">
           <h2 className="mb-4 text-sm font-semibold text-blue">
             Add New Address
           </h2>

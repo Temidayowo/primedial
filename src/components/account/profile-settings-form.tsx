@@ -27,7 +27,7 @@ export function ProfileSettingsForm({
 
   return (
     <div className="max-w-lg space-y-8">
-      <section className="rounded-xl border border-slate-200 bg-white p-5">
+      <section className="rounded-xl border border-gray-100 bg-white p-5">
         <h2 className="text-sm font-semibold text-blue">Basic Info</h2>
 
         <div className="mt-4">
@@ -63,7 +63,7 @@ export function ProfileSettingsForm({
         </form>
       </section>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-5">
+      <section className="rounded-xl border border-gray-100 bg-white p-5">
         <h2 className="text-sm font-semibold text-blue">Password</h2>
 
         {!hasPassword ? (

@@ -21,7 +21,7 @@ export default async function OrderHistoryPage() {
       </p>
 
       {orders.length === 0 ? (
-        <div className="mt-6 rounded-xl border border-dashed border-slate-200 p-8 text-center">
+        <div className="mt-6 rounded-xl border border-dashed border-gray-100 p-8 text-center">
           <p className="text-sm text-slate-500">
             You haven&apos;t placed any orders yet.
           </p>
