@@ -1,17 +1,29 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { FaFileArrowDown } from "react-icons/fa6";
 import { Product } from "@/app/(site)/shop/productList";
-import Counter from "../counter";
-import { Button } from "../ui/button";
+import QuantitySelector from "../counter";
+import { AddToCartButton } from "@/components/shared/product/add-to-cart-button";
+import { formatCurrency } from "@/lib/utils";
 
 const AboutProduct = ({
   product,
 }: {
   product: Pick<
     Product,
-    "name" | "images" | "category" | "price" | "description" | "specSheetUrl"
+    | "id"
+    | "name"
+    | "images"
+    | "category"
+    | "price"
+    | "description"
+    | "specSheetUrl"
+    | "inStock"
   >;
 }) => {
+  const [quantity, setQuantity] = useState(1);
   return (
     <section className="bg-gray-50">
       <div className="section-container grid grid-cols-1 gap-16 md:grid-cols-2">
@@ -32,14 +44,19 @@ const AboutProduct = ({
             {product.name}
           </h1>
           <h2 className="text-xl md:text-2xl lg:3xl font-semibold font-poppins">
-            ₦{product.price}
+            {formatCurrency(product.price)}
           </h2>
           <p className="text-gray-600">{product.description}</p>
           <div className="flex gap-6 items-center">
-            <Counter />
-            <Button className="bg-blue lg:bg-blue/90 hover:bg-blue text-white flex-1 py-6 rounded-2xl cursor-pointer">
-              Add to Cart
-            </Button>
+            {product.inStock && (
+              <QuantitySelector value={quantity} onChange={setQuantity} />
+            )}
+            <AddToCartButton
+              productId={product.id}
+              inStock={product.inStock}
+              quantity={quantity}
+              className="flex-1 py-4 text-base rounded-2xl"
+            />
           </div>
           <a
             href={product.specSheetUrl}

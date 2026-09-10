@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { verifySession } from "@/lib/dal";
 import { getOrderById } from "@/lib/actions/orders.action";
 import { StatusBadge } from "@/components/account/status-badge";
+import { formatCurrency } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Order Details",
@@ -67,10 +68,7 @@ export default async function OrderDetailPage(props: {
                 <p className="text-xs text-slate-400">Qty {item.quantity}</p>
               </div>
               <p className="text-sm font-medium text-blue">
-                {Number(item.price).toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })}
+                {formatCurrency(Number(item.price))}
               </p>
             </div>
           ))}
@@ -79,10 +77,7 @@ export default async function OrderDetailPage(props: {
         <div className="flex items-center justify-between border-t border-gray-100 p-4">
           <p className="text-sm font-medium text-slate-500">Total</p>
           <p className="font-clash-display text-lg font-bold text-blue">
-            {Number(order.total).toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-            })}
+            {formatCurrency(Number(order.total))}
           </p>
         </div>
       </div>

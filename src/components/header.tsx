@@ -1,12 +1,55 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { FaCartShopping, FaUser } from "react-icons/fa6";
 import { cn } from "@/lib/utils"; // Adjust this import path to where your cn function lives
 import { isSessionExpired } from "@/lib/session";
+import { getCartCount } from "@/lib/actions/cart.action";
+
+function CartBadge({ iconClassName }: { iconClassName: string }) {
+  const { status } = useSession();
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      if (status !== "authenticated") {
+        setCount(0);
+        return;
+      }
+      try {
+        const next = await getCartCount();
+        if (!cancelled) setCount(next);
+      } catch {
+        // A background badge refresh failing (stale action reference
+        // after a dev-server restart, a network blip, etc.) shouldn't
+        // crash the page - just leave the last known count showing.
+      }
+    }
+
+    load();
+    window.addEventListener("cart-updated", load);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("cart-updated", load);
+    };
+  }, [status]);
+
+  return (
+    <Link href="/cart" className="relative" aria-label="View cart">
+      <FaCartShopping className={iconClassName} />
+      {count > 0 && (
+        <div className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-green text-[10px] font-light text-white font-poppins">
+          {count > 9 ? "9+" : count}
+        </div>
+      )}
+    </Link>
+  );
+}
 
 function Avatar({
   name,
@@ -250,12 +293,7 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <div className="relative">
-              <FaCartShopping className={`${textColorClass} size-5`} />
-              <div className="absolute -top-2 -right-2 bg-green text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-light font-poppins">
-                3
-              </div>
-            </div>
+            <CartBadge iconClassName={`${textColorClass} size-5`} />
             <AccountMenu textColorClass={textColorClass} />
           </div>
         </div>
@@ -285,17 +323,12 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
           </Link>
 
           <div className="flex items-center space-x-5">
-            <div className="relative">
-              <FaCartShopping
-                className={cn(
-                  "size-5 transition-colors duration-300",
-                  isMobileMenuOpen ? "text-blue" : textColorClass,
-                )}
-              />
-              <div className="absolute -top-2 -right-2 bg-green text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-medium">
-                3
-              </div>
-            </div>
+            <CartBadge
+              iconClassName={cn(
+                "size-5 transition-colors duration-300",
+                isMobileMenuOpen ? "text-blue" : textColorClass,
+              )}
+            />
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
