@@ -45,10 +45,10 @@ export function CartItemRow({
   };
 
   return (
-    <div className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4">
+    <div className="flex items-center gap-4 rounded-xl border border-gray-100 bg-white p-4">
       <Link
         href={`/shop/${productSlug}`}
-        className="relative size-16 shrink-0 overflow-hidden rounded-lg bg-white/10 sm:size-20"
+        className="relative size-16 shrink-0 overflow-hidden rounded-lg bg-gray-100 sm:size-20"
       >
         {productImage && (
           <Image
@@ -64,7 +64,7 @@ export function CartItemRow({
       <div className="min-w-0 flex-1">
         <Link
           href={`/shop/${productSlug}`}
-          className="line-clamp-2 text-sm font-medium text-white hover:text-blue-300 sm:text-base"
+          className="line-clamp-2 text-sm font-medium text-blue hover:text-blue-600 sm:text-base"
         >
           {productName}
         </Link>
@@ -73,33 +73,33 @@ export function CartItemRow({
         </p>
       </div>
 
-      <p className="hidden w-28 shrink-0 text-sm text-slate-300 sm:block">
+      <p className="hidden w-28 shrink-0 text-sm text-slate-500 sm:block">
         {formatCurrency(unitPrice)}
       </p>
 
-      <div className="flex shrink-0 items-center gap-2 rounded-lg border border-white/10 px-2 py-1">
+      <div className="flex shrink-0 items-center gap-2 rounded-lg border border-slate-200 px-2 py-1">
         <button
           type="button"
           onClick={() => setQuantity(quantity - 1)}
           disabled={isPending || quantity <= 1}
           aria-label="Decrease quantity"
-          className="text-slate-300 hover:text-white disabled:opacity-50"
+          className="text-slate-400 hover:text-blue disabled:opacity-50"
         >
           <Minus className="size-3.5" />
         </button>
-        <span className="w-5 text-center text-sm text-white">{quantity}</span>
+        <span className="w-5 text-center text-sm text-blue">{quantity}</span>
         <button
           type="button"
           onClick={() => setQuantity(quantity + 1)}
           disabled={isPending}
           aria-label="Increase quantity"
-          className="text-slate-300 hover:text-white disabled:opacity-50"
+          className="text-slate-400 hover:text-blue disabled:opacity-50"
         >
           <Plus className="size-3.5" />
         </button>
       </div>
 
-      <p className="w-24 shrink-0 text-right text-sm font-semibold text-white sm:w-28">
+      <p className="w-24 shrink-0 text-right text-sm font-semibold text-blue sm:w-28">
         {formatCurrency(unitPrice * quantity)}
       </p>
 
@@ -108,7 +108,7 @@ export function CartItemRow({
         onClick={remove}
         disabled={isPending}
         aria-label="Remove item"
-        className="shrink-0 text-slate-400 hover:text-red-400 disabled:opacity-50"
+        className="shrink-0 text-slate-400 hover:text-red-500 disabled:opacity-50"
       >
         <Trash2 className="size-4" />
       </button>

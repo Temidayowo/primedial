@@ -26,15 +26,18 @@ export default async function CartPage() {
     .slice(0, 4);
 
   return (
-    <div className="flex min-h-screen flex-col bg-blue">
-      <Header theme="dark" className="relative bg-blue" />
+    <div className="flex min-h-screen flex-col bg-white">
+      <Header
+        theme="light"
+        className="relative border-b border-gray-100 bg-white"
+      />
 
-      <main className="flex-1">
+      <main className="flex-1 bg-gray-50">
         <div className="section-container">
-          <h1 className="font-clash-display text-2xl font-bold text-white md:text-3xl">
+          <h1 className="font-clash-display text-2xl font-bold text-blue md:text-3xl">
             Shopping Cart
           </h1>
-          <p className="mt-1 text-sm text-slate-400">
+          <p className="mt-1 text-sm text-slate-500">
             {items.length} {items.length === 1 ? "item" : "items"} in your
             cart.
           </p>
@@ -65,8 +68,8 @@ export default async function CartPage() {
         </div>
 
         {recommended.length > 0 && (
-          <div className="section-container border-t border-white/10">
-            <h2 className="font-clash-display text-lg font-bold text-white">
+          <div className="section-container border-t border-gray-100">
+            <h2 className="font-clash-display text-lg font-bold text-blue">
               You May Also Like
             </h2>
             <ProductList data={recommended} limit={4} />

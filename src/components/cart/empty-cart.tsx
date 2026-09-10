@@ -3,14 +3,14 @@ import { ShoppingCart } from "lucide-react";
 
 export function EmptyCart() {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-white/10 py-20 text-center">
-      <div className="flex size-14 items-center justify-center rounded-full bg-white/5">
+    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-white py-20 text-center">
+      <div className="flex size-14 items-center justify-center rounded-full bg-gray-100">
         <ShoppingCart className="size-6 text-slate-400" />
       </div>
-      <h2 className="mt-4 font-clash-display text-xl font-bold text-white">
+      <h2 className="mt-4 font-clash-display text-xl font-bold text-blue">
         Your cart is empty
       </h2>
-      <p className="mt-1 text-sm text-slate-400">
+      <p className="mt-1 text-sm text-slate-500">
         Add some equipment to get started.
       </p>
       <Link
