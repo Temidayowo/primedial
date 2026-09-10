@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { verifySession } from "@/lib/dal";
 import { prisma } from "@/lib/prisma";
 import { ProfileSettingsForm } from "@/components/account/profile-settings-form";
@@ -9,10 +10,17 @@ export const metadata: Metadata = {
 
 export default async function ProfileSettingsPage() {
   const session = await verifySession();
-  const user = await prisma.user.findUniqueOrThrow({
+  const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: { name: true, email: true, password: true },
   });
+
+  // A valid session cookie can still reference a user row that no longer
+  // exists (e.g. the account was deleted elsewhere) - findUniqueOrThrow
+  // would throw an unhandled 500 here instead of a clean redirect.
+  if (!user) {
+    redirect("/login");
+  }
 
   return (
     <div>
