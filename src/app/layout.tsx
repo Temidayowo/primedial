@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Poppins } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
-import { EnvironmentBadge } from "@/components/environment-badge";
 import "./globals.css";
 
 const clashDisplay = localFont({
@@ -82,7 +81,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <SessionProvider>{children}</SessionProvider>
-        <EnvironmentBadge />
       </body>
     </html>
   );
