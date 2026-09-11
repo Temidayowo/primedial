@@ -8,6 +8,7 @@ import { FaCartShopping, FaUser } from "react-icons/fa6";
 import { cn } from "@/lib/utils"; // Adjust this import path to where your cn function lives
 import { isSessionExpired } from "@/lib/session";
 import { getCartCount } from "@/lib/actions/cart.action";
+import { Role } from "@/generated/prisma/enums";
 
 function CartBadge({ iconClassName }: { iconClassName: string }) {
   const { status } = useSession();
@@ -133,14 +134,16 @@ function AccountMenu({ textColorClass }: { textColorClass: string }) {
               Signed in as {session.user.email}
             </p>
             <hr className="my-1 border-gray-100" />
-            <Link
-              href="/account"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-2 text-sm hover:bg-gray-50"
-            >
-              My Account
-            </Link>
-            {session.user.role === "ADMIN" && (
+            {session.user.role !== Role.ADMIN && (
+              <Link
+                href="/account"
+                onClick={() => setOpen(false)}
+                className="block px-4 py-2 text-sm hover:bg-gray-50"
+              >
+                My Account
+              </Link>
+            )}
+            {session.user.role === Role.ADMIN && (
               <Link
                 href="/admin"
                 onClick={() => setOpen(false)}
@@ -194,14 +197,16 @@ function MobileAccountLink({ closeMenu }: { closeMenu: () => void }) {
           </p>
         </div>
       </div>
-      <Link
-        href="/account"
-        onClick={closeMenu}
-        className="mt-3 flex items-center space-x-3 text-left text-blue"
-      >
-        <span>My Account</span>
-      </Link>
-      {session.user.role === "ADMIN" && (
+      {session.user.role !== Role.ADMIN && (
+        <Link
+          href="/account"
+          onClick={closeMenu}
+          className="mt-3 flex items-center space-x-3 text-left text-blue"
+        >
+          <span>My Account</span>
+        </Link>
+      )}
+      {session.user.role === Role.ADMIN && (
         <Link
           href="/admin"
           onClick={closeMenu}
