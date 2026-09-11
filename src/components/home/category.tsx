@@ -47,7 +47,7 @@ const Category = () => {
                 className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 ring-0 my-4"
               >
                 <Link
-                  href={`/categories/${category.slug}`}
+                  href={`/shop?category=${category.slug}`}
                   className="block h-full"
                 >
                   <Card className="bg-[#F8FAFC] ring-0 shadow-sm hover:shadow-md transition-shadow h-full">
