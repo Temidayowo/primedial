@@ -309,7 +309,7 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
           ===================================================== */}
       <header
         className={cn(
-          "block lg:hidden border-b border-gray-200 bg-white relative z-[100]",
+          "block lg:hidden border-b border-gray-200 bg-white relative z-100",
           mobileClassName,
           isMobileMenuOpen && "bg-white",
         )}

@@ -1,21 +1,12 @@
 "use client";
 
-import { useTransition } from "react";
-import { checkout } from "@/lib/actions/cart.action";
+import Link from "next/link";
 import { TAX_RATE, FLAT_SHIPPING } from "@/lib/cart-constants";
 import { formatCurrency } from "@/lib/utils";
 
 export function OrderSummary({ subtotal }: { subtotal: number }) {
-  const [isCheckingOut, startCheckout] = useTransition();
-
   const tax = subtotal * TAX_RATE;
   const total = subtotal + tax + FLAT_SHIPPING;
-
-  const handleCheckout = () => {
-    startCheckout(async () => {
-      await checkout();
-    });
-  };
 
   return (
     <div className="h-fit rounded-xl border border-gray-100 bg-white p-6">
@@ -45,17 +36,15 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
         </span>
       </div>
 
-      <button
-        type="button"
-        onClick={handleCheckout}
-        disabled={isCheckingOut}
-        className="mt-6 w-full rounded-lg bg-blue-500 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-600 disabled:opacity-60"
+      <Link
+        href="/checkout"
+        className="mt-6 block w-full rounded-lg bg-blue-500 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-blue-600"
       >
-        {isCheckingOut ? "Placing Order..." : "Proceed to Checkout"}
-      </button>
+        Proceed to Checkout
+      </Link>
       <p className="mt-2 text-center text-[11px] text-slate-500">
-        No online payment is set up yet - checkout places your order for
-        follow-up, using your default saved address.
+        Choose your shipping address, delivery method, and payment on the
+        next step.
       </p>
     </div>
   );
