@@ -33,7 +33,7 @@ const Hero = () => {
           staggerDelay={0.15}
           className="flex flex-col items-start justify-center space-y-4 md:space-y-6"
         >
-          <StaggerItem>a
+          <StaggerItem>
             <h2 className="text-3xl md:text-5xl font-bold font-clash-display text-blue">
               <TextReveal text="Precision, Innovation, Excellence in Geospatial Solutions" />
             </h2>

@@ -81,7 +81,10 @@ export async function removeCartItem(cartItemId: string) {
   revalidatePath("/cart");
 }
 
-export async function checkout() {
+export async function checkout(options?: {
+  addressId?: string;
+  shippingCost?: number;
+}) {
   const session = await verifySession();
   const { items, subtotal } = await getCart(session.user.id);
 
@@ -89,12 +92,21 @@ export async function checkout() {
     redirect("/cart");
   }
 
+  const shippingCost = options?.shippingCost ?? FLAT_SHIPPING;
   const tax = subtotal * TAX_RATE;
-  const total = subtotal + tax + FLAT_SHIPPING;
+  const total = subtotal + tax + shippingCost;
 
-  const defaultAddress = await prisma.address.findFirst({
-    where: { userId: session.user.id, isDefault: true },
-  });
+  // Falls back to the account's default address (and to whatever address
+  // matches, ignoring ownership, if the caller didn't validate it) - the
+  // ownership check happens here via userId so a stray/foreign addressId
+  // can never attach someone else's address to this order.
+  const shippingAddress = options?.addressId
+    ? await prisma.address.findFirst({
+        where: { id: options.addressId, userId: session.user.id },
+      })
+    : await prisma.address.findFirst({
+        where: { userId: session.user.id, isDefault: true },
+      });
 
   const orderNumber = `PDS-${new Date().getFullYear()}-${randomBytes(3).toString("hex").toUpperCase()}`;
 
@@ -103,7 +115,7 @@ export async function checkout() {
       orderNumber,
       total,
       userId: session.user.id,
-      shippingAddressId: defaultAddress?.id,
+      shippingAddressId: shippingAddress?.id,
       items: {
         create: items.map((item) => ({
           productId: item.productId,
