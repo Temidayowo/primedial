@@ -24,7 +24,7 @@ const FeaturedProductsClient = ({
 
         {/* Animated Product List */}
         <StaggerItem>
-          <ProductList data={products} limit={3} />
+          <ProductList data={products} limit={4} />
         </StaggerItem>
       </StaggerContainer>
     </section>
