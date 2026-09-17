@@ -4,6 +4,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+html {
+  scroll-behavior: smooth;
+}
+
 @theme {
   /* custom font */
   --font-clash-display: "Clash Display", sans-serif;

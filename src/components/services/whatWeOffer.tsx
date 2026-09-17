@@ -6,6 +6,7 @@ import { LuWaves } from "react-icons/lu";
 import { HiSquare3Stack3D } from "react-icons/hi2";
 import { BsImageAlt } from "react-icons/bs";
 import WhatWeOfferCard from "./whatWeOfferCard";
+import { StaggerContainer, StaggerItem } from "@/components/ui/MotionWrapper";
 
 const WhatWeOffer = () => {
   const whatWeOfferArray = [
@@ -60,25 +61,28 @@ const WhatWeOffer = () => {
   ];
 
   return (
-    <section id="field-surveys">
-      <div className="section-container">
-        <h4 className="text-green uppercase text-center text-sm font-semibold">
-          What We Offer
-        </h4>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold font-clash-display text-blue text-center">
-          Field &amp; Aerial Survey Services
-        </h2>
+    <section id="field-surveys" className="overflow-hidden">
+      <StaggerContainer className="section-container">
+        <StaggerItem>
+          <h4 className="text-green uppercase text-center text-sm font-semibold">
+            What We Offer
+          </h4>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold font-clash-display text-blue text-center">
+            Field &amp; Aerial Survey Services
+          </h2>
+        </StaggerItem>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
           {whatWeOfferArray.map((item) => (
-            <WhatWeOfferCard
-              icon={item.icon}
-              key={item.id}
-              header={item.header}
-              text={item.text}
-            />
+            <StaggerItem key={item.id}>
+              <WhatWeOfferCard
+                icon={item.icon}
+                header={item.header}
+                text={item.text}
+              />
+            </StaggerItem>
           ))}
         </div>
-      </div>
+      </StaggerContainer>
     </section>
   );
 };
