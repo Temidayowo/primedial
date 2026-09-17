@@ -30,12 +30,12 @@ const RequestService = () => {
   ];
 
   return (
-    <section>
-      <div className="section-container grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
+    <section id="request-service">
+      <div className="section-container grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
+        <div className="md:pr-4">
           <h4 className="uppercase text-sm text-green font-semibold">
             {" "}
-            Request Service
+            Request Equipment Repair, Calibration
           </h4>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold font-clash-display text-blue">
             Why Request Through Us
@@ -44,7 +44,7 @@ const RequestService = () => {
             Trust your instruments to the same team that uses them in the field
             every day.
           </p>
-          <div className="flex flex-col gap-6 mt-5">
+          <div className="flex flex-col gap-8 mt-5">
             {whyRequestOurService.map((request) => {
               const Icon = request.icon;
 

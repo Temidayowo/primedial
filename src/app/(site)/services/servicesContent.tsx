@@ -3,7 +3,7 @@ import WhatWeOffer from "@/components/services/whatWeOffer";
 import WhatWeService from "@/components/services/whatWeService";
 import RequestService from "@/components/services/requestService";
 import ExpertiseInAction from "@/components/services/expertiseInAction";
-import CtaBanner from "@/components/services/ctaBanner";
+import CtaBanner from "@/components/shared/ctaBanner";
 
 const ServicesContent = () => {
   return (
@@ -15,9 +15,9 @@ const ServicesContent = () => {
         backgroundImage="/images/services-page-header.jpg"
       />
       <WhatWeOffer />
+      <ExpertiseInAction />
       <WhatWeService />
       <RequestService />
-      <ExpertiseInAction />
       <CtaBanner />
     </>
   );

@@ -82,7 +82,7 @@ const FilterSection = ({ brands, categories, onDone }: FilterSectionProps) => {
           Clear all
         </Button>
       </div>
-      
+
       <div className="mt-6">
         <h4 className="uppercase font-poppins text-sm font-semibold">
           Category

@@ -2,10 +2,12 @@ import Header from "@/components/header";
 import Hero from "@/components/home/hero";
 import About from "@/components/home/about";
 import TrackRecord from "@/components/home/trackRecord";
+import Services from "@/components/home/services";
 import FeaturedProducts from "@/components/home/featuredProducts";
 import Category from "@/components/home/category";
 import Slider from "@/components/home/partners";
 import Testimonials from "@/components/home/testimonials";
+import CtaBanner from "@/components/shared/ctaBanner";
 
 export default function Home() {
   return (
@@ -18,10 +20,12 @@ export default function Home() {
       <Hero />
       <About />
       <TrackRecord />
+      <Services />
       <Category />
       <FeaturedProducts />
       <Slider />
       <Testimonials />
+      <CtaBanner />
     </>
   );
 }
