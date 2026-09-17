@@ -12,6 +12,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { AnimateOnScroll } from "@/components/ui/MotionWrapper";
 
 const Category = () => {
   // Initialize the autoplay plugin (scrolls every 3 seconds). Lazily
@@ -23,11 +24,11 @@ const Category = () => {
 
   return (
     <section className="section-container py-16 md:py-20 overflow-hidden">
-      <div className="flex items-center justify-between mb-6 md:mb-8">
+      <AnimateOnScroll className="flex items-center justify-between mb-6 md:mb-8">
         <h3 className="font-clash-display text-2xl md:text-3xl lg:text-3xl text-blue font-bold">
           Shop by Category
         </h3>
-      </div>
+      </AnimateOnScroll>
 
       <Carousel
         opts={{

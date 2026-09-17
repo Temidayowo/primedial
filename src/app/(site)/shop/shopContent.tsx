@@ -7,6 +7,7 @@ import { PageHero } from "@/components/ui/pageHero";
 import FilterSection from "@/components/filterSection";
 import MobileFilterSheet from "@/components/mobileFilterSheet";
 import ProductList from "@/app/(site)/shop/productList";
+import { AnimateOnScroll, slideRight } from "@/components/ui/MotionWrapper";
 
 interface ShopContentProps {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -50,9 +51,14 @@ const ShopContent = async ({ searchParams }: ShopContentProps) => {
         {/* Added gap-8 so the sidebar and product grid don't touch */}
         <main className="section-container py-16 grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Sidebar (desktop only - mobile uses the bottom sheet below) */}
-          <aside className="hidden lg:col-span-3 lg:block h-fit rounded-xl border-[0.1px] border-blue bg-white px-4 py-8">
-            <FilterSection categories={categories} brands={brands} />
-          </aside>
+          <AnimateOnScroll
+            variants={slideRight}
+            className="hidden lg:col-span-3 lg:block"
+          >
+            <aside className="h-fit rounded-xl border-[0.1px] border-blue bg-white px-4 py-8">
+              <FilterSection categories={categories} brands={brands} />
+            </aside>
+          </AnimateOnScroll>
 
           {/* Main Product Grid */}
           <div className="col-span-1 lg:col-span-9">

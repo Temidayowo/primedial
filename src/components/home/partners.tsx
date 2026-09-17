@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Marquee } from "@/components/shadcn-space/animations/marquee";
+import { AnimateOnScroll } from "@/components/ui/MotionWrapper";
 
 type BrandList = {
   image: string;
@@ -46,9 +47,11 @@ export default function MarqueeBrandsDemo() {
     // 2. Added overflow-hidden w-full to prevent horizontal scrolling bugs.
     <section className="w-full overflow-hidden bg-gray-50">
       <div className="section-container space-y-6 md:space-y-8">
-        <h3 className="text-center font-clash-display text-2xl md:text-3xl text-blue font-bold">
-          Our Trusted Partners
-        </h3>
+        <AnimateOnScroll>
+          <h3 className="text-center font-clash-display text-2xl md:text-3xl text-blue font-bold">
+            Our Trusted Partners
+          </h3>
+        </AnimateOnScroll>
 
         {/* Scaled the inner padding for smaller screens */}
         <Marquee className="[--duration:20s] px-4 md:px-10" pauseOnHover>

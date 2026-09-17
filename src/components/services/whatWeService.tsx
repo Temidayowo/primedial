@@ -4,6 +4,7 @@ import { FaArrowRight } from "react-icons/fa6";
 import { IoSpeedometer } from "react-icons/io5";
 import IconCard from "./iconCard";
 import WhatWeOfferCard from "./whatWeOfferCard";
+import { StaggerContainer, StaggerItem } from "@/components/ui/MotionWrapper";
 
 const equipmentCapabilities = [
   {
@@ -37,14 +38,16 @@ const equipmentActions = [
 
 const WhatWeService = () => {
   return (
-    <section id="equipment-services" className="bg-gray-100">
-      <div className="section-container">
-        <h4 className="text-green uppercase text-center text-sm font-semibold">
-          Equipment Services
-        </h4>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue text-center font-clash-display">
-          Repair, Calibration &amp; Training
-        </h2>
+    <section id="equipment-services" className="bg-gray-100 overflow-hidden">
+      <StaggerContainer className="section-container">
+        <StaggerItem>
+          <h4 className="text-green uppercase text-center text-sm font-semibold">
+            Equipment Services
+          </h4>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-blue text-center font-clash-display">
+            Repair, Calibration &amp; Training
+          </h2>
+        </StaggerItem>
         {/* <p className="text-gray-500 text-sm text-center mt-3 max-w-2xl mx-auto">
           Our technicians are trained on the full range of survey-grade
           instruments and accessories.
@@ -52,24 +55,27 @@ const WhatWeService = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
           {equipmentCapabilities.map((item) => (
-            <WhatWeOfferCard
-              key={item.id}
-              header={item.header}
-              text={item.text}
-              icon={item.icon}
-            />
+            <StaggerItem key={item.id}>
+              <WhatWeOfferCard
+                header={item.header}
+                text={item.text}
+                icon={item.icon}
+              />
+            </StaggerItem>
           ))}
         </div>
 
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/shop"
-            className="flex items-center gap-2 text-sm font-semibold text-blue hover:text-blue/80 transition-colors"
-          >
-            Want to buy equipments instead?
-            <FaArrowRight className="size-3" />
-          </Link>
-        </div>
+        <StaggerItem>
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/shop"
+              className="flex items-center gap-2 text-sm font-semibold text-blue hover:text-blue/80 transition-colors"
+            >
+              Want to buy equipments instead?
+              <FaArrowRight className="size-3" />
+            </Link>
+          </div>
+        </StaggerItem>
 
         {/* <h4 className="uppercase font-poppins text-xs font-semibold text-gray-500 text-center mt-10">
           On This Equipment
@@ -89,7 +95,7 @@ const WhatWeService = () => {
             <FaArrowRight className="size-3" />
           </Link>
         </div> */}
-      </div>
+      </StaggerContainer>
     </section>
   );
 };

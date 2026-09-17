@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
+import { StaggerContainer, StaggerItem } from "@/components/ui/MotionWrapper";
 
 const Faq = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -29,52 +30,51 @@ const Faq = () => {
   ];
 
   return (
-    <section className="flex justify-center">
-      <div className="w-full max-w-4xl mx-auto py-12 flex flex-col gap-4">
+    <section className="flex justify-center overflow-hidden">
+      <StaggerContainer className="w-full max-w-4xl mx-auto py-12 flex flex-col gap-4">
         {faqs.map((faq, index) => {
           const isOpen = openIndex === index;
 
           return (
-            <div
-              key={index}
-              className="bg-gray-50 rounded-xl overflow-hidden border-gray-300 border-[0.1px]"
-            >
-              <button
-                onClick={() => toggleFAQ(index)}
-                className="w-full flex justify-between items-center p-6 text-left hover:bg-gray-100 transition-colors"
-              >
-                <span className="text-lg font-semibold text-blue font-clash-display">
-                  {faq.question}
-                </span>
+            <StaggerItem key={index}>
+              <div className="bg-gray-50 rounded-xl overflow-hidden border-gray-300 border-[0.1px]">
+                <button
+                  onClick={() => toggleFAQ(index)}
+                  className="w-full flex justify-between items-center p-6 text-left hover:bg-gray-100 transition-colors"
+                >
+                  <span className="text-lg font-semibold text-blue font-clash-display">
+                    {faq.question}
+                  </span>
 
-                <span className="ml-4 shrink-0 text-blue">
-                  <X
-                    size={24}
-                    strokeWidth={2.5}
-                    className={`transition-transform duration-300 ease-in-out ${
-                      isOpen ? "rotate-0" : "rotate-45"
-                    }`}
-                  />
-                </span>
-              </button>
+                  <span className="ml-4 shrink-0 text-blue">
+                    <X
+                      size={24}
+                      strokeWidth={2.5}
+                      className={`transition-transform duration-300 ease-in-out ${
+                        isOpen ? "rotate-0" : "rotate-45"
+                      }`}
+                    />
+                  </span>
+                </button>
 
-              <div
-                className={`grid transition-all duration-300 ease-in-out ${
-                  isOpen
-                    ? "grid-rows-[1fr] opacity-100"
-                    : "grid-rows-[0fr] opacity-0"
-                }`}
-              >
-                <div className="overflow-hidden">
-                  <p className="px-6 pb-6 pt-2 text-gray-600 leading-relaxed">
-                    {faq.answer}
-                  </p>
+                <div
+                  className={`grid transition-all duration-300 ease-in-out ${
+                    isOpen
+                      ? "grid-rows-[1fr] opacity-100"
+                      : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <p className="px-6 pb-6 pt-2 text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </StaggerItem>
           );
         })}
-      </div>
+      </StaggerContainer>
     </section>
   );
 };
