@@ -42,23 +42,14 @@ const ProductCard = ({
         {/* 3. Replaced `mt-4` with `mt-auto pt-4`. `mt-auto` pushes this div to the very bottom. */}
         <div className="mt-auto pt-4 flex items-center justify-between">
           <p className="text-base font-poppins font-bold text-blue">
-            {product.inStock ? `₦${product.price.toFixed(2)}` : "Out of Stock"}
+            ₦{product.price.toFixed(2)}
           </p>
 
-          {product.inStock ? (
-            <AddToCartButton
-              productId={product.id}
-              inStock={product.inStock}
-              className="font-poppins"
-            />
-          ) : (
-            <Link
-              href="/contact"
-              className="rounded-full bg-green px-4 py-2 font-poppins text-sm text-white transition-colors duration-300 hover:bg-blue"
-            >
-              Get Quote
-            </Link>
-          )}
+          <AddToCartButton
+            productId={product.id}
+            inStock
+            className="font-poppins"
+          />
         </div>
       </CardContent>
     </Card>
