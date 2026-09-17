@@ -7,9 +7,17 @@ interface WorkCardProps {
   location?: string;
   about?: string;
   year?: Date | string;
+  isExample?: boolean;
 }
 
-const WorkCard = ({ name, image, location, about, year }: WorkCardProps) => {
+const WorkCard = ({
+  name,
+  image,
+  location,
+  about,
+  year,
+  isExample,
+}: WorkCardProps) => {
   const formattedDate = year ? new Date(year).toLocaleDateString() : "New";
 
   return (
@@ -25,6 +33,11 @@ const WorkCard = ({ name, image, location, about, year }: WorkCardProps) => {
       <span className="absolute top-3 left-3 z-20 bg-green rounded-full px-4 py-1 text-xs text-white">
         {formattedDate}
       </span>
+      {isExample && (
+        <span className="absolute top-3 right-3 z-20 bg-amber-600 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-white">
+          Example
+        </span>
+      )}
       <div className="relative z-20 flex flex-col bg-gray-100 px-3 py-4">
         <h3 className="text-blue font-semibold text-lg font-clash-display">{name}</h3>
         <p className="text-gray-500 text-[13px] mt-1">{about}</p>

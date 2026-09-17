@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ProductCard from "@/components/shared/product/productCard";
 import SortDropdown from "@/components/sortDropdown";
 
@@ -42,6 +43,18 @@ const ProductList = ({ data }: ProductGridProps) => {
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
+
+      <Link
+        href="/services#request-service"
+        className="mt-10 flex flex-col items-center gap-1 rounded-xl border-[0.1px] border-gray-300 bg-white px-6 py-6 text-center transition-colors hover:border-blue"
+      >
+        <p className="font-clash-display text-sm font-semibold text-blue">
+          Need a repair or calibration instead?
+        </p>
+        <p className="text-xs font-medium text-gray-500">
+          Visit the Service Center →
+        </p>
+      </Link>
     </div>
   );
 };

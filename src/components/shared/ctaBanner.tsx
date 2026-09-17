@@ -1,5 +1,4 @@
-import { FaArrowRight } from "react-icons/fa6";
-import { Button } from "../ui/button";
+import ConsultationModal from "./consultationModal";
 
 const CtaBanner = () => {
   return (
@@ -13,10 +12,7 @@ const CtaBanner = () => {
             Tell us about your project and our team will get back to you within
             24 hours.
           </p>
-          <Button className="bg-green w-fit rounded-4xl px-8 py-5 text-sm font-semibold uppercase text-white md:px-12">
-            Get Consultation
-            <FaArrowRight />
-          </Button>
+          <ConsultationModal />
         </div>
       </div>
     </section>
