@@ -19,9 +19,9 @@ export default function Home() {
       />
       <Hero />
       <About />
-      <TrackRecord />
       <Services />
       <Category />
+      <TrackRecord />
       <FeaturedProducts />
       <Slider />
       <Testimonials />

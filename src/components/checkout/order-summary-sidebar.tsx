@@ -48,19 +48,21 @@ export function OrderSummarySidebar({
         <div className="mt-4 max-h-64 space-y-3 overflow-y-auto pr-1">
           {items.map((item) => (
             <div key={item.id} className="flex items-center gap-3">
-              <div className="relative size-12 shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                {item.image && (
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    sizes="48px"
-                    className="object-cover"
-                  />
-                )}
-                <span className="absolute -top-1.5 -right-1.5 flex size-4 items-center justify-center rounded-full bg-blue text-[10px] font-medium text-white">
+              <div className="flex shrink-0 flex-col items-end gap-1">
+                <span className="flex size-4 items-center justify-center rounded-full bg-blue text-[10px] font-medium text-white">
                   {item.quantity}
                 </span>
+                <div className="relative size-12 overflow-hidden rounded-lg bg-gray-100">
+                  {item.image && (
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      sizes="48px"
+                      className="object-cover"
+                    />
+                  )}
+                </div>
               </div>
               <p className="line-clamp-2 min-w-0 flex-1 text-xs text-slate-600">
                 {item.name}

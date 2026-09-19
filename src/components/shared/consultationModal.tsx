@@ -33,7 +33,7 @@ const ConsultationModal = () => {
         className="bg-green w-fit rounded-4xl px-8 py-5 text-sm font-semibold uppercase text-white md:px-12"
       >
         Get Consultation
-        <FaArrowRight />
+        <FaArrowRight className="transition-transform duration-300 ease-out group-hover/button:translate-x-1" />
       </Button>
 
       {/* Backdrop + centering wrapper */}
