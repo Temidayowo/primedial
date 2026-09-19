@@ -44,18 +44,18 @@ const Services = () => {
     <section className="overflow-hidden">
       <StaggerContainer className="section-container py-16 md:py-20">
         <StaggerItem>
-          <div className="flex flex-col items-center text-center mb-10 md:mb-12">
+          <div className="flex flex-col items-start text-center mb-10 md:mb-12">
             <h4 className="font-clash-display text-green uppercase text-sm font-semibold">
               What We Do
             </h4>
             <h3 className="font-clash-display text-2xl md:text-3xl lg:text-4xl text-blue font-bold mt-1">
               Services We Offer
             </h3>
-            <p className="text-gray-600 text-sm mt-3 max-w-xl">
+            {/* <p className="text-gray-600 text-sm mt-3 max-w-xl">
               From field surveys to equipment repair and calibration,
               here&apos;s the full range of geospatial services our
               accredited team delivers.
-            </p>
+            </p> */}
           </div>
         </StaggerItem>
 
@@ -89,9 +89,10 @@ const Services = () => {
           <div className="mt-10 flex justify-center">
             <Link
               href="/services"
-              className="flex items-center gap-2 rounded-4xl bg-blue px-8 py-3 text-sm font-semibold uppercase text-white transition-colors hover:bg-blue/90"
+              className="group flex items-center gap-2 rounded-4xl bg-blue/95 px-8 py-3 text-sm font-semibold uppercase text-white transition-colors hover:bg-blue"
             >
-              View All Services <FaArrowRight className="size-3" />
+              View All Services
+              <FaArrowRight className="size-3 transition-transform duration-300 ease-out group-hover:translate-x-1" />
             </Link>
           </div>
         </StaggerItem>

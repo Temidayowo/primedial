@@ -11,7 +11,6 @@ export async function getFeaturedProducts() {
     orderBy: {
       createdAt: "desc",
     },
-    take: 4,
     select: {
       id: true,
       name: true,

@@ -1,12 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { FaFileArrowDown } from "react-icons/fa6";
+import Autoplay from "embla-carousel-autoplay";
 import { Product } from "@/app/(site)/shop/productList";
 import QuantitySelector from "../counter";
 import { AddToCartButton } from "@/components/shared/product/add-to-cart-button";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, cn } from "@/lib/utils";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 
 const AboutProduct = ({
   product,
@@ -24,17 +33,91 @@ const AboutProduct = ({
   >;
 }) => {
   const [quantity, setQuantity] = useState(1);
+  const [api, setApi] = useState<CarouselApi>();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const images = product.images.length > 0 ? product.images : [];
+
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => setSelectedIndex(api.selectedScrollSnap());
+    onSelect();
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
+    };
+  }, [api]);
+
+  const handleThumbnailClick = useCallback(
+    (index: number) => {
+      api?.scrollTo(index);
+    },
+    [api]
+  );
+
   return (
     <section className="bg-gray-50">
       <div className="section-container grid grid-cols-1 gap-16 md:grid-cols-2">
-        <div className=" bg-gray-100 relative aspect-square border-[0.1px] border-gray-300 rounded-xl overflow-hidden group">
-          <Image
-            src={product.images[0]}
-            alt={product.name}
-            fill
-            sizes="(min-width: 768px) 50vw, 100vw"
-            className="object-cover scale-85 group-hover:scale-100 transition duration-300 ease-in-out"
-          />
+        <div className="flex flex-col gap-4">
+          <Carousel
+            setApi={setApi}
+            opts={{ loop: true }}
+            plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]}
+            className="group"
+          >
+            <CarouselContent className="ml-0">
+              {images.map((image, index) => (
+                <CarouselItem key={image + index} className="pl-0">
+                  <div className="bg-gray-100 relative aspect-square border-[0.1px] border-gray-300 rounded-xl overflow-hidden">
+                    <Image
+                      src={image}
+                      alt={`${product.name} image ${index + 1}`}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-cover"
+                      priority={index === 0}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {images.length > 1 && (
+              <>
+                <CarouselPrevious className="left-4 z-10 h-10 w-10 bg-white/90 backdrop-blur hover:bg-white border shadow-md opacity-0 group-hover:opacity-100 transition-opacity" />
+                <CarouselNext className="right-4 z-10 h-10 w-10 bg-white/90 backdrop-blur hover:bg-white border shadow-md opacity-0 group-hover:opacity-100 transition-opacity" />
+              </>
+            )}
+          </Carousel>
+          {images.length > 1 && (
+            <div className="flex gap-3 overflow-x-auto pb-1">
+              {images.map((image, index) => (
+                <button
+                  key={image + index}
+                  type="button"
+                  onClick={() => handleThumbnailClick(index)}
+                  aria-label={`View image ${index + 1}`}
+                  aria-current={selectedIndex === index}
+                  className={cn(
+                    "relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-colors",
+                    selectedIndex === index
+                      ? "border-blue"
+                      : "border-transparent hover:border-gray-300"
+                  )}
+                >
+                  <Image
+                    src={image}
+                    alt={`${product.name} thumbnail ${index + 1}`}
+                    fill
+                    sizes="64px"
+                    className="object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-4">
           <h3 className="uppercase text-green font-semibold font-clash-display ">
