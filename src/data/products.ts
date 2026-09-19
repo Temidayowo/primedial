@@ -179,6 +179,7 @@ export const surveyingProducts: SurveyingProduct[] = [
       "/images/products/meridian-m20l-main.jpg",
       "/images/products/meridian-m20l-laser.png",
       "/images/products/meridian-m20l-side.avif",
+      "/docs/meridian-m20l-datasheet.pdf.jpg",
     ],
     specSheetUrl: "/docs/meridian-m20l-datasheet.pdf.jpg",
     features: [
