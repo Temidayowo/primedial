@@ -177,8 +177,8 @@ export const surveyingProducts: SurveyingProduct[] = [
     price: 0, // 0 triggers the "Contact for Quote" display as requested
     images: [
       "/images/products/meridian-m20l-main.jpg",
-      "/images/products/meridian-m20l-laser.jpg",
-      "/images/products/meridian-m20l-side.jpg",
+      "/images/products/meridian-m20l-laser.png",
+      "/images/products/meridian-m20l-side.avif",
     ],
     specSheetUrl: "/docs/meridian-m20l-datasheet.pdf.jpg",
     features: [
