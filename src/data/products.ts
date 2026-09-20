@@ -59,7 +59,6 @@ export const surveyingProducts: SurveyingProduct[] = [
       "Rugged IP67 rating",
     ],
     inStock: true,
-    isFeatured: true,
   },
   {
     name: "Leica TS16 Robotic Total Station",
@@ -77,7 +76,6 @@ export const surveyingProducts: SurveyingProduct[] = [
       "Captivate field software integration",
     ],
     inStock: true,
-    isFeatured: true,
   },
   {
     name: "Leica LS15 Digital Level",
@@ -95,7 +93,6 @@ export const surveyingProducts: SurveyingProduct[] = [
       "Bluetooth and USB connectivity",
     ],
     inStock: true,
-    isFeatured: true,
   },
   {
     name: "DJI Matrice 350 RTK",
@@ -113,7 +110,6 @@ export const surveyingProducts: SurveyingProduct[] = [
       "Centimeter-level RTK positioning",
     ],
     inStock: false,
-    isFeatured: true,
   },
   {
     name: "FARO Focus Premium 3D Laser Scanner",
@@ -131,7 +127,6 @@ export const surveyingProducts: SurveyingProduct[] = [
       "50% faster scan times",
     ],
     inStock: true,
-    isFeatured: true,
   },
   {
     name: "Heavy-Duty Wood Tripod with Dual Clamp",
@@ -193,5 +188,184 @@ export const surveyingProducts: SurveyingProduct[] = [
     ],
     inStock: true,
     isFeatured: true,
+  },
+  {
+    name: "Meridian MTS-A1",
+    slug: "meridian-mts-a1",
+    brand: "meridian",
+    category: "total-stations",
+    price: 0,
+    inStock: true,
+    description:
+      "The MTS-A1 features a 6-inch HD touchscreen with Android OS and surveying software, equipped with a high-resolution camera to improve efficiency and accuracy. MTS-A1 offers high-quality, high-accuracy and stable performance.",
+    images: [
+      "https://cdn.xuansiwei.com/duola6779/upload/20251020/vi1lt95gtmo/MTS-A1.png",
+    ],
+    features: [
+      "Android 11 Total Station with 6-inch HD touchscreen",
+      "Angle accuracy: 1\" / 2\" (optional)",
+      "Distance range: up to 4000m (single prism) / 1000m (non-prism)",
+      "8MP AR stakeout camera",
+      "Bluetooth 5.0 + WiFi",
+      "IP65 dust/water resistant",
+      "Weight: 7kg",
+      "Dimensions: 217 × 198 × 378 mm",
+    ],
+    specSheetUrl:
+      "https://cdn.xuansiwei.com/duola6779/upload/20260410/qstvnghg8h8/MTS-A1%20Android%20Total%20Station.pdf",
+    isFeatured: true,
+  },
+  {
+    name: "Meridian M5Plus",
+    slug: "meridian-m5plus",
+    brand: "meridian",
+    category: "gnss-receivers",
+    price: 0,
+    inStock: true,
+    description:
+      "M5Plus GNSS receiver is an extremely lightweight, full-featured, intelligent GNSS receiver system equipped with an integrated full-frequency antenna and advanced multi-channel RTK engine, built-in radio, and 8GB internal storage — built for fast, reliable fixes in demanding field conditions.",
+    images: [
+      "https://cdn.xuansiwei.com/duola6779/upload/20240125/gfuvi26e8o/M2Pro.jpg",
+    ],
+    features: [
+      "Pocket-sized IMU-RTK GNSS receiver, 1408 channels",
+      "RTK accuracy: ±(8mm+1ppm) horizontal / ±(15mm+1ppm) vertical",
+      "Built-in UHF radio (1W/2W) + Bluetooth 5.2",
+      "Up to 26h RTK rover / 30h static battery life",
+      "IP68 dust/waterproof, 2m drop rated",
+      "Weight: 599g",
+      "Dimensions: 119 × 119 × 76 mm",
+    ],
+    specSheetUrl:
+      "https://cdn.xuansiwei.com/duola6779/upload/20250919/uen4n53kfs8/Meridian%20M5Plus%20GNSS%20Receiver.pdf",
+    isFeatured: true,
+  },
+  {
+    name: "Meridian M5Plus + MBase RTK Kit",
+    slug: "meridian-m5plus-mbase-kit",
+    brand: "meridian",
+    category: "gnss-receivers",
+    inStock: true,
+    description:
+      "Complete base + rover RTK GNSS kit pairing the Meridian M5Plus rover with the Meridian MBase base station. The MBase's 5W internal radio extends reliable RTK coverage up to 35km under ideal conditions, while the M5Plus rover delivers all-day field battery life — a ready-to-survey pair out of the box.",
+    images: [
+      "https://cdn.xuansiwei.com/duola6779/upload/20240125/gfuvi26e8o/M2Pro.jpg",
+      "https://cdn.xuansiwei.com/duola6779/upload/20251020/fgu78klho28/MBase.png",
+    ],
+    features: [
+      "Kit includes: 1x Meridian M5Plus rover + 1x Meridian MBase base station",
+      "MBase: 5W radio, up to 35km RTK coverage (ideal conditions), 900g",
+      "M5Plus: 599g, up to 26h RTK rover battery life",
+      "RTK accuracy: ±(8mm+1ppm) horizontal / ±(15mm+1ppm) vertical (both units)",
+      "Both units IP68 rated",
+      // TODO: list whatever else physically ships in the kit (tribrach, poles,
+      // controller, charger, case) — that's store-specific, not on the spec sheet.
+    ],
+    price: 0, // TODO: bundle price — usually rover + base list price minus a kit discount
+    isFeatured: true,
+  },
+ 
+  // ---------- DJI (drones — verified specs, images/price are placeholders) ----------
+  {
+    name: "DJI Matrice 400",
+    slug: "dji-matrice-400",
+    brand: "dji",
+    category: "drones-uavs",
+    price: 0,
+    inStock: true,
+    isFeatured: true,
+    description:
+      "DJI Matrice 400 is DJI's flagship heavy-lift enterprise drone, built for demanding mapping, inspection, and public-safety missions. It carries a 6kg payload across compatible Zenmuse gimbal cameras (L3, H30/H30T, L2, P1), runs up to 59 minutes per flight, and includes built-in RTK for survey-grade positioning.",
+    images: [],
+    features: [
+      "Max payload: 6kg (compatible with Zenmuse L3, H30, H30T, L2, P1)",
+      "Takeoff weight: ~9.74kg (with batteries); max takeoff weight 15.8kg",
+      "Up to 59 min max flight time (no payload)",
+      "Up to 40km O4 Enterprise video transmission (FCC) / 20km (CE/SRRC/MIC)",
+      "Built-in RTK: 1cm + 1ppm horizontal accuracy",
+      "Omnidirectional obstacle sensing: binocular vision, rotating + upper LiDAR, 3D infrared, 6-direction mmWave radar",
+      "IP55 rated",
+    ],
+    specSheetUrl: "https://enterprise.dji.com/matrice-400/specs",
+  },
+  {
+    name: "DJI Air 2S",
+    slug: "dji-air-2s",
+    brand: "dji",
+    category: "drones-uavs",
+    price: 0,
+    inStock: true,
+    description:
+      "DJI Air 2S pairs a 1-inch CMOS sensor with 5.4K video and intelligent shooting modes in a compact, foldable body — a strong all-round aerial photography drone.",
+    images: [], // TODO: add your own hosted product images
+    features: [
+      "1-inch CMOS sensor, 20MP stills",
+      "5.4K/30fps video",
+      "Takeoff weight: ~595g",
+      "Up to 31 min max flight time",
+      "12km O3 video transmission (FCC)",
+      "4-directional obstacle sensing (front/back/up/down)",
+      "MasterShots & intelligent shooting modes",
+    ],
+    specSheetUrl: "https://www.dji.com/air-2s/specs",
+  },
+  {
+    name: "DJI Mavic 3",
+    slug: "dji-mavic-3",
+    brand: "dji",
+    category: "drones-uavs",
+    price: 0,
+    inStock: true,
+    description:
+      "DJI Mavic 3 combines a Hasselblad main camera with a dedicated tele camera for hybrid zoom, backed by long flight time and omnidirectional obstacle sensing — built for professional aerial photography and mapping.",
+    images: [],
+    features: [
+      "Dual camera: Hasselblad 4/3 CMOS 20MP main + 1/2\" 12MP tele (28x hybrid zoom)",
+      "Takeoff weight: ~895g",
+      "Up to 46 min max flight time",
+      "15km O3+ video transmission (FCC)",
+      "Omnidirectional obstacle sensing",
+    ],
+    specSheetUrl: "https://www.dji.com/mavic-3-pro/specs", // TODO: swap for the exact Mavic 3 SKU spec page/PDF you stock
+  },
+  {
+    name: "DJI Mini 5 Pro",
+    slug: "dji-mini-5-pro",
+    brand: "dji",
+    category: "drones-uavs",
+    price: 0,
+    inStock: true,
+    description:
+      "DJI Mini 5 Pro brings a 1-inch sensor and forward LiDAR obstacle sensing into a sub-250g airframe, so it stays under many local drone-registration weight thresholds while still delivering flagship-level capture quality.",
+    images: [],
+    features: [
+      "1-inch CMOS sensor, 50MP stills",
+      "4K video up to 120fps, FHD up to 240fps",
+      "Takeoff weight: 249.9g (±4g) — sub-250g category",
+      "Up to 36 min flight time (52 min with Plus battery, where available)",
+      "Up to 20km O4+ video transmission (FCC)",
+      "Omnidirectional obstacle sensing incl. forward LiDAR",
+    ],
+  },
+  {
+    name: "DJI Matrice 4E",
+    slug: "dji-matrice-4e",
+    brand: "dji",
+    category: "drones-uavs",
+    price: 0,
+    inStock: true,
+    description:
+      "DJI Matrice 4E is an enterprise mapping drone with a triple-camera payload and long endurance, built for aerial surveying and photogrammetry — a natural pairing with GNSS RTK base stations for ground-truthed mapping data.",
+    images: [],
+    features: [
+      "Triple camera: 4/3\" 20MP wide + 1/1.3\" 48MP medium tele + 1/1.5\" 48MP tele",
+      "Takeoff weight: ~1219g (up to 1420g with accessories)",
+      "Up to 49 min max flight time",
+      "Up to 25km O4 video transmission (FCC) / 12km (CE)",
+      "RTK-ready for survey-grade positioning",
+      // Note: DJI also sells an M4T variant with an added thermal camera —
+      // add it as a separate product if you stock that SKU too.
+    ],
+    specSheetUrl: "https://enterprise.dji.com/matrice-4-series/specs",
   },
 ];
