@@ -9,6 +9,7 @@ interface PaymentMethod {
   id: string;
   brand: string;
   last4: string;
+  cardholderName: string;
   expiryMonth: number;
   expiryYear: number;
   isDefault: boolean;
@@ -45,6 +46,7 @@ export function ManagePaymentMethods({
                     </span>
                   )}
                 </div>
+                <p className="text-xs text-slate-400">{method.cardholderName}</p>
                 <p className="text-xs text-slate-400">
                   Expires {String(method.expiryMonth).padStart(2, "0")}/
                   {method.expiryYear}

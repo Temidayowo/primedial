@@ -33,16 +33,3 @@ export function PaymentSchemeIcons({ className }: { className?: string }) {
     </div>
   );
 }
-
-export function PaystackWordmark({ className }: { className?: string }) {
-  return (
-    <span
-      className={cn(
-        "font-clash-display text-sm font-bold text-[#011B33]",
-        className,
-      )}
-    >
-      Paystack<span className="text-[#00C3F3]">.</span>
-    </span>
-  );
-}

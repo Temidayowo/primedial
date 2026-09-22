@@ -1,11 +1,15 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Lock } from "lucide-react";
-import { checkout } from "@/lib/actions/cart.action";
+import { createPendingOrder } from "@/lib/actions/cart.action";
+import { payForOrder } from "@/lib/payments/pay-for-order";
+import { isNextRedirectError } from "@/lib/next-redirect";
 import { TAX_RATE } from "@/lib/cart-constants";
 import { formatCurrency } from "@/lib/utils";
+import type { PaymentMethodChoice } from "@/lib/payment-method";
 
 interface SummaryItem {
   id: string;
@@ -20,21 +24,50 @@ export function OrderSummarySidebar({
   subtotal,
   shippingCost,
   selectedAddressId,
+  paymentMethod,
 }: {
   items: SummaryItem[];
   subtotal: number;
   shippingCost: number;
   selectedAddressId: string | null;
+  paymentMethod: PaymentMethodChoice;
 }) {
+  const router = useRouter();
   const [isPlacingOrder, startPlaceOrder] = useTransition();
+  const [error, setError] = useState<string | null>(null);
 
   const tax = subtotal * TAX_RATE;
   const total = subtotal + tax + shippingCost;
 
   const handlePlaceOrder = () => {
     if (!selectedAddressId) return;
+    setError(null);
+
     startPlaceOrder(async () => {
-      await checkout({ addressId: selectedAddressId, shippingCost });
+      try {
+        const order = await createPendingOrder({
+          addressId: selectedAddressId,
+          shippingCost,
+        });
+
+        await payForOrder({
+          orderId: order.orderId,
+          paymentMethod,
+          onSuccess: () => router.push(`/account/orders/${order.orderId}`),
+          onError: setError,
+          onCardCancelled: () =>
+            setError("Payment was cancelled. Your order is saved - you can try again."),
+          onBankTransferCancelled: () =>
+            setError(
+              "If you already sent the transfer, we'll confirm it automatically once it clears. Otherwise your order is saved - you can try again below.",
+            ),
+        });
+      } catch (err) {
+        if (isNextRedirectError(err)) throw err;
+        setError(
+          err instanceof Error ? err.message : "Something went wrong placing your order",
+        );
+      }
     });
   };
 
@@ -110,6 +143,9 @@ export function OrderSummarySidebar({
           <p className="mt-2 text-center text-[11px] text-amber-600">
             Add a shipping address to continue.
           </p>
+        )}
+        {error && (
+          <p className="mt-2 text-center text-[11px] text-red-600">{error}</p>
         )}
         <p className="mt-2 text-center text-[11px] text-slate-500">
           By placing your order, you agree to our Terms of Service.
