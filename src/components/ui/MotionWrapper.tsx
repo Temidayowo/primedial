@@ -65,7 +65,14 @@ export function StaggerContainer({
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.15 }}
+      // `amount` is a fraction of THIS element's own height, not a fixed
+      // viewport threshold - a long, single-column list (e.g. the shop
+      // grid on mobile, where every card stacks in one column) can be
+      // many screens tall, so no scroll position ever shows 15% of it at
+      // once and the reveal never fires, leaving every item stuck at
+      // opacity: 0. `amount: 0` triggers as soon as any part is visible,
+      // regardless of how tall the container ends up being.
+      viewport={{ once: true, amount: 0 }}
       variants={{
         hidden: {},
         visible: {
