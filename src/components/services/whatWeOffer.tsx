@@ -1,5 +1,4 @@
 import { FaMapLocationDot, FaCompassDrafting } from "react-icons/fa6";
-import { FaDatabase } from "react-icons/fa";
 import { PiDroneFill } from "react-icons/pi";
 import { GiOilRig, GiMineTruck } from "react-icons/gi";
 import { LuWaves } from "react-icons/lu";

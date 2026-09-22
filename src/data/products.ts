@@ -199,7 +199,8 @@ export const surveyingProducts: SurveyingProduct[] = [
     description:
       "The MTS-A1 features a 6-inch HD touchscreen with Android OS and surveying software, equipped with a high-resolution camera to improve efficiency and accuracy. MTS-A1 offers high-quality, high-accuracy and stable performance.",
     images: [
-      "https://cdn.xuansiwei.com/duola6779/upload/20251020/vi1lt95gtmo/MTS-A1.png",
+      "/product-images/meridian-mts-a1/meridian-mts-a1-1.jpg",
+      "/product-images/meridian-mts-a1/meridian-mts-a1-2.jpg",
     ],
     features: [
       "Android 11 Total Station with 6-inch HD touchscreen",
@@ -224,9 +225,7 @@ export const surveyingProducts: SurveyingProduct[] = [
     inStock: true,
     description:
       "M5Plus GNSS receiver is an extremely lightweight, full-featured, intelligent GNSS receiver system equipped with an integrated full-frequency antenna and advanced multi-channel RTK engine, built-in radio, and 8GB internal storage — built for fast, reliable fixes in demanding field conditions.",
-    images: [
-      "https://cdn.xuansiwei.com/duola6779/upload/20240125/gfuvi26e8o/M2Pro.jpg",
-    ],
+    images: ["/product-images/meridian-m5plus/meridian-m5plus-1.jpg"],
     features: [
       "Pocket-sized IMU-RTK GNSS receiver, 1408 channels",
       "RTK accuracy: ±(8mm+1ppm) horizontal / ±(15mm+1ppm) vertical",
@@ -249,8 +248,9 @@ export const surveyingProducts: SurveyingProduct[] = [
     description:
       "Complete base + rover RTK GNSS kit pairing the Meridian M5Plus rover with the Meridian MBase base station. The MBase's 5W internal radio extends reliable RTK coverage up to 35km under ideal conditions, while the M5Plus rover delivers all-day field battery life — a ready-to-survey pair out of the box.",
     images: [
-      "https://cdn.xuansiwei.com/duola6779/upload/20240125/gfuvi26e8o/M2Pro.jpg",
-      "https://cdn.xuansiwei.com/duola6779/upload/20251020/fgu78klho28/MBase.png",
+      "/product-images/meridian-m5plus-mbase-kit/meridian-m5plus-1.jpg",
+      "/product-images/meridian-m5plus-mbase-kit/meridian-mbase-1.jpg",
+      "/product-images/meridian-m5plus-mbase-kit/meridian-mbase-2.jpg",
     ],
     features: [
       "Kit includes: 1x Meridian M5Plus rover + 1x Meridian MBase base station",
@@ -265,7 +265,7 @@ export const surveyingProducts: SurveyingProduct[] = [
     isFeatured: true,
   },
  
-  // ---------- DJI (drones — verified specs, images/price are placeholders) ----------
+  // ---------- DJI (drones — verified specs, price is a placeholder) ----------
   {
     name: "DJI Matrice 400",
     slug: "dji-matrice-400",
@@ -276,7 +276,7 @@ export const surveyingProducts: SurveyingProduct[] = [
     isFeatured: true,
     description:
       "DJI Matrice 400 is DJI's flagship heavy-lift enterprise drone, built for demanding mapping, inspection, and public-safety missions. It carries a 6kg payload across compatible Zenmuse gimbal cameras (L3, H30/H30T, L2, P1), runs up to 59 minutes per flight, and includes built-in RTK for survey-grade positioning.",
-    images: [],
+    images: ["/product-images/dji-matrice-400/dji-matrice400-1.jpg"],
     features: [
       "Max payload: 6kg (compatible with Zenmuse L3, H30, H30T, L2, P1)",
       "Takeoff weight: ~9.74kg (with batteries); max takeoff weight 15.8kg",
@@ -297,7 +297,10 @@ export const surveyingProducts: SurveyingProduct[] = [
     inStock: true,
     description:
       "DJI Air 2S pairs a 1-inch CMOS sensor with 5.4K video and intelligent shooting modes in a compact, foldable body — a strong all-round aerial photography drone.",
-    images: [], // TODO: add your own hosted product images
+    images: [
+      "/product-images/dji-air-2s/dji-air2s-1.jpg",
+      "/product-images/dji-air-2s/dji-air2s-2.jpg",
+    ],
     features: [
       "1-inch CMOS sensor, 20MP stills",
       "5.4K/30fps video",
@@ -318,7 +321,11 @@ export const surveyingProducts: SurveyingProduct[] = [
     inStock: true,
     description:
       "DJI Mavic 3 combines a Hasselblad main camera with a dedicated tele camera for hybrid zoom, backed by long flight time and omnidirectional obstacle sensing — built for professional aerial photography and mapping.",
-    images: [],
+    images: [
+      "/product-images/dji-mavic-3/dji-mavic3-1.jpg",
+      "/product-images/dji-mavic-3/dji-mavic3-2.jpg",
+      "/product-images/dji-mavic-3/dji-mavic3-3.jpg",
+    ],
     features: [
       "Dual camera: Hasselblad 4/3 CMOS 20MP main + 1/2\" 12MP tele (28x hybrid zoom)",
       "Takeoff weight: ~895g",
@@ -337,7 +344,11 @@ export const surveyingProducts: SurveyingProduct[] = [
     inStock: true,
     description:
       "DJI Mini 5 Pro brings a 1-inch sensor and forward LiDAR obstacle sensing into a sub-250g airframe, so it stays under many local drone-registration weight thresholds while still delivering flagship-level capture quality.",
-    images: [],
+    images: [
+      "/product-images/dji-mini-5-pro/dji-mini5pro-1.jpg",
+      "/product-images/dji-mini-5-pro/dji-mini5pro-2.jpg",
+      "/product-images/dji-mini-5-pro/dji-mini5pro-3.jpg",
+    ],
     features: [
       "1-inch CMOS sensor, 50MP stills",
       "4K video up to 120fps, FHD up to 240fps",
@@ -356,7 +367,7 @@ export const surveyingProducts: SurveyingProduct[] = [
     inStock: true,
     description:
       "DJI Matrice 4E is an enterprise mapping drone with a triple-camera payload and long endurance, built for aerial surveying and photogrammetry — a natural pairing with GNSS RTK base stations for ground-truthed mapping data.",
-    images: [],
+    images: ["/product-images/dji-matrice-4e/dji-matrice4e-1.jpg"],
     features: [
       "Triple camera: 4/3\" 20MP wide + 1/1.3\" 48MP medium tele + 1/1.5\" 48MP tele",
       "Takeoff weight: ~1219g (up to 1420g with accessories)",

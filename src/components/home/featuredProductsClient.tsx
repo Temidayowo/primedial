@@ -55,14 +55,16 @@ const FeaturedProductsClient = ({
                 <CarouselItem key={product.id}>
                   <div className="grid h-full grid-cols-1 items-center gap-8 p-6 md:grid-cols-2 md:gap-12 md:p-10 lg:px-32">
                     <div className="relative aspect-square overflow-hidden rounded-xl bg-gray-100 md:aspect-4/3">
-                      <Image
-                        src={product.images[0]}
-                        alt={product.name}
-                        fill
-                        sizes="(min-width: 768px) 45vw, 100vw"
-                        className="object-cover object-center"
-                        priority
-                      />
+                      {product.images[0] && (
+                        <Image
+                          src={product.images[0]}
+                          alt={product.name}
+                          fill
+                          sizes="(min-width: 768px) 45vw, 100vw"
+                          className="object-cover object-center"
+                          priority
+                        />
+                      )}
                     </div>
 
                     <div className="flex flex-col items-start">
