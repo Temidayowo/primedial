@@ -14,14 +14,18 @@ const ProductCard = ({
     <Card className="bg-[#F8FAFC] ring-0 rounded-lg shadow hover:shadow-lg duration-300 transition-transform ease-in-out hover:scale-102 mx-0 h-full flex flex-col">
       <CardHeader>
         <Link href={`/shop/${product.slug}`} className="block">
-          <Image
-            src={product.images[0]}
-            alt={product.name}
-            width={300}
-            height={200}
-            loading="eager"
-            className="w-full h-64 md:h-44 object-cover object-center"
-          />
+          {product.images[0] ? (
+            <Image
+              src={product.images[0]}
+              alt={product.name}
+              width={300}
+              height={200}
+              loading="eager"
+              className="w-full h-64 md:h-44 object-cover object-center"
+            />
+          ) : (
+            <div className="w-full h-64 md:h-44 rounded-md bg-gray-100" />
+          )}
         </Link>
       </CardHeader>
 
