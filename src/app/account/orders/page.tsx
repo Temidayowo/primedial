@@ -35,6 +35,7 @@ export default async function OrderHistoryPage() {
               orderNumber={order.orderNumber}
               createdAt={order.createdAt}
               status={order.status}
+              paymentStatus={order.paymentStatus}
               total={Number(order.total)}
               itemSummary={order.items
                 .map((item) => item.product.name)

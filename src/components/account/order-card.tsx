@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { StatusBadge } from "@/components/account/status-badge";
-import { OrderStatus } from "@/generated/prisma/enums";
+import { StatusBadge, PaymentStatusBadge } from "@/components/account/status-badge";
+import { OrderStatus, PaymentStatus } from "@/generated/prisma/enums";
 import { formatCurrency } from "@/lib/utils";
 
 interface OrderCardProps {
@@ -8,6 +8,7 @@ interface OrderCardProps {
   orderNumber: string;
   createdAt: Date;
   status: OrderStatus;
+  paymentStatus: PaymentStatus;
   total: number;
   itemSummary: string;
 }
@@ -17,6 +18,7 @@ export function OrderCard({
   orderNumber,
   createdAt,
   status,
+  paymentStatus,
   total,
   itemSummary,
 }: OrderCardProps) {
@@ -35,7 +37,10 @@ export function OrderCard({
             })}
           </p>
         </div>
-        <StatusBadge status={status} />
+        <div className="flex items-center gap-2">
+          {paymentStatus !== "PAID" && <PaymentStatusBadge status={paymentStatus} />}
+          <StatusBadge status={status} />
+        </div>
       </div>
 
       <p className="mt-3 truncate text-sm text-slate-500">{itemSummary}</p>

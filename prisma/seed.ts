@@ -113,6 +113,7 @@ async function main() {
       userId: testUser.id,
       brand: "Visa",
       last4: "4242",
+      cardholderName: "Test User",
       expiryMonth: 11,
       expiryYear: 2028,
       isDefault: true,

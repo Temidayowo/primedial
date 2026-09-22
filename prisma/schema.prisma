@@ -24,6 +24,17 @@ enum OrderStatus {
   CANCELLED
 }
 
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+enum PaymentProvider {
+  PAYSTACK
+  OPAY
+}
+
 model Product {
   id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name         String
@@ -147,19 +158,23 @@ model Address {
   orders Order[]
 }
 
-// Deliberately does not store real card numbers - there is no payment
-// processor (e.g. Stripe) wired up yet, and this app should never hold
-// raw card data itself. This only tracks the display-safe fields you'd
-// get back from a real vault (brand, last 4 digits, expiry) so the UI
-// has something to show; wire up a real processor before trusting this
-// for actual payments.
+// Deliberately does not store real card numbers or CVV - checkout itself
+// goes through Paystack's popup (see src/lib/actions/payments.action.ts),
+// which collects card details directly into Paystack's own iframe and
+// never sends them to this app. This model is a reference-only "cards on
+// file" list for the account page; it's never read from when actually
+// charging a card. Only ever store display-safe fields here (brand, last
+// 4 digits, expiry, cardholder name) - never a full PAN, and never a CVV
+// under any circumstances (PCI-DSS forbids storing CVV after
+// authorization, full stop, regardless of encryption).
 model PaymentMethod {
-  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  brand       String // e.g. "Visa", "Mastercard"
-  last4       String
-  expiryMonth Int
-  expiryYear  Int
-  isDefault   Boolean @default(false)
+  id             String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  brand          String // e.g. "Visa", "Mastercard"
+  last4          String
+  cardholderName String
+  expiryMonth    Int
+  expiryYear     Int
+  isDefault      Boolean @default(false)
 
   createdAt DateTime @default(now())
 
@@ -179,6 +194,19 @@ model Order {
 
   shippingAddressId String?  @db.Uuid
   shippingAddress   Address? @relation(fields: [shippingAddressId], references: [id], onDelete: SetNull)
+
+  // Set on the order the moment it's created, before any money has moved -
+  // the order row is the one thing all three payment paths (Paystack popup
+  // verify call, Paystack webhook, OPay webhook) update, so a payment can
+  // be confirmed even if the client never comes back (tab closed, popup
+  // dismissed after a successful charge, etc).
+  paymentStatus    PaymentStatus    @default(PENDING)
+  paymentProvider  PaymentProvider?
+  // Regenerated on every payment attempt (retrying after a failed/abandoned
+  // attempt reuses the same order but gets a fresh reference), so this is
+  // what ties a specific Paystack/OPay transaction back to this order.
+  paymentReference String?          @unique
+  paidAt           DateTime?
 
   items OrderItem[]
 }

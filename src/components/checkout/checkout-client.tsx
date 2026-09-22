@@ -9,6 +9,7 @@ import { OrderReviewSection } from "./order-review-section";
 import { OrderSummarySidebar } from "./order-summary-sidebar";
 import { TrustBadges } from "./trust-badges";
 import { SectionCard } from "./section-card";
+import type { PaymentMethodChoice } from "@/lib/payment-method";
 
 interface Address {
   id: string;
@@ -61,6 +62,7 @@ export function CheckoutClient({
   const [cardOverride, setCardOverride] = useState<string | null>(null);
   const [selectedShippingId, setSelectedShippingId] =
     useState<ShippingMethodId>(SHIPPING_METHODS[0].id);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethodChoice>("card");
 
   const selectedAddressId =
     addressOverride && addresses.some((a) => a.id === addressOverride)
@@ -99,6 +101,8 @@ export function CheckoutClient({
         <SectionCard step={3} title="Payment">
           <PaymentSection
             paymentMethods={paymentMethods}
+            selectedMethod={paymentMethod}
+            onSelectMethod={setPaymentMethod}
             selectedCardId={selectedCardId}
             onSelectCard={setCardOverride}
           />
@@ -117,6 +121,7 @@ export function CheckoutClient({
         subtotal={subtotal}
         shippingCost={shippingCost}
         selectedAddressId={selectedAddressId}
+        paymentMethod={paymentMethod}
       />
     </div>
   );

@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { verifySession } from "@/lib/dal";
 import { getOrderById } from "@/lib/actions/orders.action";
-import { StatusBadge } from "@/components/account/status-badge";
+import { StatusBadge, PaymentStatusBadge } from "@/components/account/status-badge";
+import { RetryPayment } from "@/components/account/retry-payment";
 import { formatCurrency } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -44,8 +45,18 @@ export default async function OrderDetailPage(props: {
             })}
           </p>
         </div>
-        <StatusBadge status={order.status} />
+        <div className="flex items-center gap-2">
+          <PaymentStatusBadge status={order.paymentStatus} />
+          <StatusBadge status={order.status} />
+        </div>
       </div>
+
+      {order.paymentStatus !== "PAID" && (
+        <RetryPayment
+          orderId={order.id}
+          paymentStatus={order.paymentStatus === "FAILED" ? "FAILED" : "PENDING"}
+        />
+      )}
 
       <div className="mt-8 rounded-xl border border-gray-100 bg-white">
         <div className="divide-y divide-gray-100">

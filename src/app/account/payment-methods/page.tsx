@@ -17,8 +17,9 @@ export default async function PaymentMethodsPage() {
         Payment Methods
       </h1>
       <p className="mt-1 text-sm text-slate-500">
-        No online checkout is set up yet, so this only stores a label for
-        your records - never a full card number.
+        These are saved here for your reference only - checkout always asks
+        for your card details again, and we never store a full card number
+        or CVV.
       </p>
 
       <div className="mt-6">

@@ -13,16 +13,20 @@ export async function getPaymentMethods(userId: string) {
 }
 
 // This form only ever collects display-safe fields (brand, last 4,
-// expiry) - never a full card number. There is no payment processor
-// wired up yet, so this is a placeholder for the UI, not a real card
-// vault. Wire up a real processor (e.g. Stripe) before this app ever
-// needs to charge anyone.
+// expiry, cardholder name) - never a full card number or CVV. Checkout
+// itself goes through Paystack's popup, which never sends card details to
+// this app; this is a reference-only "cards on file" list for the account
+// page, not a real card vault.
 const paymentMethodSchema = z.object({
   brand: z.string().min(2, { error: "Card brand is required." }).trim(),
   last4: z
     .string()
     .trim()
     .regex(/^\d{4}$/, { error: "Enter the last 4 digits only." }),
+  cardholderName: z
+    .string()
+    .trim()
+    .min(2, { error: "Cardholder name is required." }),
   expiryMonth: z.coerce.number().int().min(1).max(12),
   expiryYear: z.coerce.number().int().min(new Date().getFullYear()),
 });
@@ -40,6 +44,7 @@ export async function createPaymentMethod(
   const validatedFields = paymentMethodSchema.safeParse({
     brand: formData.get("brand"),
     last4: formData.get("last4"),
+    cardholderName: formData.get("cardholderName"),
     expiryMonth: formData.get("expiryMonth"),
     expiryYear: formData.get("expiryYear"),
   });
