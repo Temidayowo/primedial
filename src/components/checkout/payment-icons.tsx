@@ -13,7 +13,7 @@ function Chip({
   return (
     <span
       className={cn(
-        "flex h-6 items-center rounded-[4px] border border-gray-200 bg-white px-1.5 text-[10px] font-bold tracking-tight",
+        "flex h-6 items-center rounded-sm border border-gray-200 bg-white px-1.5 text-[10px] font-bold tracking-tight",
         className,
       )}
     >

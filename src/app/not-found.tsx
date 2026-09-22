@@ -62,7 +62,7 @@ export default function NotFound() {
             <Link
               key={link.href}
               href={link.href}
-              className="relative inline-block pb-1 text-sm font-medium text-gray-500 transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-blue after:transition-all after:duration-300 after:content-[''] hover:text-blue hover:after:w-full"
+              className="relative inline-block pb-1 text-sm font-medium text-gray-500 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-blue after:transition-all after:duration-300 after:content-[''] hover:text-blue hover:after:w-full"
             >
               {link.label}
             </Link>
