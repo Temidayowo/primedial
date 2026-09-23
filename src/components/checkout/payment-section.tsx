@@ -131,7 +131,7 @@ export function PaymentSection({
         })}
       </div>
 
-      {selectedMethod === "card" && chargeableCards.length > 0 && (
+      {selectedMethod === "card" && (
         <button
           type="button"
           onClick={() => setIsCardPickerOpen(true)}
