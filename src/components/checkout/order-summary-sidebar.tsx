@@ -7,6 +7,7 @@ import { Lock } from "lucide-react";
 import { createPendingOrder } from "@/lib/actions/cart.action";
 import { payForOrder } from "@/lib/payments/pay-for-order";
 import { isNextRedirectError } from "@/lib/next-redirect";
+import { OtpModal } from "@/components/ui/otp-modal";
 import { TAX_RATE } from "@/lib/cart-constants";
 import { formatCurrency } from "@/lib/utils";
 import type { PaymentMethodChoice } from "@/lib/payment-method";
@@ -25,16 +26,22 @@ export function OrderSummarySidebar({
   shippingCost,
   selectedAddressId,
   paymentMethod,
+  selectedSavedCardId,
 }: {
   items: SummaryItem[];
   subtotal: number;
   shippingCost: number;
   selectedAddressId: string | null;
   paymentMethod: PaymentMethodChoice;
+  selectedSavedCardId: string | null;
 }) {
   const router = useRouter();
   const [isPlacingOrder, startPlaceOrder] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [otpRequest, setOtpRequest] = useState<{
+    displayText: string;
+    submit: (otp: string) => Promise<void>;
+  } | null>(null);
 
   const tax = subtotal * TAX_RATE;
   const total = subtotal + tax + shippingCost;
@@ -53,14 +60,23 @@ export function OrderSummarySidebar({
         await payForOrder({
           orderId: order.orderId,
           paymentMethod,
+          savedCardId: selectedSavedCardId,
           onSuccess: () => router.push(`/account/orders/${order.orderId}`),
-          onError: setError,
+          // Paystack's popup reported success but our own verify call
+          // couldn't confirm it (see /api/verify-payment) - the order is
+          // most likely actually paid. Send them to the order page
+          // instead of stranding them here with just an error banner and
+          // no next step - it already shows the pending status and a
+          // retry panel, which is a more honest and actionable place to
+          // land than checkout.
+          onError: () => router.push(`/account/orders/${order.orderId}`),
           onCardCancelled: () =>
             setError("Payment was cancelled. Your order is saved - you can try again."),
-          onBankTransferCancelled: () =>
-            setError(
-              "If you already sent the transfer, we'll confirm it automatically once it clears. Otherwise your order is saved - you can try again below.",
-            ),
+          // Same reasoning as onError above - closing the popup here
+          // isn't proof the transfer didn't happen, so this is just as
+          // ambiguous as a failed verify, not a clean cancel.
+          onBankTransferCancelled: () => router.push(`/account/orders/${order.orderId}`),
+          onOtpRequired: setOtpRequest,
         });
       } catch (err) {
         if (isNextRedirectError(err)) throw err;
@@ -133,7 +149,7 @@ export function OrderSummarySidebar({
           type="button"
           onClick={handlePlaceOrder}
           disabled={isPlacingOrder || !selectedAddressId}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-500 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-blue/95 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Lock className="size-4" />
           {isPlacingOrder ? "Placing Order..." : "Place Order"}
@@ -151,6 +167,16 @@ export function OrderSummarySidebar({
           By placing your order, you agree to our Terms of Service.
         </p>
       </div>
+
+      <OtpModal
+        open={otpRequest !== null}
+        displayText={otpRequest?.displayText ?? ""}
+        onSubmit={async (otp) => {
+          await otpRequest?.submit(otp);
+          setOtpRequest(null);
+        }}
+        onClose={() => setOtpRequest(null)}
+      />
     </div>
   );
 }

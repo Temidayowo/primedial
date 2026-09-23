@@ -1,6 +1,5 @@
 "use server";
 
-import * as z from "zod";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession } from "@/lib/dal";
@@ -10,63 +9,6 @@ export async function getPaymentMethods(userId: string) {
     where: { userId },
     orderBy: [{ isDefault: "desc" }, { createdAt: "desc" }],
   });
-}
-
-// This form only ever collects display-safe fields (brand, last 4,
-// expiry, cardholder name) - never a full card number or CVV. Checkout
-// itself goes through Paystack's popup, which never sends card details to
-// this app; this is a reference-only "cards on file" list for the account
-// page, not a real card vault.
-const paymentMethodSchema = z.object({
-  brand: z.string().min(2, { error: "Card brand is required." }).trim(),
-  last4: z
-    .string()
-    .trim()
-    .regex(/^\d{4}$/, { error: "Enter the last 4 digits only." }),
-  cardholderName: z
-    .string()
-    .trim()
-    .min(2, { error: "Cardholder name is required." }),
-  expiryMonth: z.coerce.number().int().min(1).max(12),
-  expiryYear: z.coerce.number().int().min(new Date().getFullYear()),
-});
-
-export type PaymentMethodFormState =
-  | { errors?: Record<string, string[]>; message?: string }
-  | undefined;
-
-export async function createPaymentMethod(
-  prevState: PaymentMethodFormState,
-  formData: FormData,
-): Promise<PaymentMethodFormState> {
-  const session = await verifySession();
-
-  const validatedFields = paymentMethodSchema.safeParse({
-    brand: formData.get("brand"),
-    last4: formData.get("last4"),
-    cardholderName: formData.get("cardholderName"),
-    expiryMonth: formData.get("expiryMonth"),
-    expiryYear: formData.get("expiryYear"),
-  });
-
-  if (!validatedFields.success) {
-    return { errors: z.flattenError(validatedFields.error).fieldErrors };
-  }
-
-  const isFirst = (await prisma.paymentMethod.count({
-    where: { userId: session.user.id },
-  })) === 0;
-
-  await prisma.paymentMethod.create({
-    data: {
-      ...validatedFields.data,
-      userId: session.user.id,
-      isDefault: isFirst,
-    },
-  });
-
-  revalidatePath("/account/payment-methods");
-  return { message: "Payment method added." };
 }
 
 export async function deletePaymentMethod(paymentMethodId: string) {

@@ -1,10 +1,20 @@
 import { NextResponse } from "next/server";
-import { verifyPaystackWebhookSignature } from "@/lib/payments/paystack";
+import {
+  verifyPaystackWebhookSignature,
+  saveOrUpdatePaystackAuthorization,
+  type PaystackAuthorization,
+} from "@/lib/payments/paystack";
 import { markOrderPaidByReference, markOrderFailedByReference } from "@/lib/payments/order-status";
+import { prisma } from "@/lib/prisma";
 
 interface PaystackWebhookEvent {
   event: string;
-  data: { reference: string; status: string };
+  data: {
+    reference: string;
+    status: string;
+    authorization?: PaystackAuthorization;
+    customer?: { email: string };
+  };
 }
 
 // Backup source of truth for Paystack payments, independent of the
@@ -28,9 +38,24 @@ export async function POST(request: Request) {
   }
 
   switch (event.event) {
-    case "charge.success":
-      await markOrderPaidByReference(event.data.reference);
+    case "charge.success": {
+      const result = await markOrderPaidByReference(event.data.reference);
+
+      if (result.ok && event.data.authorization && event.data.customer) {
+        const user = await prisma.user.findUnique({
+          where: { id: result.userId },
+          select: { name: true },
+        });
+
+        await saveOrUpdatePaystackAuthorization({
+          userId: result.userId,
+          authorization: event.data.authorization,
+          email: event.data.customer.email,
+          cardholderName: user?.name ?? "Cardholder",
+        });
+      }
       break;
+    }
     case "charge.failed":
       await markOrderFailedByReference(event.data.reference);
       break;
