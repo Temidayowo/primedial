@@ -17,9 +17,9 @@ export default async function PaymentMethodsPage() {
         Payment Methods
       </h1>
       <p className="mt-1 text-sm text-slate-500">
-        These are saved here for your reference only - checkout always asks
-        for your card details again, and we never store a full card number
-        or CVV.
+        Cards you&apos;ve paid with are saved here automatically so you can
+        check out faster next time - we never store a full card number or
+        CVV.
       </p>
 
       <div className="mt-6">

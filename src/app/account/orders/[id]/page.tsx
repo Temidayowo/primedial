@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { verifySession } from "@/lib/dal";
 import { getOrderById } from "@/lib/actions/orders.action";
+import { getPaymentMethods } from "@/lib/actions/payment-methods.action";
 import { StatusBadge, PaymentStatusBadge } from "@/components/account/status-badge";
 import { RetryPayment } from "@/components/account/retry-payment";
 import { formatCurrency } from "@/lib/utils";
@@ -17,7 +18,10 @@ export default async function OrderDetailPage(props: {
 }) {
   const { id } = await props.params;
   const session = await verifySession();
-  const order = await getOrderById(session.user.id, id);
+  const [order, paymentMethods] = await Promise.all([
+    getOrderById(session.user.id, id),
+    getPaymentMethods(session.user.id),
+  ]);
 
   if (!order) notFound();
 
@@ -55,6 +59,7 @@ export default async function OrderDetailPage(props: {
         <RetryPayment
           orderId={order.id}
           paymentStatus={order.paymentStatus === "FAILED" ? "FAILED" : "PENDING"}
+          paymentMethods={paymentMethods}
         />
       )}
 

@@ -19,7 +19,7 @@ export async function markOrderPaidByReference(reference: string) {
   }
 
   if (order.paymentStatus === PaymentStatus.PAID) {
-    return { ok: true as const, orderId: order.id, alreadyPaid: true };
+    return { ok: true as const, orderId: order.id, userId: order.userId, alreadyPaid: true };
   }
 
   await prisma.$transaction([
@@ -51,7 +51,7 @@ export async function markOrderPaidByReference(reference: string) {
     console.error(`[order confirmation email] Failed for order ${order.id}:`, error);
   }
 
-  return { ok: true as const, orderId: order.id, alreadyPaid: false };
+  return { ok: true as const, orderId: order.id, userId: order.userId, alreadyPaid: false };
 }
 
 export async function markOrderFailedByReference(reference: string) {

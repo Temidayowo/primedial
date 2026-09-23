@@ -159,14 +159,13 @@ model Address {
 }
 
 // Deliberately does not store real card numbers or CVV - checkout itself
-// goes through Paystack's popup (see src/lib/actions/payments.action.ts),
-// which collects card details directly into Paystack's own iframe and
-// never sends them to this app. This model is a reference-only "cards on
-// file" list for the account page; it's never read from when actually
-// charging a card. Only ever store display-safe fields here (brand, last
-// 4 digits, expiry, cardholder name) - never a full PAN, and never a CVV
-// under any circumstances (PCI-DSS forbids storing CVV after
-// authorization, full stop, regardless of encryption).
+// goes through Paystack (popup for a new card, or paystackAuthorizationCode
+// below for a saved one), which handles card entry directly and never
+// sends a full PAN or CVV to this app. Rows are created automatically
+// after a successful, reusable Paystack payment (see
+// saveOrUpdatePaystackAuthorization in src/lib/payments/paystack.ts) -
+// never entered manually - so a row here is always a real, chargeable
+// card, not just a reference note.
 model PaymentMethod {
   id             String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   brand          String // e.g. "Visa", "Mastercard"
@@ -175,6 +174,16 @@ model PaymentMethod {
   expiryMonth    Int
   expiryYear     Int
   isDefault      Boolean @default(false)
+
+  // Paystack's reusable charge token for this specific card, and the
+  // email it's bound to - Paystack only allows charging an authorization
+  // with the exact email it was created under, so both have to be kept
+  // together. Nullable only because pre-existing manually-entered rows
+  // (from before this feature existed) don't have one and are just
+  // display leftovers; the checkout "pay with a saved card" list filters
+  // to rows where this is set.
+  paystackAuthorizationCode String? @unique
+  paystackCustomerEmail     String?
 
   createdAt DateTime @default(now())
 
