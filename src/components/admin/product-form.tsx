@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { Plus, X } from "lucide-react";
+import { UploadButton } from "@/components/admin/upload-button";
 import type { ProductFormState } from "@/lib/actions/admin/products.action";
 
 const inputClasses =
@@ -42,9 +43,8 @@ export function ProductForm({
   submitLabel: string;
 }) {
   const [state, formAction, isPending] = useActionState(action, undefined);
-  const [images, setImages] = useState<string[]>(
-    product?.images?.length ? product.images : [""],
-  );
+  const [images, setImages] = useState<string[]>(product?.images ?? []);
+  const [specSheetUrl, setSpecSheetUrl] = useState(product?.specSheetUrl ?? "");
   const [features, setFeatures] = useState<string[]>(
     product?.features?.length ? product.features : [""],
   );
@@ -96,12 +96,34 @@ export function ProductForm({
         </div>
 
         <div>
-          <label className={labelClasses}>Spec Sheet URL (optional)</label>
-          <input
-            name="specSheetUrl"
-            defaultValue={product?.specSheetUrl ?? ""}
-            className={`mt-1.5 ${inputClasses}`}
-          />
+          <label className={labelClasses}>Spec Sheet PDF (optional)</label>
+          <input type="hidden" name="specSheetUrl" value={specSheetUrl} />
+          <div className="mt-1.5 flex flex-wrap items-center gap-3">
+            <UploadButton
+              kind="document"
+              label={specSheetUrl ? "Replace PDF" : "Upload PDF"}
+              onUploaded={setSpecSheetUrl}
+            />
+            {specSheetUrl && (
+              <>
+                <a
+                  href={specSheetUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-xs font-medium text-blue hover:underline"
+                >
+                  View
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setSpecSheetUrl("")}
+                  className="text-xs text-slate-400 hover:text-red-500"
+                >
+                  Remove
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
@@ -187,41 +209,32 @@ export function ProductForm({
       <div>
         <label className={labelClasses}>Images</label>
         <p className="mt-1 text-xs text-slate-400">
-          Paths under /public (e.g. /images/products/example.jpg) or full URLs.
+          Upload JPG, PNG, WebP, AVIF or GIF files (up to 8 MB each). The first is the main image.
         </p>
-        <div className="mt-1.5 space-y-2">
-          {images.map((value, index) => (
-            <div key={index} className="flex gap-2">
-              <input
-                name="images"
-                value={value}
-                onChange={(e) =>
-                  setImages((prev) =>
-                    prev.map((v, i) => (i === index ? e.target.value : v)),
-                  )
-                }
-                placeholder="/images/products/example.jpg"
-                className={inputClasses}
-              />
+        <div className="mt-2 flex flex-wrap gap-3">
+          {images.filter(Boolean).map((url, index) => (
+            <div key={url} className="relative size-24 overflow-hidden rounded-lg border border-slate-200 bg-gray-100">
+              <input type="hidden" name="images" value={url} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={url} alt="" className="size-full object-cover" />
               <button
                 type="button"
                 onClick={() => setImages((prev) => prev.filter((_, i) => i !== index))}
-                disabled={images.length === 1}
-                className="shrink-0 rounded-lg border border-slate-200 p-2.5 text-slate-400 hover:text-red-500 disabled:opacity-40"
+                className="absolute top-1 right-1 rounded-full bg-white/90 p-1 text-slate-500 hover:text-red-500"
                 aria-label="Remove image"
               >
-                <X className="size-4" />
+                <X className="size-3.5" />
               </button>
             </div>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={() => setImages((prev) => [...prev, ""])}
-          className="mt-2 flex items-center gap-1 text-xs font-medium text-blue hover:underline"
-        >
-          <Plus className="size-3.5" /> Add image
-        </button>
+        <div className="mt-2">
+          <UploadButton
+            kind="image"
+            label="Add image"
+            onUploaded={(url) => setImages((prev) => [...prev.filter(Boolean), url])}
+          />
+        </div>
         {state?.errors?.images && (
           <p className="mt-1 text-xs text-red-500">{state.errors.images[0]}</p>
         )}
