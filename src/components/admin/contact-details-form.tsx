@@ -76,7 +76,7 @@ export function ContactDetailsForm({ details }: { details: ContactDetails }) {
           <button
             type="button"
             onClick={() => setPhones((prev) => [...prev, ""])}
-            className="mt-2 flex items-center gap-1 text-xs font-medium text-blue-600 hover:underline"
+            className="mt-2 flex items-center gap-1 text-xs font-medium text-blue hover:underline"
           >
             <Plus className="size-3.5" /> Add phone number
           </button>

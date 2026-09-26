@@ -25,7 +25,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
         </p>
         <Link
           href="/login"
-          className="mt-6 block w-full rounded-lg bg-blue-500 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-blue-600"
+          className="mt-6 block w-full rounded-lg bg-green py-2.5 text-center text-sm font-medium text-white transition-colors duration-300 hover:bg-blue"
         >
           Go to Log In
         </Link>
@@ -59,7 +59,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
               type={showPassword ? "text" : "password"}
               placeholder="Create a new password"
               required
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-10 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-10 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none"
             />
             <button
               type="button"
@@ -102,7 +102,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Re-enter your new password"
               required
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-10 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-10 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none"
             />
             <button
               type="button"
@@ -129,7 +129,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full rounded-lg bg-blue-500 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-60"
+          className="w-full rounded-lg bg-green py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue disabled:opacity-60"
         >
           {isPending ? "Updating..." : "Update Password"}
         </button>

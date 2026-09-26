@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 const statusStyles: Record<InquiryStatus, string> = {
-  NEW: "bg-blue-50 text-blue-600",
+  NEW: "bg-blue/10 text-blue",
   IN_PROGRESS: "bg-orange-50 text-orange-600",
   RESOLVED: "bg-green/10 text-green",
 };
@@ -54,9 +54,9 @@ export default async function AdminInquiriesPage({
             key={tab.href}
             href={tab.href}
             className={cn(
-              "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors",
+              "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors duration-300",
               tab.active
-                ? "border-blue-500 bg-blue-500 text-white"
+                ? "border-blue bg-blue text-white"
                 : "border-gray-200 bg-white text-slate-500 hover:text-blue",
             )}
           >

@@ -42,14 +42,14 @@ export function OtpModal({
           placeholder="Enter OTP"
           value={otp}
           onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+          className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none"
         />
         {error && <p className="text-xs text-red-600">{error}</p>}
         <button
           type="button"
           onClick={handleSubmit}
           disabled={isPending || otp.length === 0}
-          className="w-full rounded-lg bg-blue-500 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-60"
+          className="w-full rounded-lg bg-green py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue disabled:opacity-60"
         >
           {isPending ? "Verifying..." : "Verify"}
         </button>

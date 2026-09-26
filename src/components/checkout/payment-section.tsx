@@ -97,14 +97,14 @@ export function PaymentSection({
               aria-checked={isSelected}
               onClick={() => onSelectMethod(id)}
               className={cn(
-                "relative rounded-xl border p-4 text-left transition-colors",
+                "relative rounded-xl border p-4 text-left transition-colors duration-300",
                 isSelected
-                  ? "border-blue-500 bg-blue-50/50 ring-1 ring-blue-500"
+                  ? "border-blue bg-blue/5 ring-1 ring-blue"
                   : "border-gray-200 hover:border-slate-300",
               )}
             >
               {isSelected && (
-                <span className="absolute top-3 right-3 flex size-5 items-center justify-center rounded-full bg-blue-500 text-white">
+                <span className="absolute top-3 right-3 flex size-5 items-center justify-center rounded-full bg-blue text-white">
                   <Check className="size-3" />
                 </span>
               )}
@@ -112,7 +112,7 @@ export function PaymentSection({
                 <Icon
                   className={cn(
                     "size-4",
-                    isSelected ? "text-blue-600" : "text-slate-400",
+                    isSelected ? "text-blue" : "text-slate-400",
                   )}
                 />
                 <p
@@ -135,7 +135,7 @@ export function PaymentSection({
         <button
           type="button"
           onClick={() => setIsCardPickerOpen(true)}
-          className="mt-4 flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 p-4 text-left transition-colors hover:border-slate-300"
+          className="mt-4 flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 p-4 text-left transition-colors duration-300 hover:border-slate-300"
         >
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-gray-100">
@@ -158,7 +158,7 @@ export function PaymentSection({
               </p>
             </div>
           </div>
-          <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-blue-600">
+          <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-blue">
             Change
             <ChevronDown className="size-3.5" />
           </span>
@@ -191,9 +191,9 @@ export function PaymentSection({
                   }
                 }}
                 className={cn(
-                  "flex w-full cursor-pointer items-center justify-between gap-4 rounded-xl border p-4 text-left transition-colors",
+                  "flex w-full cursor-pointer items-center justify-between gap-4 rounded-xl border p-4 text-left transition-colors duration-300",
                   isSelected
-                    ? "border-blue-500 bg-blue-50/50 ring-1 ring-blue-500"
+                    ? "border-blue bg-blue/5 ring-1 ring-blue"
                     : "border-gray-200 hover:border-slate-300",
                 )}
               >
@@ -207,7 +207,7 @@ export function PaymentSection({
                         {method.brand} &bull;&bull;&bull;&bull; {method.last4}
                       </p>
                       {method.isDefault && (
-                        <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-medium text-blue-600">
+                        <span className="rounded-full bg-blue/10 px-2 py-0.5 text-[10px] font-medium text-blue">
                           Default
                         </span>
                       )}
@@ -232,7 +232,7 @@ export function PaymentSection({
                     <Trash2 className="size-4" />
                   </button>
                   {isSelected && (
-                    <span className="flex size-5 items-center justify-center rounded-full bg-blue-500 text-white">
+                    <span className="flex size-5 items-center justify-center rounded-full bg-blue text-white">
                       <Check className="size-3" />
                     </span>
                   )}
@@ -256,9 +256,9 @@ export function PaymentSection({
               }
             }}
             className={cn(
-              "flex w-full cursor-pointer items-center gap-3 rounded-xl border p-4 text-left transition-colors",
+              "flex w-full cursor-pointer items-center gap-3 rounded-xl border p-4 text-left transition-colors duration-300",
               selectedSavedCardId === null
-                ? "border-blue-500 bg-blue-50/50 ring-1 ring-blue-500"
+                ? "border-blue bg-blue/5 ring-1 ring-blue"
                 : "border-dashed border-gray-200 hover:border-slate-300",
             )}
           >
@@ -272,7 +272,7 @@ export function PaymentSection({
               </p>
             </div>
             {selectedSavedCardId === null && (
-              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-blue-500 text-white">
+              <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-blue text-white">
                 <Check className="size-3" />
               </span>
             )}

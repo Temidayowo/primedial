@@ -12,7 +12,7 @@ import { COURIER_SUGGESTIONS } from "@/lib/orders/tracking";
 import { cn } from "@/lib/utils";
 
 const inputClasses =
-  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none disabled:bg-gray-50";
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none disabled:bg-gray-50";
 const labelClasses = "text-xs font-medium tracking-wide text-slate-500 uppercase";
 
 const STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
@@ -196,7 +196,7 @@ export function FulfilmentPanel({
           <button
             type="submit"
             disabled={update.isPending || locked}
-            className="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg bg-blue px-4 py-2 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue/90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {update.isPending ? "Saving..." : "Save"}
           </button>
@@ -252,7 +252,7 @@ export function FulfilmentPanel({
             <button
               type="submit"
               disabled={note.isPending}
-              className="rounded-lg border border-blue-500 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50 disabled:opacity-50"
+              className="rounded-lg border border-blue px-4 py-2 text-sm font-medium text-blue transition-colors duration-300 hover:bg-blue/5 disabled:opacity-50"
             >
               {note.isPending ? "Adding..." : "Add update"}
             </button>

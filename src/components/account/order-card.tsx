@@ -49,7 +49,7 @@ export function OrderCard({
 
       <p className="mt-3 truncate text-sm text-slate-500">{itemSummary}</p>
       {deliverySummary && (
-        <p className="mt-1.5 flex items-center gap-1.5 text-xs text-blue-600">
+        <p className="mt-1.5 flex items-center gap-1.5 text-xs text-blue">
           <Truck className="size-3.5 shrink-0" />
           <span className="truncate">{deliverySummary}</span>
         </p>
@@ -61,7 +61,7 @@ export function OrderCard({
         </p>
         <Link
           href={`/account/orders/${id}`}
-          className="text-sm font-medium text-blue-600 hover:text-blue-500"
+          className="text-sm font-medium text-blue hover:text-blue/70"
         >
           {status === "SHIPPED" ? "Track Order" : "View Details"}
         </Link>

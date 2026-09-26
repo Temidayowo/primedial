@@ -32,7 +32,7 @@ export function ContentListHeader({
       </div>
       <Link
         href={addHref}
-        className="flex items-center gap-1.5 rounded-lg bg-blue-500 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600"
+        className="flex items-center gap-1.5 rounded-lg bg-blue px-4 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue/90"
       >
         <Plus className="size-4" /> {addLabel}
       </Link>
@@ -97,7 +97,7 @@ export function EditLink({ href, label }: { href: string; label: string }) {
     <Link
       href={href}
       aria-label={label}
-      className="text-slate-400 transition-colors hover:text-blue"
+      className="text-slate-400 transition-colors duration-300 hover:text-blue"
     >
       <Pencil className="size-4" />
     </Link>
@@ -119,7 +119,7 @@ export function ContentFormPage({
     <div>
       <Link
         href={backHref}
-        className="inline-flex items-center gap-1 text-sm text-slate-500 transition-colors hover:text-blue"
+        className="inline-flex items-center gap-1 text-sm text-slate-500 transition-colors duration-300 hover:text-blue"
       >
         <ArrowLeft className="size-4" /> {backLabel}
       </Link>

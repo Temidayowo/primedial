@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { updateName, changePassword } from "@/lib/actions/profile.action";
 
 const inputClasses =
-  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none";
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none";
 const labelClasses = "text-xs font-medium tracking-wide text-slate-500 uppercase";
 
 export function ProfileSettingsForm({
@@ -56,7 +56,7 @@ export function ProfileSettingsForm({
           <button
             type="submit"
             disabled={nameIsPending}
-            className="mt-4 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-60"
+            className="mt-4 rounded-lg bg-green px-4 py-2 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue disabled:opacity-60"
           >
             {nameIsPending ? "Saving..." : "Save Name"}
           </button>
@@ -133,7 +133,7 @@ export function ProfileSettingsForm({
             <button
               type="submit"
               disabled={passwordIsPending}
-              className="rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-60"
+              className="rounded-lg bg-green px-4 py-2 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue disabled:opacity-60"
             >
               {passwordIsPending ? "Updating..." : "Update Password"}
             </button>

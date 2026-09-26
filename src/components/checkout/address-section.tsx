@@ -43,14 +43,14 @@ export function AddressSection({
                 type="button"
                 onClick={() => onSelect(address.id)}
                 className={cn(
-                  "relative rounded-xl border p-4 text-left transition-colors",
+                  "relative rounded-xl border p-4 text-left transition-colors duration-300",
                   isSelected
-                    ? "border-blue-500 bg-blue-50/50 ring-1 ring-blue-500"
+                    ? "border-blue bg-blue/5 ring-1 ring-blue"
                     : "border-gray-200 hover:border-slate-300",
                 )}
               >
                 {isSelected && (
-                  <span className="absolute top-3 right-3 flex size-5 items-center justify-center rounded-full bg-blue-500 text-white">
+                  <span className="absolute top-3 right-3 flex size-5 items-center justify-center rounded-full bg-blue text-white">
                     <Check className="size-3" />
                   </span>
                 )}
@@ -59,7 +59,7 @@ export function AddressSection({
                     {address.label || "Address"}
                   </p>
                   {address.isDefault && (
-                    <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-medium text-blue-600">
+                    <span className="rounded-full bg-blue/10 px-2 py-0.5 text-[10px] font-medium text-blue">
                       Default
                     </span>
                   )}
@@ -109,7 +109,7 @@ export function AddressSection({
         <button
           type="button"
           onClick={() => setShowForm(true)}
-          className="mt-4 flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-500"
+          className="mt-4 flex items-center gap-2 text-sm font-medium text-blue hover:text-blue/70"
         >
           <Plus className="size-4" />
           Add new address

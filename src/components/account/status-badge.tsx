@@ -3,7 +3,7 @@ import { OrderStatus, PaymentStatus } from "@/generated/prisma/enums";
 
 const styles: Record<OrderStatus, string> = {
   PROCESSING: "bg-orange-50 text-orange-600",
-  SHIPPED: "bg-blue-50 text-blue-600",
+  SHIPPED: "bg-blue/10 text-blue",
   DELIVERED: "bg-green/10 text-green",
   CANCELLED: "bg-red-50 text-red-600",
 };

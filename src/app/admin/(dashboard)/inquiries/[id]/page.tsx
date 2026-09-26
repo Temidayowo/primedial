@@ -69,14 +69,14 @@ export default async function AdminInquiryPage({ params }: PageProps<"/admin/inq
         <div className="flex flex-wrap gap-3">
           <a
             href={`mailto:${inquiry.email}?subject=${replySubject}`}
-            className="flex items-center gap-1.5 rounded-lg bg-blue-500 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600"
+            className="flex items-center gap-1.5 rounded-lg bg-blue px-4 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue/90"
           >
             <Mail className="size-4" /> Reply by email
           </a>
           {inquiry.phone && (
             <a
               href={`tel:${inquiry.phone.replace(/[^\d+]/g, "")}`}
-              className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-blue transition-colors hover:bg-gray-50"
+              className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-blue transition-colors duration-300 hover:bg-gray-50"
             >
               <Phone className="size-4" /> Call
             </a>

@@ -67,7 +67,7 @@ function ProgressSteps({ view }: { view: TrackingView }) {
   const currentIndex = steps.findIndex((step) => !step.done);
 
   return (
-    <ol className="grid gap-4 rounded-xl border border-gray-100 bg-white p-5 sm:grid-cols-4 sm:gap-2">
+    <ol className="isolate grid gap-4 rounded-xl border border-gray-100 bg-white p-5 sm:grid-cols-4 sm:gap-2">
       {steps.map((step, index) => {
         const isCurrent = index === currentIndex;
         const Icon = step.done ? Check : step.icon;
@@ -88,7 +88,7 @@ function ProgressSteps({ view }: { view: TrackingView }) {
                 step.done
                   ? "border-green bg-green text-white"
                   : isCurrent
-                    ? "border-blue-500 bg-white text-blue-500"
+                    ? "border-blue bg-white text-blue"
                     : "border-gray-200 bg-white text-slate-300",
               )}
             >
@@ -98,7 +98,7 @@ function ProgressSteps({ view }: { view: TrackingView }) {
               <p
                 className={cn(
                   "text-sm font-medium",
-                  step.done ? "text-blue" : isCurrent ? "text-blue-600" : "text-slate-400",
+                  step.done ? "text-blue" : isCurrent ? "text-blue" : "text-slate-400",
                 )}
               >
                 {step.label}
@@ -160,7 +160,7 @@ function DeliveryDetails({ view }: { view: TrackingView }) {
           href={view.trackingUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-blue-500 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50"
+          className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-blue px-4 py-2 text-sm font-medium text-blue transition-colors duration-300 hover:bg-blue/5"
         >
           Track on the courier&apos;s website <ExternalLink className="size-3.5" />
         </a>
@@ -181,7 +181,7 @@ function Timeline({
   return (
     <div className="rounded-xl border border-gray-100 bg-white p-5">
       <h3 className="text-sm font-semibold text-blue">Order updates</h3>
-      <ol className="mt-4 space-y-0">
+      <ol className="isolate mt-4 space-y-0">
         {events.map((event, index) => (
           <li key={event.id} className="relative flex gap-3 pb-5 last:pb-0">
             {index < events.length - 1 && (
@@ -190,7 +190,7 @@ function Timeline({
             <CircleDot
               className={cn(
                 "relative z-10 mt-0.5 size-5 shrink-0 bg-white",
-                index === 0 ? "text-blue-500" : "text-slate-300",
+                index === 0 ? "text-blue" : "text-slate-300",
               )}
             />
             <div className="min-w-0 flex-1">

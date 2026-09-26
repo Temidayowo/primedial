@@ -37,7 +37,7 @@ export default async function AdminDashboardPage() {
       <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-5">
         {statCards.map(({ key, label, icon: Icon, format }) => (
           <div key={key} className="rounded-xl border border-gray-100 bg-white p-5">
-            <Icon className="size-5 text-blue-500" />
+            <Icon className="size-5 text-blue" />
             <p className="mt-3 font-clash-display text-xl font-bold text-blue">
               {format ? format(stats[key]) : stats[key]}
             </p>
@@ -53,7 +53,7 @@ export default async function AdminDashboardPage() {
           </h2>
           <Link
             href="/admin/orders"
-            className="text-sm font-medium text-blue-600 hover:underline"
+            className="text-sm font-medium text-blue hover:underline"
           >
             View all
           </Link>

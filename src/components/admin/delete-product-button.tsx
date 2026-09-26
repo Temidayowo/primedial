@@ -30,7 +30,7 @@ export function DeleteProductButton({ productId }: { productId: string }) {
         onClick={handleDelete}
         disabled={isPending}
         aria-label="Delete product"
-        className="text-slate-400 transition-colors hover:text-red-500 disabled:opacity-50"
+        className="text-slate-400 transition-colors duration-300 hover:text-red-500 disabled:opacity-50"
       >
         <Trash2 className="size-4" />
       </button>

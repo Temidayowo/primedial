@@ -19,7 +19,7 @@ export function ForgotPasswordForm() {
         </h1>
         <p className="mt-4 text-sm text-slate-500">{state.message}</p>
         <p className="mt-6 text-center text-sm text-slate-500">
-          <Link href="/login" className="text-blue-600 hover:text-blue-500">
+          <Link href="/login" className="text-blue hover:text-blue/70">
             Back to log in
           </Link>
         </p>
@@ -53,7 +53,7 @@ export function ForgotPasswordForm() {
               type="email"
               placeholder="you@company.com"
               required
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-3 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-3 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none"
             />
           </div>
         </div>
@@ -63,7 +63,7 @@ export function ForgotPasswordForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full rounded-lg bg-blue-500 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-60"
+          className="w-full rounded-lg bg-green py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue disabled:opacity-60"
         >
           {isPending ? "Sending..." : "Send Reset Link"}
         </button>
@@ -71,7 +71,7 @@ export function ForgotPasswordForm() {
 
       <p className="mt-6 text-center text-sm text-slate-500">
         Remembered your password?{" "}
-        <Link href="/login" className="text-blue-600 hover:text-blue-500">
+        <Link href="/login" className="text-blue hover:text-blue/70">
           Log In
         </Link>
       </p>

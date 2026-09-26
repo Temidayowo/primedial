@@ -30,7 +30,7 @@ export default async function VerifyEmailPendingPage() {
         <ResendVerificationButton email={session.user.email} />
 
         <p className="mt-6 text-sm text-slate-500">
-          <Link href="/" className="text-blue-600 hover:text-blue-500">
+          <Link href="/" className="text-blue hover:text-blue/70">
             Continue to the site
           </Link>
         </p>

@@ -76,7 +76,7 @@ export function CartItemRow({
         <div className="min-w-0 flex-1">
           <Link
             href={`/shop/${productSlug}`}
-            className="line-clamp-2 text-sm font-medium text-blue hover:text-blue-600 sm:text-base"
+            className="line-clamp-2 text-sm font-medium text-blue hover:text-blue/70 sm:text-base"
           >
             {productName}
           </Link>

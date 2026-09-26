@@ -38,7 +38,7 @@ export function GoogleSignInButton() {
         <button
           type="submit"
           disabled={isPending}
-          className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white py-2.5 text-sm font-medium text-blue transition-colors hover:bg-slate-50 disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white py-2.5 text-sm font-medium text-blue transition-colors duration-300 hover:bg-slate-50 disabled:opacity-60"
         >
           <GoogleIcon />
           {isPending ? "Redirecting..." : "Continue with Google"}

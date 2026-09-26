@@ -27,6 +27,10 @@ export interface Product {
 // 2. Interface if your component expects the FULL ARRAY (e.g., a ProductGrid)
 export interface ProductGridProps {
   data: Product[];
+  // All products matching the filters, across every page.
+  total: number;
+  // 1-based position of the first product on this page.
+  firstIndex: number;
 }
 
 // 3. Interface if your component expects a SINGLE ITEM (e.g., a ProductCard)
@@ -34,12 +38,23 @@ export interface ProductCardProps {
   product: Product;
 }
 
-const ProductList = ({ data }: ProductGridProps) => {
+const ProductList = ({ data, total, firstIndex }: ProductGridProps) => {
+  const lastIndex = firstIndex + data.length - 1;
+
   return (
     <div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center gap-4">
         <p className="text-sm text-gray-500">
-          <span className="text-blue">{data.length}</span> products found{" "}
+          {total > data.length ? (
+            <>
+              Showing <span className="text-blue">{firstIndex}–{lastIndex}</span> of{" "}
+              <span className="text-blue">{total}</span> products
+            </>
+          ) : (
+            <>
+              <span className="text-blue">{total}</span> {total === 1 ? "product" : "products"} found
+            </>
+          )}
         </p>
         <SortDropdown />
       </div>
@@ -50,22 +65,23 @@ const ProductList = ({ data }: ProductGridProps) => {
           </StaggerItem>
         ))}
       </StaggerContainer>
-
-      <AnimateOnScroll>
-        <Link
-          href="/services#request-service"
-          className="mt-10 flex flex-col items-center gap-1 rounded-xl border-[0.1px] border-gray-300 bg-white px-6 py-6 text-center transition-colors hover:border-blue"
-        >
-          <p className="font-clash-display text-sm font-semibold text-blue">
-            Need a repair or calibration instead?
-          </p>
-          <p className="text-xs font-medium text-gray-500">
-            Visit the Service Center →
-          </p>
-        </Link>
-      </AnimateOnScroll>
     </div>
   );
 };
+
+// Shown under the product grid and its page controls.
+export const ServiceCenterBanner = () => (
+  <AnimateOnScroll>
+    <Link
+      href="/services#request-service"
+      className="mt-10 flex flex-col items-center gap-1 rounded-xl border-[0.1px] border-gray-300 bg-white px-6 py-6 text-center transition-colors duration-300 hover:border-blue"
+    >
+      <p className="font-clash-display text-sm font-semibold text-blue">
+        Need a repair or calibration instead?
+      </p>
+      <p className="text-xs font-medium text-gray-500">Visit the Service Center →</p>
+    </Link>
+  </AnimateOnScroll>
+);
 
 export default ProductList;

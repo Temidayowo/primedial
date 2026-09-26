@@ -24,8 +24,8 @@ const MessageSection = async () => {
         <StaggerContainer className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
           <StaggerItem>
             <div className="self-start rounded-xl border-[0.1px] border-gray-300 bg-gray-100 px-4 py-6 flex flex-col gap-2">
-              <div className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-gray-300 text-gray-700">
-                <FaLocationDot className="size-5 text-blue" />
+              <div className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-green/10">
+                <FaLocationDot className="size-5 text-green" />
               </div>
               <h3 className="font-clash-display text-sm font-semibold">
                 Address
@@ -35,8 +35,8 @@ const MessageSection = async () => {
           </StaggerItem>
           <StaggerItem>
             <div className="self-start rounded-xl border-[0.1px] border-gray-300 bg-gray-100 px-4 py-6 flex flex-col gap-2">
-              <div className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-gray-300 text-gray-700">
-                <FaPhone className="size-5 text-blue" />
+              <div className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-green/10">
+                <FaPhone className="size-5 text-green" />
               </div>
               <h3 className="font-clash-display text-sm font-semibold">Phone</h3>
               <div className="flex flex-col">
@@ -54,8 +54,8 @@ const MessageSection = async () => {
           </StaggerItem>
           <StaggerItem>
             <div className="self-start rounded-xl border-[0.1px] border-gray-300 bg-gray-100 px-4 py-6 flex flex-col gap-2">
-              <div className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-gray-300 text-gray-700">
-                <FaEnvelope className="size-5 text-blue" />
+              <div className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-green/10">
+                <FaEnvelope className="size-5 text-green" />
               </div>
               <h3 className="font-clash-display text-sm font-semibold">Email</h3>
               <div className="flex flex-col">
@@ -70,8 +70,8 @@ const MessageSection = async () => {
           </StaggerItem>
           <StaggerItem>
             <div className="self-start rounded-xl border-[0.1px] border-gray-300 bg-gray-100 px-4 py-6 flex flex-col gap-2">
-              <div className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-gray-300 text-gray-700">
-                <FaClock className="size-5 text-blue" />
+              <div className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-green/10">
+                <FaClock className="size-5 text-green" />
               </div>
               <h3 className="font-clash-display text-sm font-semibold">
                 Business Hours

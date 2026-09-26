@@ -15,7 +15,7 @@ export function EmptyCart() {
       </p>
       <Link
         href="/shop"
-        className="mt-6 rounded-full bg-blue-500 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600"
+        className="mt-6 rounded-full bg-green px-6 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue"
       >
         Continue Shopping
       </Link>

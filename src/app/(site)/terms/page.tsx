@@ -87,7 +87,7 @@ export default function TermsPage() {
             </h2>
             <p className="mt-2">
               Questions about these Terms can be sent through our{" "}
-              <a href="/contact" className="text-blue-600 hover:text-blue-500">
+              <a href="/contact" className="text-blue hover:text-blue/70">
                 contact page
               </a>
               .

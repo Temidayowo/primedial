@@ -43,14 +43,14 @@ export default function NotFound() {
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
           <Link
             href="/"
-            className="group flex items-center justify-center gap-2 rounded-4xl bg-blue/95 px-8 py-3 text-sm font-semibold uppercase text-white transition-colors hover:bg-blue"
+            className="group flex items-center justify-center gap-2 rounded-4xl bg-blue/95 px-8 py-3 text-sm font-semibold uppercase text-white transition-colors duration-300 hover:bg-blue"
           >
             <FaHouse className="size-3.5" />
             Back to Home
           </Link>
           <Link
             href="/shop"
-            className="group flex items-center justify-center gap-2 rounded-4xl border border-blue bg-transparent px-8 py-3 text-sm font-semibold uppercase text-blue transition-colors hover:bg-blue hover:text-white"
+            className="group flex items-center justify-center gap-2 rounded-4xl border border-blue bg-transparent px-8 py-3 text-sm font-semibold uppercase text-blue transition-colors duration-300 hover:bg-blue hover:text-white"
           >
             Browse Shop
             <FaArrowRight className="size-3 transition-transform duration-300 ease-out group-hover:translate-x-1" />
@@ -62,7 +62,7 @@ export default function NotFound() {
             <Link
               key={link.href}
               href={link.href}
-              className="relative inline-block pb-1 text-sm font-medium text-gray-500 transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-blue after:transition-all after:duration-300 after:content-[''] hover:text-blue hover:after:w-full"
+              className="relative inline-block pb-1 text-sm font-medium text-gray-500 transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-blue after:transition-all after:duration-300 after:content-[''] hover:text-blue hover:after:w-full"
             >
               {link.label}
             </Link>

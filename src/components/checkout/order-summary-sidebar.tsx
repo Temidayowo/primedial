@@ -150,7 +150,7 @@ export function OrderSummarySidebar({
           type="button"
           onClick={handlePlaceOrder}
           disabled={isPlacingOrder || !selectedAddressId}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-500 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-green py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-blue disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Lock className="size-4" />
           {isPlacingOrder ? "Placing Order..." : "Place Order"}

@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { PRODUCTS_PER_PAGE } from "@/lib/pagination";
 
 // Get Featured Products
 export async function getFeaturedProducts() {
@@ -66,28 +67,44 @@ export async function getBrands() {
   });
 }
 
+// One page of the shop, filtered and sorted. `page` is clamped to the
+// last page, so a stale or hand-edited ?page= still shows products.
 export async function getProducts(
   categories?: string[],
   brands?: string[],
   sort?: string,
+  page = 1,
 ) {
+  const where = {
+    ...(categories &&
+      categories.length > 0 && {
+        category: { slug: { in: categories } },
+      }),
+    ...(brands &&
+      brands.length > 0 && {
+        brand: { slug: { in: brands } },
+      }),
+  };
+
+  const total = await prisma.product.count({ where });
+  const pageCount = Math.max(1, Math.ceil(total / PRODUCTS_PER_PAGE));
+  const currentPage = Math.min(Math.max(1, Math.trunc(page) || 1), pageCount);
+
   const products = await prisma.product.findMany({
-    where: {
-      ...(categories &&
-        categories.length > 0 && {
-          category: { slug: { in: categories } },
-        }),
-      ...(brands &&
-        brands.length > 0 && {
-          brand: { slug: { in: brands } },
-        }),
-    },
-    orderBy:
+    where,
+    // The id tie-breaker keeps the order stable between pages - without
+    // it, products with the same price (or created in the same instant)
+    // could repeat on one page and be skipped on the next.
+    orderBy: [
       sort === "price-asc"
-        ? { price: "asc" }
+        ? { price: "asc" as const }
         : sort === "price-desc"
-          ? { price: "desc" }
-          : { createdAt: "desc" },
+          ? { price: "desc" as const }
+          : { createdAt: "desc" as const },
+      { id: "asc" as const },
+    ],
+    skip: (currentPage - 1) * PRODUCTS_PER_PAGE,
+    take: PRODUCTS_PER_PAGE,
     select: {
       id: true,
       name: true,
@@ -105,13 +122,19 @@ export async function getProducts(
     },
   });
 
-  return products.map((product) => ({
-    ...product,
-    brand: product.brand.name,
-    category: product.category.slug,
-    specSheetUrl: product.specSheetUrl ?? undefined,
-    price: Number(product.price),
-  }));
+  return {
+    products: products.map((product) => ({
+      ...product,
+      brand: product.brand.name,
+      category: product.category.slug,
+      specSheetUrl: product.specSheetUrl ?? undefined,
+      price: Number(product.price),
+    })),
+    total,
+    page: currentPage,
+    pageCount,
+    pageSize: PRODUCTS_PER_PAGE,
+  };
 }
 
 export async function getProductsBySlug(slug: string) {
