@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ImageOff } from "lucide-react";
 import { imageProps, isValidImageSrc } from "@/lib/images";
 import { cn } from "@/lib/utils";
+import { UploadButton } from "@/components/admin/upload-button";
 
 // Building blocks for the CMS forms under /admin. Styling matches
 // product-form.tsx so every admin form looks the same.
@@ -141,9 +142,8 @@ export function CheckboxField({
   );
 }
 
-// Text input for an image path/URL with a live preview underneath, so
-// a typo in the path shows up here instead of as a broken image on the
-// public site.
+// Image picker: uploads the chosen file to R2 and submits its URL in a
+// hidden input, with a live preview underneath.
 export function ImageField({
   label,
   name,
@@ -170,19 +170,25 @@ export function ImageField({
     <Field
       label={label}
       htmlFor={name}
-      hint="A path to a file in /public (e.g. /images/team/jane.jpg) or a full https:// URL."
+      hint="Choose an image file (JPG, PNG, WebP, AVIF or GIF, up to 8 MB)."
       error={error}
     >
-      <input
-        id={name}
-        name={name}
-        value={value}
-        required={required}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="/images/example.jpg"
-        aria-invalid={error ? true : undefined}
-        className={inputClasses}
+      <input type="hidden" id={name} name={name} value={value} />
+      <UploadButton
+        kind="image"
+        label={src ? "Replace image" : "Upload image"}
+        onUploaded={setValue}
       />
+      {required && !src && (
+        <input
+          tabIndex={-1}
+          aria-hidden
+          required
+          value=""
+          onChange={() => {}}
+          className="pointer-events-none absolute h-0 w-0 opacity-0"
+        />
+      )}
       {canPreview && (
         <div
           className={cn(
@@ -193,7 +199,7 @@ export function ImageField({
           {failedSrc === src ? (
             <p className="flex items-center gap-1.5 px-3 text-center text-xs text-red-500">
               <ImageOff className="size-4 shrink-0" />
-              Couldn&apos;t load this image. Check the path.
+              Couldn&apos;t load this image. Try uploading it again.
             </p>
           ) : (
             <Image

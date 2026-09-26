@@ -1,5 +1,10 @@
 import type { NextConfig } from "next";
 
+// Public host of the Cloudflare R2 bucket (R2_PUBLIC_URL in .env).
+const r2Host = process.env.R2_PUBLIC_URL
+  ? new URL(process.env.R2_PUBLIC_URL).hostname
+  : null;
+
 const nextConfig: NextConfig = {
   /* config options here */
   devIndicators: false,
@@ -17,6 +22,7 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.shadcnspace.com",
       },
+      ...(r2Host ? [{ protocol: "https" as const, hostname: r2Host }] : []),
     ],
   },
 };
