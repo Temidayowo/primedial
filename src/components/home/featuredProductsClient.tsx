@@ -82,7 +82,7 @@ const FeaturedProductsClient = ({
                       </p>
                       <Link
                         href={`/shop/${product.slug}`}
-                        className="group mt-6 flex items-center gap-2 rounded-4xl bg-blue/95 px-8 py-3 text-sm font-semibold uppercase text-white transition-colors hover:bg-blue"
+                        className="group mt-6 flex items-center gap-2 rounded-4xl bg-blue/95 px-8 py-3 text-sm font-semibold uppercase text-white transition-colors duration-300 hover:bg-blue"
                       >
                         View Product
                         <FaArrowRight className="size-3 transition-transform duration-300 ease-out group-hover:translate-x-1" />
@@ -106,7 +106,7 @@ const FeaturedProductsClient = ({
           <div className="mt-10 flex justify-center">
             <Link
               href="/shop"
-              className="group flex items-center gap-2 rounded-4xl border border-blue bg-transparent px-8 py-3 text-sm font-semibold uppercase text-blue transition-colors hover:bg-blue hover:text-white"
+              className="group flex items-center gap-2 rounded-4xl border border-blue bg-transparent px-8 py-3 text-sm font-semibold uppercase text-blue transition-colors duration-300 hover:bg-blue hover:text-white"
             >
               Shop All Products
               <FaArrowRight className="size-3 transition-transform duration-300 ease-out group-hover:translate-x-1" />

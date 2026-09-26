@@ -30,8 +30,16 @@ const Faq = () => {
   ];
 
   return (
-    <section className="flex justify-center overflow-hidden">
+    <section id="faq" className="flex justify-center overflow-hidden scroll-mt-24">
       <StaggerContainer className="w-full max-w-4xl mx-auto py-12 flex flex-col gap-4">
+        <StaggerItem>
+          <div className="mb-4 text-center">
+            <p className="text-green uppercase text-sm font-semibold">FAQ</p>
+            <h2 className="mt-1 font-clash-display text-2xl font-bold text-blue md:text-3xl lg:text-4xl">
+              Frequently Asked Questions
+            </h2>
+          </div>
+        </StaggerItem>
         {faqs.map((faq, index) => {
           const isOpen = openIndex === index;
 
@@ -40,13 +48,15 @@ const Faq = () => {
               <div className="bg-gray-50 rounded-xl overflow-hidden border-gray-300 border-[0.1px]">
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full flex justify-between items-center p-6 text-left hover:bg-gray-100 transition-colors"
+                  className="w-full flex justify-between items-center p-6 text-left hover:bg-gray-100 transition-colors duration-300"
                 >
                   <span className="text-lg font-semibold text-blue font-clash-display">
                     {faq.question}
                   </span>
 
-                  <span className="ml-4 shrink-0 text-blue">
+                  <span
+                    className={`ml-4 shrink-0 transition-colors duration-300 ${isOpen ? "text-green" : "text-blue"}`}
+                  >
                     <X
                       size={24}
                       strokeWidth={2.5}

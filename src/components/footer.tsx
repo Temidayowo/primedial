@@ -14,7 +14,7 @@ const Footer = async () => {
   ]);
 
   // Reusable Tailwind classes for the animated underline link
-  const animatedLinkClasses = "relative inline-block pb-1 text-white transition-colors hover:text-gray-200 after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-white after:left-0 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full";
+  const animatedLinkClasses = "relative inline-block pb-1 text-white transition-colors duration-300 hover:text-gray-200 after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-white after:left-0 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full";
 
   return (
     <footer className="bg-blue border-t border-white/10 mt-auto">
@@ -90,19 +90,19 @@ const Footer = async () => {
             {/* Edited at /admin/settings */}
             <ul className="space-y-3 text-sm text-gray-300 mb-6 font-poppins">
               <li className="flex items-start space-x-3">
-                <FaLocationDot className="text-white mt-1 shrink-0" />
+                <FaLocationDot className="text-green mt-1 shrink-0" />
                 <span>{contact.address}</span>
               </li>
               {contact.phones[0] && (
                 <li className="flex items-center space-x-3">
-                  <FaPhone className="text-white shrink-0" />
+                  <FaPhone className="text-green shrink-0" />
                   <a href={telHref(contact.phones[0])} className="hover:text-white">
                     {contact.phones[0]}
                   </a>
                 </li>
               )}
               <li className="flex items-center space-x-3">
-                <FaEnvelope className="text-white shrink-0" />
+                <FaEnvelope className="text-green shrink-0" />
                 <a href={`mailto:${contact.email}`} className="break-all hover:text-white">
                   {contact.email}
                 </a>

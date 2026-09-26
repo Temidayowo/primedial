@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 // product-form.tsx so every admin form looks the same.
 
 export const inputClasses =
-  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none";
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none";
 const labelClasses = "text-xs font-medium tracking-wide text-slate-500 uppercase";
 
 export function Field({
@@ -223,7 +223,7 @@ export function SubmitButton({
     <button
       type="submit"
       disabled={isPending}
-      className="rounded-lg bg-blue-500 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-60"
+      className="rounded-lg bg-blue px-6 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue/90 disabled:opacity-60"
     >
       {isPending ? "Saving..." : label}
     </button>

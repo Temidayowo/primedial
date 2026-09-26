@@ -244,11 +244,11 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
   const textColorClass = isDark ? "text-white" : "text-blue";
   const iconBackgroundClass = isDark ? "bg-white" : "bg-blue";
   const textHoverClass = isDark ? "hover:text-white/80" : "hover:text-blue/80";
-  const underlineClass = isDark ? "after:bg-white" : "after:bg-blue";
+  const underlineClass = "after:bg-green";
 
-  const animatedLinkClasses = `relative inline-block pb-1 ${textColorClass} transition-colors ${textHoverClass} after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 ${underlineClass} after:transition-all after:duration-300 after:content-[''] hover:after:w-full`;
+  const animatedLinkClasses = `relative inline-block pb-1 ${textColorClass} transition-colors duration-300 ${textHoverClass} after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 ${underlineClass} after:transition-all after:duration-300 after:content-[''] hover:after:w-full`;
   const mobileLinkClasses =
-    "relative inline-block pb-1 text-blue transition-colors hover:text-blue/80 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-blue after:transition-all after:duration-300 after:content-[''] hover:after:w-full";
+    "relative inline-block pb-1 text-blue transition-colors duration-300 hover:text-blue/80 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-green after:transition-all after:duration-300 after:content-[''] hover:after:w-full";
 
   return (
     <>

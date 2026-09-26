@@ -19,9 +19,9 @@ export function ShippingMethodSection({
           <label
             key={method.id}
             className={cn(
-              "flex cursor-pointer items-center justify-between gap-4 rounded-xl border p-4 transition-colors",
+              "flex cursor-pointer items-center justify-between gap-4 rounded-xl border p-4 transition-colors duration-300",
               isSelected
-                ? "border-blue-500 bg-blue-50/50 ring-1 ring-blue-500"
+                ? "border-blue bg-blue/5 ring-1 ring-blue"
                 : "border-gray-200 hover:border-slate-300",
             )}
           >
@@ -31,7 +31,7 @@ export function ShippingMethodSection({
                 name="shipping-method"
                 checked={isSelected}
                 onChange={() => onSelect(method.id)}
-                className="size-4 accent-blue-500"
+                className="size-4 accent-blue"
               />
               <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-gray-100">
                 <Truck className="size-4 text-slate-500" />

@@ -33,7 +33,7 @@ export function SignupForm() {
           <button
             type="submit"
             disabled={isResending}
-            className="text-sm text-blue-600 hover:text-blue-500 disabled:opacity-60"
+            className="text-sm text-blue hover:text-blue/70 disabled:opacity-60"
           >
             {isResending ? "Sending..." : "Didn't get it? Resend"}
           </button>
@@ -43,7 +43,7 @@ export function SignupForm() {
         </form>
 
         <p className="mt-6 text-center text-sm text-slate-500">
-          <Link href="/login" className="text-blue-600 hover:text-blue-500">
+          <Link href="/login" className="text-blue hover:text-blue/70">
             Back to log in
           </Link>
         </p>
@@ -58,7 +58,7 @@ export function SignupForm() {
       </h1>
       <p className="mt-2 text-sm text-slate-500">
         Join{" "}
-        <Link href="/" className="text-blue-600 hover:text-blue-500">
+        <Link href="/" className="text-blue hover:text-blue/70">
           Prime Dial Solutions
         </Link>{" "}
         to get started.
@@ -80,7 +80,7 @@ export function SignupForm() {
               type="text"
               placeholder="John Doe"
               required
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-3 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-3 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none"
             />
           </div>
           {state?.errors?.name && (
@@ -105,7 +105,7 @@ export function SignupForm() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-3 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-3 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none"
             />
           </div>
           {state?.errors?.email && (
@@ -128,7 +128,7 @@ export function SignupForm() {
               type={showPassword ? "text" : "password"}
               placeholder="Create a password"
               required
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-10 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-10 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none"
             />
             <button
               type="button"
@@ -171,7 +171,7 @@ export function SignupForm() {
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Re-enter your password"
               required
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-10 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-10 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none"
             />
             <button
               type="button"
@@ -199,15 +199,15 @@ export function SignupForm() {
               type="checkbox"
               name="terms"
               required
-              className="mt-0.5 size-4 rounded border-slate-300 accent-blue-500"
+              className="mt-0.5 size-4 rounded border-slate-300 accent-blue"
             />
             <span>
               I agree to the{" "}
-              <Link href="/terms" className="text-blue-600 hover:text-blue-500">
+              <Link href="/terms" className="text-blue hover:text-blue/70">
                 Terms of Service
               </Link>{" "}
               and{" "}
-              <Link href="/privacy" className="text-blue-600 hover:text-blue-500">
+              <Link href="/privacy" className="text-blue hover:text-blue/70">
                 Privacy Policy
               </Link>
             </span>
@@ -226,7 +226,7 @@ export function SignupForm() {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full rounded-lg bg-blue-500 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-60"
+          className="w-full rounded-lg bg-green py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue disabled:opacity-60"
         >
           {isPending ? "Creating account..." : "Create Account"}
         </button>
@@ -242,7 +242,7 @@ export function SignupForm() {
 
       <p className="mt-6 text-center text-sm text-slate-500">
         Already have an account?{" "}
-        <Link href="/login" className="text-blue-600 hover:text-blue-500">
+        <Link href="/login" className="text-blue hover:text-blue/70">
           Log In
         </Link>
       </p>

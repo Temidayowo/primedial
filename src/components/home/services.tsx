@@ -89,7 +89,7 @@ const Services = () => {
           <div className="mt-10 flex justify-center">
             <Link
               href="/services"
-              className="group flex items-center gap-2 rounded-4xl bg-blue/95 px-8 py-3 text-sm font-semibold uppercase text-white transition-colors hover:bg-blue"
+              className="group flex items-center gap-2 rounded-4xl bg-blue/95 px-8 py-3 text-sm font-semibold uppercase text-white transition-colors duration-300 hover:bg-blue"
             >
               View All Services
               <FaArrowRight className="size-3 transition-transform duration-300 ease-out group-hover:translate-x-1" />

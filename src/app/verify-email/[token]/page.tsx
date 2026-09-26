@@ -26,7 +26,7 @@ export default async function VerifyEmailPage(props: {
           <>
             <Link
               href="/login"
-              className="mt-6 block w-full rounded-lg bg-blue-500 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-blue-600"
+              className="mt-6 block w-full rounded-lg bg-green py-2.5 text-center text-sm font-medium text-white transition-colors duration-300 hover:bg-blue"
             >
               Go to Log In
             </Link>
@@ -36,7 +36,7 @@ export default async function VerifyEmailPage(props: {
           <ResendVerificationButton email={result.email} />
         ) : (
           <p className="mt-6 text-sm text-slate-500">
-            <Link href="/signup" className="text-blue-600 hover:text-blue-500">
+            <Link href="/signup" className="text-blue hover:text-blue/70">
               Create a new account
             </Link>
           </p>

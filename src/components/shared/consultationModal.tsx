@@ -71,7 +71,7 @@ const ConsultationModal = () => {
               type="button"
               onClick={() => setIsOpen(false)}
               aria-label="Close"
-              className="shrink-0 rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 hover:text-blue transition-colors"
+              className="shrink-0 rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 hover:text-blue transition-colors duration-300"
             >
               <X className="size-5" />
             </button>

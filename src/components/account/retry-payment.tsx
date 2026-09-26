@@ -104,9 +104,9 @@ export function RetryPayment({
               type="button"
               onClick={() => setMethod(id)}
               className={cn(
-                "flex flex-col items-center gap-1 rounded-lg border p-3 text-xs font-medium transition-colors",
+                "flex flex-col items-center gap-1 rounded-lg border p-3 text-xs font-medium transition-colors duration-300",
                 isSelected
-                  ? "border-blue-500 bg-blue-50 text-blue"
+                  ? "border-blue bg-blue/10 text-blue"
                   : "border-slate-200 bg-white text-slate-500 hover:border-slate-300",
               )}
             >
@@ -129,14 +129,14 @@ export function RetryPayment({
                 className={cn(
                   "flex w-full items-center justify-between rounded-lg border bg-white p-3 text-left text-xs",
                   isSelected
-                    ? "border-blue-500 ring-1 ring-blue-500"
+                    ? "border-blue ring-1 ring-blue"
                     : "border-slate-200 hover:border-slate-300",
                 )}
               >
                 <span className="text-slate-600">
                   {card.brand} &bull;&bull;&bull;&bull; {card.last4}
                 </span>
-                {isSelected && <Check className="size-3.5 text-blue-500" />}
+                {isSelected && <Check className="size-3.5 text-blue" />}
               </button>
             );
           })}
@@ -146,7 +146,7 @@ export function RetryPayment({
             className={cn(
               "flex w-full items-center gap-2 rounded-lg border bg-white p-3 text-left text-xs",
               savedCardId === null
-                ? "border-blue-500 ring-1 ring-blue-500"
+                ? "border-blue ring-1 ring-blue"
                 : "border-dashed border-slate-200 hover:border-slate-300",
             )}
           >
@@ -160,7 +160,7 @@ export function RetryPayment({
         type="button"
         onClick={handlePay}
         disabled={isPending}
-        className="mt-4 w-full rounded-lg bg-blue-500 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-4 w-full rounded-lg bg-green py-2.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-blue disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isPending ? "Processing..." : "Pay Now"}
       </button>

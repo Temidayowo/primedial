@@ -57,7 +57,7 @@ export function ManagePaymentMethods({
                   {method.brand} &bull;&bull;&bull;&bull; {method.last4}
                 </p>
                 {method.isDefault && (
-                  <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-medium text-blue-600">
+                  <span className="rounded-full bg-blue/10 px-2 py-0.5 text-[10px] font-medium text-blue">
                     Default
                   </span>
                 )}

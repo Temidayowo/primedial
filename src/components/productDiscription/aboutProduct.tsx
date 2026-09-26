@@ -104,7 +104,7 @@ const AboutProduct = ({
                   aria-label={`View image ${index + 1}`}
                   aria-current={selectedIndex === index}
                   className={cn(
-                    "relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-colors",
+                    "relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-colors duration-300",
                     selectedIndex === index
                       ? "border-blue"
                       : "border-transparent hover:border-gray-300"

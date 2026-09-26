@@ -89,7 +89,7 @@ export default function PrivacyPage() {
             </h2>
             <p className="mt-2">
               Questions about this Privacy Policy can be sent through our{" "}
-              <a href="/contact" className="text-blue-600 hover:text-blue-500">
+              <a href="/contact" className="text-blue hover:text-blue/70">
                 contact page
               </a>
               .

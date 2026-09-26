@@ -24,7 +24,7 @@ export default function QuantitySelector({
         onClick={decrement}
         disabled={value <= min}
         aria-label="Decrease quantity"
-        className="text-slate-600 hover:text-blue disabled:opacity-50 disabled:hover:text-slate-400 transition-colors focus:outline-none"
+        className="text-slate-600 hover:text-blue disabled:opacity-50 disabled:hover:text-slate-400 transition-colors duration-300 focus:outline-none"
       >
         <Minus size={20} strokeWidth={2} />
       </button>
@@ -38,7 +38,7 @@ export default function QuantitySelector({
         onClick={increment}
         disabled={value >= max}
         aria-label="Increase quantity"
-        className="text-slate-600 hover:text-blue disabled:opacity-50 disabled:hover:text-slate-400 transition-colors focus:outline-none"
+        className="text-slate-600 hover:text-blue disabled:opacity-50 disabled:hover:text-slate-400 transition-colors duration-300 focus:outline-none"
       >
         <Plus size={20} strokeWidth={2} />
       </button>

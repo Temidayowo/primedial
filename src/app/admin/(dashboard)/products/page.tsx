@@ -26,7 +26,7 @@ export default async function AdminProductsPage() {
         </div>
         <Link
           href="/admin/products/new"
-          className="flex items-center gap-1.5 rounded-lg bg-blue-500 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600"
+          className="flex items-center gap-1.5 rounded-lg bg-blue px-4 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue/90"
         >
           <Plus className="size-4" /> Add Product
         </Link>
@@ -90,7 +90,7 @@ export default async function AdminProductsPage() {
                       <Link
                         href={`/admin/products/${product.id}`}
                         aria-label="Edit product"
-                        className="text-slate-400 transition-colors hover:text-blue"
+                        className="text-slate-400 transition-colors duration-300 hover:text-blue"
                       >
                         <Pencil className="size-4" />
                       </Link>

@@ -33,7 +33,7 @@ export default function TrackOrderPage() {
           <p className="mt-8 text-center text-sm text-slate-500">
             Your order number is in your confirmation email. Signed-in customers can also see every
             order under{" "}
-            <Link href="/account/orders" className="font-medium text-blue-600 hover:underline">
+            <Link href="/account/orders" className="font-medium text-blue hover:underline">
               My Orders
             </Link>
             .

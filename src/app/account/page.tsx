@@ -33,8 +33,8 @@ export default async function AccountDashboardPage() {
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-xl border border-gray-100 bg-white p-5">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-blue-50">
-              <Package className="size-5 text-blue-500" />
+            <div className="flex size-10 items-center justify-center rounded-lg bg-green/10">
+              <Package className="size-5 text-green" />
             </div>
             <div>
               <p className="text-xs text-slate-500">Total Orders</p>
@@ -47,8 +47,8 @@ export default async function AccountDashboardPage() {
 
         <div className="rounded-xl border border-gray-100 bg-white p-5">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-orange-50">
-              <Wallet className="size-5 text-orange-500" />
+            <div className="flex size-10 items-center justify-center rounded-lg bg-blue/10">
+              <Wallet className="size-5 text-blue" />
             </div>
             <div>
               <p className="text-xs text-slate-500">Total Spent</p>
@@ -65,11 +65,11 @@ export default async function AccountDashboardPage() {
               ? `/account/orders/${mostRecentOrder.id}`
               : "/account/orders"
           }
-          className="flex items-center justify-between rounded-xl border border-blue-500 bg-blue-500 p-5 transition-colors hover:bg-blue-600"
+          className="flex items-center justify-between rounded-xl border border-blue bg-blue p-5 transition-colors duration-300 hover:bg-blue/90"
         >
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-white/15">
-              <Truck className="size-5 text-white" />
+              <Truck className="size-5 text-green" />
             </div>
             <div>
               <p className="text-xs text-white/80">Quick Action</p>
@@ -88,7 +88,7 @@ export default async function AccountDashboardPage() {
           </h2>
           <Link
             href="/account/orders"
-            className="text-sm font-medium text-blue-600 hover:text-blue-500"
+            className="text-sm font-medium text-blue hover:text-blue/70"
           >
             View all
           </Link>
@@ -101,7 +101,7 @@ export default async function AccountDashboardPage() {
             </p>
             <Link
               href="/shop"
-              className="mt-3 inline-block text-sm font-medium text-blue-600 hover:text-blue-500"
+              className="mt-3 inline-block text-sm font-medium text-blue hover:text-blue/70"
             >
               Browse equipment
             </Link>

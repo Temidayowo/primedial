@@ -8,7 +8,7 @@ import { OrderTracking } from "@/components/orders/order-tracking";
 import { StatusBadge } from "@/components/account/status-badge";
 
 const inputClasses =
-  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none";
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none";
 const labelClasses = "text-xs font-medium tracking-wide text-blue uppercase";
 
 // Order confirmation emails and account pages can link here with the
@@ -66,7 +66,7 @@ export function TrackOrderForm({ defaultOrderNumber = "" }: { defaultOrderNumber
         <button
           type="submit"
           disabled={isPending}
-          className="flex items-center justify-center gap-2 rounded-lg bg-green px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue disabled:opacity-60"
+          className="flex items-center justify-center gap-2 rounded-lg bg-green px-6 py-2.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-blue disabled:opacity-60"
         >
           <Search className="size-4" />
           {isPending ? "Looking up..." : "Track"}

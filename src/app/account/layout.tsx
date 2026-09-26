@@ -15,7 +15,7 @@ export default async function AccountLayout({
       />
 
       <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col lg:flex-row">
-        <aside className="sticky top-0 z-10 shrink-0 border-b border-gray-100 bg-white lg:static lg:z-auto lg:w-64 lg:border-r lg:border-b-0 lg:bg-gray-50">
+        <aside className="sticky top-0 z-20 shrink-0 border-b border-gray-100 bg-white lg:static lg:z-auto lg:w-64 lg:border-r lg:border-b-0 lg:bg-gray-50">
           <AccountSidebar />
         </aside>
 

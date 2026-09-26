@@ -21,7 +21,7 @@ export default function AccountError({
         <div className="mt-6 flex flex-col gap-3">
           <button
             onClick={reset}
-            className="rounded-lg bg-blue-500 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600"
+            className="rounded-lg bg-green py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue"
           >
             Try Again
           </button>

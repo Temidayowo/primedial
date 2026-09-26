@@ -15,7 +15,7 @@ export function ResendVerificationButton({ email }: { email: string }) {
       <button
         type="submit"
         disabled={isPending}
-        className="w-full rounded-lg bg-blue-500 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-60"
+        className="w-full rounded-lg bg-green py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue disabled:opacity-60"
       >
         {isPending ? "Sending..." : "Send a new link"}
       </button>

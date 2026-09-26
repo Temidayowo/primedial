@@ -30,7 +30,7 @@ const ProductDescriptionPage = async (props: {
           <li>
             <Link
               href="/"
-              className="transition-colors hover:text-blue hover:underline"
+              className="transition-colors duration-300 hover:text-blue hover:underline"
             >
               Home
             </Link>
@@ -39,7 +39,7 @@ const ProductDescriptionPage = async (props: {
           <li>
             <Link
               href="/shop"
-              className="transition-colors hover:text-blue hover:underline"
+              className="transition-colors duration-300 hover:text-blue hover:underline"
             >
               Shop
             </Link>
@@ -48,7 +48,7 @@ const ProductDescriptionPage = async (props: {
           <li>
             <Link
               href={`/shop?category=${encodeURIComponent(product.category)}`}
-              className="transition-colors hover:text-blue hover:underline"
+              className="transition-colors duration-300 hover:text-blue hover:underline"
             >
               {categoryLabel}
             </Link>

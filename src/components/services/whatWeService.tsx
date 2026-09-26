@@ -69,7 +69,7 @@ const WhatWeService = () => {
           <div className="mt-8 flex justify-center">
             <Link
               href="/shop"
-              className="flex items-center gap-2 text-sm font-semibold text-blue hover:text-blue/80 transition-colors"
+              className="flex items-center gap-2 text-sm font-semibold text-blue hover:text-blue/80 transition-colors duration-300"
             >
               Want to buy equipments instead?
               <FaArrowRight className="size-3" />
@@ -89,7 +89,7 @@ const WhatWeService = () => {
         <div className="mt-8 flex justify-center">
           <Link
             href="/shop"
-            className="flex items-center gap-2 text-sm font-semibold text-blue hover:text-blue/80 transition-colors"
+            className="flex items-center gap-2 text-sm font-semibold text-blue hover:text-blue/80 transition-colors duration-300"
           >
             Looking to buy new equipment instead? Browse the Shop
             <FaArrowRight className="size-3" />

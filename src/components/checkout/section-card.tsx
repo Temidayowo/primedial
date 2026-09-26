@@ -12,7 +12,7 @@ export function SectionCard({
   return (
     <section className="rounded-xl border border-gray-100 bg-white p-6">
       <div className="flex items-center gap-3">
-        <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-blue font-clash-display text-sm font-bold text-white">
+        <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-green font-clash-display text-sm font-bold text-white">
           {step}
         </span>
         <div>

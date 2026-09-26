@@ -50,7 +50,7 @@ export function PageHero({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className={cn(
-            "font-poppins font-medium text-white text-xs uppercase tracking-widest mb-1",
+            "font-poppins font-semibold text-green text-xs uppercase tracking-widest mb-1",
             align === "center" && "mx-auto",
             align === "right" && "ml-auto"
           )}

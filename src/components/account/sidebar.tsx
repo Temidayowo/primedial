@@ -68,9 +68,9 @@ export function AccountSidebar() {
               key={href}
               href={href}
               className={cn(
-                "flex shrink-0 items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors",
+                "flex shrink-0 items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-300",
                 isActive
-                  ? "border-blue-500 bg-blue-500 text-white"
+                  ? "border-blue bg-blue text-white"
                   : "border-gray-100 bg-white text-slate-500 hover:bg-gray-100 hover:text-blue",
               )}
             >
@@ -82,7 +82,7 @@ export function AccountSidebar() {
 
         <button
           onClick={() => signOut({ redirectTo: "/" })}
-          className="flex shrink-0 items-center gap-1.5 rounded-full border border-gray-100 bg-white px-4 py-2 text-sm font-medium whitespace-nowrap text-slate-500 transition-colors hover:bg-gray-100 hover:text-blue"
+          className="flex shrink-0 items-center gap-1.5 rounded-full border border-gray-100 bg-white px-4 py-2 text-sm font-medium whitespace-nowrap text-slate-500 transition-colors duration-300 hover:bg-gray-100 hover:text-blue"
         >
           <LogOut className="size-4 shrink-0" />
           Log Out
@@ -102,9 +102,9 @@ export function AccountSidebar() {
               key={href}
               href={href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors duration-300",
                 isActive
-                  ? "bg-blue-500 text-white"
+                  ? "bg-blue text-white"
                   : "text-slate-500 hover:bg-gray-100 hover:text-blue",
               )}
             >
@@ -118,7 +118,7 @@ export function AccountSidebar() {
 
         <button
           onClick={() => signOut({ redirectTo: "/" })}
-          className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-left text-sm font-medium text-slate-500 transition-colors hover:bg-gray-100 hover:text-blue"
+          className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-left text-sm font-medium text-slate-500 transition-colors duration-300 hover:bg-gray-100 hover:text-blue"
         >
           <LogOut className="size-4 shrink-0" />
           Log Out

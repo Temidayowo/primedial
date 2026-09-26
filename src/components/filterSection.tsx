@@ -42,9 +42,10 @@ const FilterSection = ({ brands, categories, onDone }: FilterSectionProps) => {
     // Construct the new URL query string
     const params = new URLSearchParams(searchParams.toString());
     
-    // Clear old filters first
+    // Clear old filters first, and go back to page 1 of the new results
     params.delete("category");
     params.delete("brand");
+    params.delete("page");
 
     // Append newly selected filters
     selectedCategories.forEach((c) => params.append("category", c as string));
@@ -62,6 +63,7 @@ const FilterSection = ({ brands, categories, onDone }: FilterSectionProps) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("category");
     params.delete("brand");
+    params.delete("page");
 
     router.push(`?${params.toString()}`, { scroll: false });
     onDone?.();
@@ -96,7 +98,7 @@ const FilterSection = ({ brands, categories, onDone }: FilterSectionProps) => {
                   name="category" // MUST HAVE THIS for FormData to work
                   value={category.slug}
                   defaultChecked={currentCategories.includes(category.slug)}
-                  className="size-4 accent-blue"
+                  className="size-4 accent-green"
                 />
                 <p className="font-poppins font-normal text-sm">
                   {category.name}
@@ -121,7 +123,7 @@ const FilterSection = ({ brands, categories, onDone }: FilterSectionProps) => {
                   name="brand" // MUST HAVE THIS for FormData to work
                   value={brand.slug}
                   defaultChecked={currentBrands.includes(brand.slug)}
-                  className="size-4 accent-blue"
+                  className="size-4 accent-green"
                 />
                 <p className="font-poppins font-normal text-sm">{brand.name}</p>
               </label>
@@ -135,7 +137,7 @@ const FilterSection = ({ brands, categories, onDone }: FilterSectionProps) => {
       
       <div className="w-full flex justify-center mt-6">
         {/* Changed to type="submit" so it triggers the form's onSubmit event */}
-        <Button type="submit" className="bg-blue py-5 text-white w-full">
+        <Button type="submit" className="bg-green py-5 text-white w-full transition-colors duration-300 hover:bg-blue">
           Apply Filters
         </Button>
       </div>

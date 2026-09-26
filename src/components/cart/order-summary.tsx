@@ -57,7 +57,7 @@ export function OrderSummary({
       ) : (
         <Link
           href="/checkout"
-          className="mt-6 block w-full rounded-lg bg-blue-500 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-blue-600"
+          className="mt-6 block w-full rounded-lg bg-green py-3 text-center text-sm font-semibold text-white transition-colors duration-300 hover:bg-blue"
         >
           Proceed to Checkout
         </Link>

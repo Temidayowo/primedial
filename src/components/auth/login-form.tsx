@@ -46,7 +46,7 @@ export function LoginForm({ context = "user" }: LoginFormProps) {
               type="email"
               placeholder="you@company.com"
               required
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-3 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-3 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none"
             />
           </div>
         </div>
@@ -61,7 +61,7 @@ export function LoginForm({ context = "user" }: LoginFormProps) {
             </label>
             <Link
               href="/forgot-password"
-              className="text-xs text-blue-600 hover:text-blue-500"
+              className="text-xs text-blue hover:text-blue/70"
             >
               Forgot password?
             </Link>
@@ -75,7 +75,7 @@ export function LoginForm({ context = "user" }: LoginFormProps) {
               placeholder="••••••••"
               required
               minLength={8}
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-10 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pr-10 pl-10 text-sm text-blue placeholder:text-slate-400 focus:border-blue focus:outline-none"
             />
             <button
               type="button"
@@ -96,7 +96,7 @@ export function LoginForm({ context = "user" }: LoginFormProps) {
           <input
             type="checkbox"
             name="remember"
-            className="size-4 rounded border-slate-300 accent-blue-500"
+            className="size-4 rounded border-slate-300 accent-blue"
           />
           Remember me for 30 days
         </label>
@@ -112,7 +112,7 @@ export function LoginForm({ context = "user" }: LoginFormProps) {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full rounded-lg bg-blue-500 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600 disabled:opacity-60"
+          className="w-full rounded-lg bg-green py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue disabled:opacity-60"
         >
           {isPending ? "Logging in..." : "Log In"}
         </button>
@@ -130,7 +130,7 @@ export function LoginForm({ context = "user" }: LoginFormProps) {
 
           <p className="mt-6 text-center text-sm text-slate-500">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-blue-600 hover:text-blue-500">
+            <Link href="/signup" className="text-blue hover:text-blue/70">
               Sign Up
             </Link>
           </p>

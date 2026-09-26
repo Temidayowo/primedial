@@ -39,7 +39,7 @@ export function ManageAddresses({ addresses }: { addresses: Address[] }) {
                   {address.label || "Address"}
                 </p>
                 {address.isDefault && (
-                  <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-medium text-blue-600">
+                  <span className="rounded-full bg-blue/10 px-2 py-0.5 text-[10px] font-medium text-blue">
                     Default
                   </span>
                 )}
@@ -60,7 +60,7 @@ export function ManageAddresses({ addresses }: { addresses: Address[] }) {
                     startTransition(() => setDefaultAddress(address.id))
                   }
                   aria-label="Set as default"
-                  className="text-slate-400 hover:text-blue-600 disabled:opacity-50"
+                  className="text-slate-400 hover:text-blue/70 disabled:opacity-50"
                 >
                   <Star className="size-4" />
                 </button>
@@ -90,7 +90,7 @@ export function ManageAddresses({ addresses }: { addresses: Address[] }) {
         <button
           type="button"
           onClick={() => setShowForm(true)}
-          className="mt-6 flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-500"
+          className="mt-6 flex items-center gap-2 text-sm font-medium text-blue hover:text-blue/70"
         >
           <Plus className="size-4" />
           Add New Address

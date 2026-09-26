@@ -35,7 +35,7 @@ export function InquiryStatusSelect({ id, status }: { id: string; status: Inquir
         value={value}
         disabled={isPending}
         onChange={(e) => change(e.target.value as InquiryStatus)}
-        className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-blue focus:border-blue-500 focus:outline-none disabled:opacity-60"
+        className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-blue focus:border-blue focus:outline-none disabled:opacity-60"
       >
         {Object.values(InquiryStatus).map((option) => (
           <option key={option} value={option}>

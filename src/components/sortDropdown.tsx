@@ -9,6 +9,8 @@ export default function SortDropdown() {
   const handleSortChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("sort", value);
+    // A new order starts from the first page.
+    params.delete("page");
     router.push(`?${params.toString()}`, { scroll: false });
   };
 

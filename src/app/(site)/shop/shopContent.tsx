@@ -6,8 +6,10 @@ import {
 import { PageHero } from "@/components/ui/pageHero";
 import FilterSection from "@/components/filterSection";
 import MobileFilterSheet from "@/components/mobileFilterSheet";
-import ProductList from "@/app/(site)/shop/productList";
+import ProductList, { ServiceCenterBanner } from "@/app/(site)/shop/productList";
 import { AnimateOnScroll, slideRight } from "@/components/ui/MotionWrapper";
+import { ShopPagination } from "@/components/shop/pagination";
+import { parsePage } from "@/lib/pagination";
 
 interface ShopContentProps {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -30,12 +32,15 @@ const ShopContent = async ({ searchParams }: ShopContentProps) => {
   const sort =
     typeof searchParams.sort === "string" ? searchParams.sort : undefined;
 
+  const requestedPage = parsePage(searchParams.page);
+
   // 2. Fetch everything in parallel (Filters + Filtered Products)
-  const [categories, brands, products] = await Promise.all([
+  const [categories, brands, result] = await Promise.all([
     getCategories(),
     getBrands(),
-    getProducts(categoryParams, brandParams, sort),
+    getProducts(categoryParams, brandParams, sort, requestedPage),
   ]);
+  const { products, total, page, pageCount, pageSize } = result;
 
   return (
     <>
@@ -49,7 +54,10 @@ const ShopContent = async ({ searchParams }: ShopContentProps) => {
 
       <section className="bg-gray-100">
         {/* Added gap-8 so the sidebar and product grid don't touch */}
-        <main className="section-container py-16 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <main
+          id="products"
+          className="section-container py-16 grid grid-cols-1 lg:grid-cols-12 gap-8 scroll-mt-4"
+        >
           {/* Sidebar (desktop only - mobile uses the bottom sheet below) */}
           <AnimateOnScroll
             variants={slideRight}
@@ -76,7 +84,17 @@ const ShopContent = async ({ searchParams }: ShopContentProps) => {
                 </p>
               </div>
             ) : (
-              <ProductList data={products} />
+              <>
+                {/* Keyed by page so the grid's entrance animation replays. */}
+                <ProductList
+                  key={page}
+                  data={products}
+                  total={total}
+                  firstIndex={(page - 1) * pageSize + 1}
+                />
+                <ShopPagination page={page} pageCount={pageCount} searchParams={searchParams} />
+                <ServiceCenterBanner />
+              </>
             )}
           </div>
         </main>
