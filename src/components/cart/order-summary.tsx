@@ -4,7 +4,13 @@ import Link from "next/link";
 import { TAX_RATE, FLAT_SHIPPING } from "@/lib/cart-constants";
 import { formatCurrency } from "@/lib/utils";
 
-export function OrderSummary({ subtotal }: { subtotal: number }) {
+export function OrderSummary({
+  subtotal,
+  hasUnavailableItems = false,
+}: {
+  subtotal: number;
+  hasUnavailableItems?: boolean;
+}) {
   const tax = subtotal * TAX_RATE;
   const total = subtotal + tax + FLAT_SHIPPING;
 
@@ -36,12 +42,26 @@ export function OrderSummary({ subtotal }: { subtotal: number }) {
         </span>
       </div>
 
-      <Link
-        href="/checkout"
-        className="mt-6 block w-full rounded-lg bg-blue-500 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-blue-600"
-      >
-        Proceed to Checkout
-      </Link>
+      {hasUnavailableItems ? (
+        <>
+          <span
+            aria-disabled="true"
+            className="mt-6 block w-full cursor-not-allowed rounded-lg bg-slate-200 py-3 text-center text-sm font-semibold text-slate-500"
+          >
+            Proceed to Checkout
+          </span>
+          <p className="mt-2 text-center text-[11px] text-red-600">
+            Remove the items marked unavailable to continue.
+          </p>
+        </>
+      ) : (
+        <Link
+          href="/checkout"
+          className="mt-6 block w-full rounded-lg bg-blue-500 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-blue-600"
+        >
+          Proceed to Checkout
+        </Link>
+      )}
       <p className="mt-2 text-center text-[11px] text-slate-500">
         Choose your shipping address, delivery method, and payment on the
         next step.

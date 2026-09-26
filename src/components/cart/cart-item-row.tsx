@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2 } from "lucide-react";
@@ -10,6 +10,7 @@ import {
 } from "@/lib/actions/cart.action";
 import { notifyCartUpdated } from "@/components/shared/product/add-to-cart-button";
 import { formatCurrency } from "@/lib/utils";
+import { MAX_CART_QUANTITY } from "@/lib/product-availability";
 
 interface CartItemRowProps {
   id: string;
@@ -18,6 +19,9 @@ interface CartItemRowProps {
   productImage: string | undefined;
   unitPrice: number;
   quantity: number;
+  // Set when the product has gone out of stock - checkout refuses the
+  // cart until it's removed.
+  unavailableReason?: string;
 }
 
 export function CartItemRow({
@@ -27,12 +31,19 @@ export function CartItemRow({
   productImage,
   unitPrice,
   quantity,
+  unavailableReason,
 }: CartItemRowProps) {
   const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
 
   const setQuantity = (next: number) => {
+    setError(null);
     startTransition(async () => {
-      await updateCartItemQuantity(id, next);
+      const result = await updateCartItemQuantity(id, next);
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
       notifyCartUpdated();
     });
   };
@@ -72,6 +83,10 @@ export function CartItemRow({
           <p className="mt-1 text-xs text-slate-400 sm:hidden">
             {formatCurrency(unitPrice)} each
           </p>
+          {unavailableReason && (
+            <p className="mt-1 text-xs font-medium text-red-600">{unavailableReason}</p>
+          )}
+          {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
         </div>
 
         <button
@@ -104,7 +119,7 @@ export function CartItemRow({
           <button
             type="button"
             onClick={() => setQuantity(quantity + 1)}
-            disabled={isPending}
+            disabled={isPending || quantity >= MAX_CART_QUANTITY || Boolean(unavailableReason)}
             aria-label="Increase quantity"
             className="text-slate-400 hover:text-blue disabled:opacity-50"
           >

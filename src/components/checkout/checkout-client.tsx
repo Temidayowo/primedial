@@ -124,6 +124,7 @@ export function CheckoutClient({
         items={items}
         subtotal={subtotal}
         shippingCost={shippingCost}
+        shippingMethodId={selectedShippingId}
         selectedAddressId={selectedAddressId}
         paymentMethod={paymentMethod}
         selectedSavedCardId={paymentMethod === "card" ? selectedSavedCardId : null}

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/dal";
+import { isUuid } from "@/lib/uuid";
 
 export async function getAllProductsAdmin() {
   await requireAdmin();
@@ -26,6 +27,7 @@ export async function getAllProductsAdmin() {
 
 export async function getProductByIdAdmin(id: string) {
   await requireAdmin();
+  if (!isUuid(id)) return null;
 
   const product = await prisma.product.findUnique({ where: { id } });
   if (!product) return null;
@@ -41,6 +43,13 @@ function slugify(value: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+// Blank input -> null (so an admin can clear a value), otherwise a positive number.
+const optionalDimension = (label: string) =>
+  z.preprocess(
+    (v) => (v === null || v === undefined || String(v).trim() === "" ? null : v),
+    z.coerce.number().positive({ error: `${label} must be greater than 0.` }).nullable(),
+  );
+
 const productSchema = z.object({
   name: z.string().min(2, { error: "Name is required." }).trim(),
   description: z.string().min(10, { error: "Description is required." }).trim(),
@@ -52,6 +61,10 @@ const productSchema = z.object({
     .min(1, { error: "At least one image is required." }),
   features: z.array(z.string().trim().min(1)).default([]),
   specSheetUrl: z.string().trim().optional(),
+  weightKg: optionalDimension("Weight"),
+  lengthCm: optionalDimension("Length"),
+  widthCm: optionalDimension("Width"),
+  heightCm: optionalDimension("Height"),
   inStock: z.coerce.boolean().default(true),
   isFeatured: z.coerce.boolean().default(false),
 });
@@ -70,6 +83,10 @@ function parseProductFormData(formData: FormData) {
     images: formData.getAll("images").filter((v) => String(v).trim().length > 0),
     features: formData.getAll("features").filter((v) => String(v).trim().length > 0),
     specSheetUrl: formData.get("specSheetUrl") || undefined,
+    weightKg: formData.get("weightKg"),
+    lengthCm: formData.get("lengthCm"),
+    widthCm: formData.get("widthCm"),
+    heightCm: formData.get("heightCm"),
     inStock: formData.get("inStock") === "on",
     isFeatured: formData.get("isFeatured") === "on",
   });
@@ -97,7 +114,7 @@ export async function createProduct(
     data: { ...validated.data, slug },
   });
 
-  revalidatePath("/admin/products");
+  revalidateProductPages();
   redirect("/admin/products");
 }
 
@@ -118,7 +135,7 @@ export async function updateProduct(
     data: validated.data,
   });
 
-  revalidatePath("/admin/products");
+  revalidateProductPages();
   revalidatePath(`/admin/products/${id}`);
   redirect("/admin/products");
 }
@@ -135,6 +152,14 @@ export async function deleteProduct(id: string) {
   }
 
   await prisma.product.delete({ where: { id } });
-  revalidatePath("/admin/products");
+  revalidateProductPages();
   return { error: null };
+}
+
+// The home page is prerendered and shows featured products, so it has to
+// be refreshed whenever a product changes. /shop and product pages render
+// on each request and pick changes up by themselves.
+function revalidateProductPages() {
+  revalidatePath("/admin/products");
+  revalidatePath("/");
 }

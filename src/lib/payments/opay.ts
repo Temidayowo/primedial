@@ -1,5 +1,5 @@
 import "server-only";
-import { createHmac, timingSafeEqual } from "crypto";
+import { createHmac } from "crypto";
 
 // OPay's hosted "Cashier" checkout API.
 //
@@ -16,16 +16,14 @@ import { createHmac, timingSafeEqual } from "crypto";
 //     or wrong-country string silently returns "payMethod not supported"
 //     instead of an error that points at the field.
 //
-// #############################################################################
-// # STILL UNVERIFIED: verifyOpayWebhookSignature below and the webhook      #
-// # payload shape in /api/opay-webhook. The create-call test above proved  #
-// # the secret key isn't involved in signing *requests*, but OPay webhooks #
-// # are a separate, incoming direction - there's no way to confirm their   #
-// # payload/signature scheme without an actual webhook firing. Log the raw #
-// # body the first time one arrives in sandbox (complete an OPay test      #
-// # payment via the cashierUrl this file returns) and adjust                #
-// # verifyOpayWebhookSignature and the /api/opay-webhook route to match.   #
-// #############################################################################
+// Payment confirmation does NOT rely on the webhook's signature scheme,
+// which has never been observed from a real delivery. Instead every
+// confirmation path (the webhook, a customer returning to their order
+// page, a retry switching providers) asks OPay directly via
+// queryOpayPaymentStatus below and trusts only that answer. That call's
+// auth - a Bearer HMAC-SHA512 of the request body keyed with the secret
+// key - and its response shape were confirmed against the sandbox on
+// 2026-09-26.
 
 const OPAY_LIVE_BASE = "https://liveapi.opaycheckout.com";
 const OPAY_SANDBOX_BASE = "https://sandboxapi.opaycheckout.com";
@@ -127,25 +125,50 @@ export async function createOpayCashierCheckout(params: CreateCashierParams) {
   return json.data;
 }
 
-// See the "STILL UNVERIFIED" block above - shape/algorithm needs
-// confirming against a real webhook delivery. Implemented as HMAC-SHA512
-// of the raw JSON body using the secret key (the one place it's actually
-// used), compared against a `sha512`/`signature` field OPay is expected
-// to send either as a header or inside the payload itself.
-export function verifyOpayWebhookSignature(
-  rawBody: string,
-  signatureHeader: string | null,
-) {
-  const secretKey = process.env.OPAY_SECRET_KEY;
-  if (!secretKey || !signatureHeader) return false;
+export type OpayPaymentStatus = "INITIAL" | "PENDING" | "SUCCESS" | "FAIL" | "CLOSE";
 
-  const expected = createHmac("sha512", secretKey).update(rawBody).digest("hex");
+interface OpayStatusResponse {
+  code: string;
+  message: string;
+  data?: {
+    reference: string;
+    orderNo: string;
+    status: OpayPaymentStatus | string;
+    amount?: { total: number; currency: string };
+  };
+}
 
-  const expectedBuf = Buffer.from(expected, "utf8");
-  const actualBuf = Buffer.from(signatureHeader, "utf8");
+// OPay's own record of a cashier payment. Returns null when OPay has no
+// transaction for this reference (code 02812 "Transaction does not
+// exist"); throws on any other failure so callers don't mistake an
+// outage for "not paid".
+export async function queryOpayPaymentStatus(reference: string) {
+  const { secretKey, merchantId } = opayEnv();
+  const body = JSON.stringify({ country: "NG", reference });
+  const signature = createHmac("sha512", secretKey).update(body).digest("hex");
 
-  return (
-    expectedBuf.length === actualBuf.length &&
-    timingSafeEqual(expectedBuf, actualBuf)
-  );
+  const res = await fetch(`${opayBaseUrl()}/api/v1/international/cashier/status`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${signature}`,
+      MerchantId: merchantId,
+    },
+    body,
+    cache: "no-store",
+  });
+
+  const json = (await res.json()) as OpayStatusResponse;
+
+  if (json.code === "02812") return null;
+  if (!res.ok || json.code !== "00000" || !json.data) {
+    throw new Error(json.message || "OPay status request failed");
+  }
+
+  return {
+    reference: json.data.reference,
+    status: json.data.status,
+    amountKobo: json.data.amount?.total ?? null,
+    currency: json.data.amount?.currency ?? null,
+  };
 }

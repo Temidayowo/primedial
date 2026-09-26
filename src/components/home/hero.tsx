@@ -48,14 +48,18 @@ const Hero = () => {
           </StaggerItem>
 
           <StaggerItem className="flex space-x-4 mt-4">
-            <button className="bg-green hover:bg-blue transition-colors duration-300 text-white px-6 md:px-8 py-2 md:py-3 rounded-full hover:bg-green-hover">
-              <Link href="" className="flex items-center font-medium">
-                Services <FaArrowRight className="ml-2" />
-              </Link>
-            </button>
-            <button className="border font-medium border-blue transition-colors duration-300 text-blue px-6 md:px-8 py-2 md:py-3 rounded-full hover:bg-blue hover:text-white">
-              <Link href="">Shop Now</Link>
-            </button>
+            <Link
+              href="/services"
+              className="flex items-center bg-green hover:bg-blue transition-colors duration-300 text-white font-medium px-6 md:px-8 py-2 md:py-3 rounded-full"
+            >
+              Services <FaArrowRight className="ml-2" />
+            </Link>
+            <Link
+              href="/shop"
+              className="border font-medium border-blue transition-colors duration-300 text-blue px-6 md:px-8 py-2 md:py-3 rounded-full hover:bg-blue hover:text-white"
+            >
+              Shop Now
+            </Link>
           </StaggerItem>
         </StaggerContainer>
 

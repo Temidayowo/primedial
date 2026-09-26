@@ -39,17 +39,30 @@ interface PayForOrderParams {
 // the "Payment not completed" retry panel on an order's detail page
 // (paying for an existing one) - same provider calls, same popup
 // wiring, same verify step either way.
+//
+// The payment actions return { ok: false, error } instead of throwing
+// (production strips thrown messages); this turns those into thrown
+// Errors with the real message, which both callers already display.
+function unwrap<T extends object>(result: { ok: true } & T | { ok: false; error: string }): T {
+  if (!result.ok) throw new Error(result.error);
+  return result;
+}
+
 export async function payForOrder(params: PayForOrderParams) {
   const { orderId, paymentMethod, savedCardId } = params;
 
   if (paymentMethod === "opay") {
-    const { cashierUrl } = await initiateOpayPayment(orderId);
-    window.location.href = cashierUrl;
+    const opay = unwrap(await initiateOpayPayment(orderId));
+    if (opay.alreadyPaid) {
+      await params.onSuccess();
+      return;
+    }
+    window.location.href = opay.cashierUrl;
     return;
   }
 
   if (paymentMethod === "card" && savedCardId) {
-    const charge = await payWithSavedCard(orderId, savedCardId);
+    const charge = unwrap(await payWithSavedCard(orderId, savedCardId));
 
     if (charge.status === "paid") {
       await params.onSuccess();
@@ -63,7 +76,7 @@ export async function payForOrder(params: PayForOrderParams) {
     params.onOtpRequired({
       displayText: charge.displayText,
       submit: async (otp: string) => {
-        await submitSavedCardOtp(orderId, charge.reference, otp);
+        unwrap(await submitSavedCardOtp(orderId, charge.reference, otp));
         await params.onSuccess();
       },
     });
@@ -71,18 +84,13 @@ export async function payForOrder(params: PayForOrderParams) {
   }
 
   const channel = paymentMethod === "card" ? "card" : "bank_transfer";
-  const payment = await initiatePaystackPayment(orderId, channel);
+  const payment = unwrap(await initiatePaystackPayment(orderId, channel));
 
-  // Reconciled against an existing reference from a prior attempt that
-  // turned out to have already succeeded (see reconcileIfAlreadyPaid in
-  // payments.action.ts) - no new charge needed.
+  // An earlier attempt on this order turned out to have already gone
+  // through (checked with the provider first) - no new charge needed.
   if (payment.alreadyPaid) {
     await params.onSuccess();
     return;
-  }
-
-  if (!payment.publicKey) {
-    throw new Error("Payments are not configured yet");
   }
 
   await openPaystackPopup({

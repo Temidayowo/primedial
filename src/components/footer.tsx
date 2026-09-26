@@ -1,17 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
-import { 
-  FaFacebook, 
-  FaTwitter, 
-  FaInstagram, 
-  FaLinkedin, 
-  FaEnvelope, 
-  FaLocationDot, 
-  FaPhone 
-} from "react-icons/fa6";
+import { FaEnvelope, FaLocationDot, FaPhone } from "react-icons/fa6";
+import { SocialIcon } from "@/components/social-icon";
+import { getPublishedSocialLinks } from "@/lib/content";
+import { getContactDetails, telHref } from "@/lib/site-settings";
+import { SOCIAL_PLATFORM_LABELS } from "@/lib/social-platforms";
 
-const Footer = () => {
+const Footer = async () => {
   const currentYear = new Date().getFullYear();
+  const [socialLinks, contact] = await Promise.all([
+    getPublishedSocialLinks(),
+    getContactDetails(),
+  ]);
 
   // Reusable Tailwind classes for the animated underline link
   const animatedLinkClasses = "relative inline-block pb-1 text-white transition-colors hover:text-gray-200 after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-white after:left-0 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full";
@@ -68,6 +68,9 @@ const Footer = () => {
                 <Link href="/contact" className={animatedLinkClasses}>Contact Us</Link>
               </li>
               <li>
+                <Link href="/track-order" className={animatedLinkClasses}>Track Your Order</Link>
+              </li>
+              <li>
                 <Link href="/faq" className={animatedLinkClasses}>FAQs</Link>
               </li>
               <li>
@@ -84,36 +87,45 @@ const Footer = () => {
             <h3 className="font-clash-display font-bold text-white text-lg mb-4">
               Get in Touch
             </h3>
+            {/* Edited at /admin/settings */}
             <ul className="space-y-3 text-sm text-gray-300 mb-6 font-poppins">
               <li className="flex items-start space-x-3">
                 <FaLocationDot className="text-white mt-1 shrink-0" />
-                <span>123 Innovation Drive, Tech City, 10001</span>
+                <span>{contact.address}</span>
               </li>
-              <li className="flex items-center space-x-3">
-                <FaPhone className="text-white shrink-0" />
-                <span>+1 (555) 123-4567</span>
-              </li>
+              {contact.phones[0] && (
+                <li className="flex items-center space-x-3">
+                  <FaPhone className="text-white shrink-0" />
+                  <a href={telHref(contact.phones[0])} className="hover:text-white">
+                    {contact.phones[0]}
+                  </a>
+                </li>
+              )}
               <li className="flex items-center space-x-3">
                 <FaEnvelope className="text-white shrink-0" />
-                <span>info@primedial.com</span>
+                <a href={`mailto:${contact.email}`} className="break-all hover:text-white">
+                  {contact.email}
+                </a>
               </li>
             </ul>
 
-            {/* Social Media Icons */}
-            <div className="flex space-x-4">
-              <a href="#" aria-label="Facebook" className="text-gray-400 hover:text-white hover:-translate-y-1 transition-all duration-300">
-                <FaFacebook className="size-5" />
-              </a>
-              <a href="#" aria-label="Twitter" className="text-gray-400 hover:text-white hover:-translate-y-1 transition-all duration-300">
-                <FaTwitter className="size-5" />
-              </a>
-              <a href="#" aria-label="Instagram" className="text-gray-400 hover:text-white hover:-translate-y-1 transition-all duration-300">
-                <FaInstagram className="size-5" />
-              </a>
-              <a href="#" aria-label="LinkedIn" className="text-gray-400 hover:text-white hover:-translate-y-1 transition-all duration-300">
-                <FaLinkedin className="size-5" />
-              </a>
-            </div>
+            {/* Social Media Icons - managed in /admin/socials */}
+            {socialLinks.length > 0 && (
+              <div className="flex space-x-4">
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={SOCIAL_PLATFORM_LABELS[link.platform]}
+                    className="text-gray-400 hover:text-white hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <SocialIcon platform={link.platform} className="size-5" />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
           
         </div>

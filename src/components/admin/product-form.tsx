@@ -17,6 +17,10 @@ interface ProductFormValues {
   images: string[];
   features: string[];
   specSheetUrl?: string | null;
+  weightKg?: number | null;
+  lengthCm?: number | null;
+  widthCm?: number | null;
+  heightCm?: number | null;
   inStock: boolean;
   isFeatured: boolean;
 }
@@ -144,6 +148,39 @@ export function ProductForm({
           {state?.errors?.brandId && (
             <p className="mt-1 text-xs text-red-500">{state.errors.brandId[0]}</p>
           )}
+        </div>
+      </div>
+
+      <div>
+        <label className={labelClasses}>Shipping (packed)</label>
+        <p className="mt-1 text-xs text-slate-400">
+          Boxed weight and dimensions, used for courier quotes and bookings.
+        </p>
+        <div className="mt-1.5 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {(
+            [
+              ["weightKg", "Weight (kg)"],
+              ["lengthCm", "Length (cm)"],
+              ["widthCm", "Width (cm)"],
+              ["heightCm", "Height (cm)"],
+            ] as const
+          ).map(([field, label]) => (
+            <div key={field}>
+              <input
+                name={field}
+                type="number"
+                step="0.01"
+                min="0"
+                placeholder={label}
+                aria-label={label}
+                defaultValue={product?.[field] ?? ""}
+                className={inputClasses}
+              />
+              {state?.errors?.[field] && (
+                <p className="mt-1 text-xs text-red-500">{state.errors[field][0]}</p>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 

@@ -7,6 +7,8 @@ import { prisma } from "@/lib/prisma";
 import { EMAIL_FROM, getResendClient, isEmailConfigured } from "@/lib/resend";
 import { getBaseUrl } from "@/lib/url";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { normalizeEmail } from "@/lib/email-address";
+import { emailFromResetIdentifier, resetIdentifier } from "@/lib/email/tokens";
 
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
 
@@ -28,7 +30,7 @@ export async function requestPasswordReset(
     return { error: "Please enter a valid email." };
   }
 
-  const { email } = validatedFields.data;
+  const email = normalizeEmail(validatedFields.data.email);
 
   // Always return the same message whether or not the account exists,
   // so this form can't be used to enumerate registered emails.
@@ -47,15 +49,21 @@ export async function requestPasswordReset(
     return { message: genericMessage };
   }
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findFirst({
+    where: { email: { equals: email, mode: "insensitive" } },
+  });
 
   if (user?.password) {
     const token = randomBytes(32).toString("hex");
 
-    await prisma.verificationToken.deleteMany({ where: { identifier: email } });
+    // Replaces only earlier reset links - a pending email verification
+    // link for the same address stays valid.
+    await prisma.verificationToken.deleteMany({
+      where: { identifier: resetIdentifier(user.email) },
+    });
     await prisma.verificationToken.create({
       data: {
-        identifier: email,
+        identifier: resetIdentifier(user.email),
         token,
         expires: new Date(Date.now() + RESET_TOKEN_TTL_MS),
       },
@@ -126,11 +134,17 @@ export type ResetPasswordState =
     }
   | undefined;
 
+// The token arrives as a hidden form field, not a bound argument - see the
+// note on authenticate() in auth.action.ts about bound form actions.
 export async function resetPassword(
-  token: string,
   prevState: ResetPasswordState,
   formData: FormData,
 ): Promise<ResetPasswordState> {
+  const token = formData.get("token");
+  if (typeof token !== "string" || token.length === 0 || token.length > 200) {
+    return { error: "This reset link is invalid or has expired." };
+  }
+
   const validatedFields = resetSchema.safeParse({
     password: formData.get("password"),
     confirmPassword: formData.get("confirmPassword"),
@@ -144,7 +158,13 @@ export async function resetPassword(
     where: { token },
   });
 
-  if (!verificationToken || verificationToken.expires < new Date()) {
+  // Only tokens issued by requestPasswordReset - an email verification
+  // token can't be used to set a password.
+  const email = verificationToken
+    ? emailFromResetIdentifier(verificationToken.identifier)
+    : null;
+
+  if (!verificationToken || !email || verificationToken.expires < new Date()) {
     return { error: "This reset link is invalid or has expired." };
   }
 
@@ -154,7 +174,7 @@ export async function resetPassword(
   // deleted between requesting and using the reset link - it just
   // updates zero rows instead of crashing.
   const { count } = await prisma.user.updateMany({
-    where: { email: verificationToken.identifier },
+    where: { email: { equals: email, mode: "insensitive" } },
     data: { password: hashedPassword },
   });
 

@@ -5,17 +5,22 @@ import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { signIn, EmailNotVerifiedError, AdminAccountError } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { sendVerificationEmail } from "@/lib/actions/verify-email.action";
+import { sendVerificationEmail } from "@/lib/email/verification";
+import { normalizeEmail } from "@/lib/email-address";
 import { RateLimitedError } from "@/auth";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export type LoginContext = "user" | "admin";
 
-export async function authenticate(
-  context: LoginContext,
-  prevState: string | undefined,
-  formData: FormData,
-) {
+// The login type arrives as a hidden form field rather than a bound
+// argument: a no-JavaScript submission of a form whose action was bound
+// in the browser (authenticate.bind(null, context)) sent the Next.js
+// server into an endless loop, freezing every request. It's only a hint
+// for which error to show - authorize() in src/auth.ts checks the
+// account's role against it either way.
+export async function authenticate(prevState: string | undefined, formData: FormData) {
+  const context: LoginContext = formData.get("loginType") === "admin" ? "admin" : "user";
+
   try {
     await signIn("credentials", {
       email: formData.get("email"),
@@ -73,7 +78,7 @@ export async function signInWithGoogle(prevState: string | undefined) {
 const signupSchema = z
   .object({
     name: z.string().min(2, { error: "Name must be at least 2 characters." }).trim(),
-    email: z.email({ error: "Please enter a valid email." }).trim(),
+    email: z.email({ error: "Please enter a valid email." }).trim().transform(normalizeEmail),
     password: z
       .string()
       .min(8, { error: "Be at least 8 characters long." })
@@ -125,7 +130,9 @@ export async function signup(
     return { message: "Too many attempts. Please try again later." };
   }
 
-  const existingUser = await prisma.user.findUnique({ where: { email } });
+  const existingUser = await prisma.user.findFirst({
+    where: { email: { equals: email, mode: "insensitive" } },
+  });
 
   if (existingUser) {
     return { message: "An account with this email already exists." };

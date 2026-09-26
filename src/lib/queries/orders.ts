@@ -1,17 +1,25 @@
-"use server";
-
+import "server-only";
 import { prisma } from "@/lib/prisma";
+import { PaymentStatus } from "@/generated/prisma/enums";
+import { isUuid } from "@/lib/uuid";
+
+// Server-only reads for the customer's own orders. Callers pass the id
+// from verifySession(), never one from the client.
 
 export async function getOrderStats(userId: string) {
-  const result = await prisma.order.aggregate({
-    where: { userId },
-    _count: { _all: true },
-    _sum: { total: true },
-  });
+  const [orderCount, paid] = await Promise.all([
+    prisma.order.count({ where: { userId } }),
+    // Only money actually received counts as "spent" - unpaid, failed
+    // and abandoned orders don't.
+    prisma.order.aggregate({
+      where: { userId, paymentStatus: PaymentStatus.PAID },
+      _sum: { total: true },
+    }),
+  ]);
 
   return {
-    totalOrders: result._count._all,
-    totalSpent: Number(result._sum.total ?? 0),
+    totalOrders: orderCount,
+    totalSpent: Number(paid._sum.total ?? 0),
   };
 }
 
@@ -37,11 +45,13 @@ export async function getAllOrders(userId: string) {
 }
 
 export async function getOrderById(userId: string, orderId: string) {
+  if (!isUuid(orderId)) return null;
   return prisma.order.findFirst({
     where: { id: orderId, userId },
     include: {
       items: { include: { product: true } },
       shippingAddress: true,
+      events: { orderBy: { occurredAt: "desc" } },
     },
   });
 }

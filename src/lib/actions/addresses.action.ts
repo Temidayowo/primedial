@@ -5,13 +5,6 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession } from "@/lib/dal";
 
-export async function getAddresses(userId: string) {
-  return prisma.address.findMany({
-    where: { userId },
-    orderBy: [{ isDefault: "desc" }, { createdAt: "desc" }],
-  });
-}
-
 const addressSchema = z.object({
   label: z.string().trim().optional(),
   fullName: z.string().min(2, { error: "Full name is required." }).trim(),
@@ -79,16 +72,22 @@ export async function deleteAddress(addressId: string) {
 export async function setDefaultAddress(addressId: string) {
   const session = await verifySession();
 
-  await prisma.$transaction([
-    prisma.address.updateMany({
-      where: { userId: session.user.id },
-      data: { isDefault: false },
-    }),
-    prisma.address.updateMany({
-      where: { id: addressId, userId: session.user.id },
-      data: { isDefault: true },
-    }),
-  ]);
+  // Two plain updates - the Neon HTTP driver can't run transactions.
+  // Only touches the user's own addresses, and does nothing unless the
+  // chosen one is theirs.
+  const owned = await prisma.address.count({
+    where: { id: addressId, userId: session.user.id },
+  });
+  if (owned === 0) return;
+
+  await prisma.address.updateMany({
+    where: { userId: session.user.id, id: { not: addressId } },
+    data: { isDefault: false },
+  });
+  await prisma.address.updateMany({
+    where: { id: addressId, userId: session.user.id },
+    data: { isDefault: true },
+  });
 
   revalidatePath("/account/addresses");
 }

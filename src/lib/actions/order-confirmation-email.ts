@@ -1,6 +1,7 @@
 import { EMAIL_FROM, getResendClient, isEmailConfigured } from "@/lib/resend";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/utils";
+import { getBaseUrl } from "@/lib/url";
 
 // Called from markOrderPaidByReference (src/lib/payments/order-status.ts)
 // right after an order flips PENDING -> PAID, regardless of which of the
@@ -22,6 +23,8 @@ export async function sendOrderConfirmationEmail(orderId: string) {
   });
 
   if (!order) return;
+
+  const orderUrl = `${await getBaseUrl()}/account/orders/${order.id}`;
 
   const itemsHtml = order.items
     .map(
@@ -58,8 +61,14 @@ export async function sendOrderConfirmationEmail(orderId: string) {
           Total: ${formatCurrency(Number(order.total))}
         </p>
         <p style="color: #475569; font-size: 14px; line-height: 1.6;">
-          You can track this order any time from your account.
+          We'll email you again when it ships. You can follow its progress any time:
         </p>
+        <a
+          href="${orderUrl}"
+          style="display: inline-block; margin-top: 8px; padding: 10px 20px; background-color: #3b82f6; color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 14px;"
+        >
+          Track your order
+        </a>
       </div>
     `,
   });

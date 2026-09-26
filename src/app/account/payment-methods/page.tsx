@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { verifySession } from "@/lib/dal";
-import { getPaymentMethods } from "@/lib/actions/payment-methods.action";
+import { getPaymentMethods } from "@/lib/queries/payment-methods";
 import { ManagePaymentMethods } from "@/components/account/manage-payment-methods";
 
 export const metadata: Metadata = {

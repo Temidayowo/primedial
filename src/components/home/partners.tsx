@@ -1,50 +1,16 @@
 import Image from "next/image";
 import { Marquee } from "@/components/shadcn-space/animations/marquee";
 import { AnimateOnScroll } from "@/components/ui/MotionWrapper";
+import { getPublishedPartners } from "@/lib/content";
+import { imageProps } from "@/lib/images";
 
-type BrandList = {
-  image: string;
-  lightimg: string;
-  name: string;
-};
+// Partner logos are managed in /admin/partners.
+export default async function Partners() {
+  const partners = await getPublishedPartners();
 
-export default function MarqueeBrandsDemo() {
-  const brandList: BrandList[] = [
-    {
-      image: "https://images.shadcnspace.com/assets/brand-logo/logoipsum-1.svg",
-      lightimg:
-        "https://images.shadcnspace.com/assets/brand-logo/logoipsum-light-1.svg",
-      name: "Brand 1",
-    },
-    {
-      image: "https://images.shadcnspace.com/assets/brand-logo/logoipsum-2.svg",
-      lightimg:
-        "https://images.shadcnspace.com/assets/brand-logo/logoipsum-light-2.svg",
-      name: "Brand 2",
-    },
-    {
-      image: "https://images.shadcnspace.com/assets/brand-logo/logoipsum-3.svg",
-      lightimg:
-        "https://images.shadcnspace.com/assets/brand-logo/logoipsum-light-3.svg",
-      name: "Brand 3",
-    },
-    {
-      image: "https://images.shadcnspace.com/assets/brand-logo/logoipsum-4.svg",
-      lightimg:
-        "https://images.shadcnspace.com/assets/brand-logo/logoipsum-light-4.svg",
-      name: "Brand 4",
-    },
-    {
-      image: "https://images.shadcnspace.com/assets/brand-logo/logoipsum-5.svg",
-      lightimg:
-        "https://images.shadcnspace.com/assets/brand-logo/logoipsum-light-5.svg",
-      name: "Brand 5",
-    },
-  ];
+  if (partners.length === 0) return null;
 
   return (
-    // 1. Changed px-32 to px-6 md:px-12 lg:px-32.
-    // 2. Added overflow-hidden w-full to prevent horizontal scrolling bugs.
     <section className="w-full overflow-hidden bg-gray-50">
       <div className="section-container space-y-6 md:space-y-8">
         <AnimateOnScroll>
@@ -53,28 +19,38 @@ export default function MarqueeBrandsDemo() {
           </h3>
         </AnimateOnScroll>
 
-        {/* Scaled the inner padding for smaller screens */}
         <Marquee className="[--duration:20s] px-4 md:px-10" pauseOnHover>
-          {brandList.map((brand, index) => (
-            <div key={index} className="flex items-center justify-center">
+          {partners.map((partner) => {
+            const logo = (
               <Image
-                src={brand.image}
-                alt={brand.name}
+                {...imageProps(partner.logo)}
+                alt={partner.name}
                 width={144}
                 height={48}
-                // 3. Made width responsive (w-24 on mobile, w-36 on desktop)
-                // 4. Fixed mismatched margins between light/dark mode
-                className="w-24 md:w-32 lg:w-36 h-auto mr-8 md:mr-12 lg:mr-20 dark:hidden object-contain"
+                className="w-24 md:w-32 lg:w-36 h-12 object-contain"
               />
-              <Image
-                src={brand.lightimg}
-                alt={brand.name}
-                width={144}
-                height={48}
-                className="hidden dark:block w-24 md:w-32 lg:w-36 h-auto mr-8 md:mr-12 lg:mr-20 object-contain"
-              />
-            </div>
-          ))}
+            );
+
+            return (
+              <div
+                key={partner.id}
+                className="flex items-center justify-center mr-8 md:mr-12 lg:mr-20"
+              >
+                {partner.websiteUrl ? (
+                  <a
+                    href={partner.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${partner.name} website`}
+                  >
+                    {logo}
+                  </a>
+                ) : (
+                  logo
+                )}
+              </div>
+            );
+          })}
         </Marquee>
       </div>
     </section>
