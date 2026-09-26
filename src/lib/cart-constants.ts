@@ -9,24 +9,29 @@ export const FLAT_SHIPPING = 5000; // NGN
 // Shown as selectable options on /checkout. The first entry's cost
 // matches FLAT_SHIPPING so the cart page's preview total and the
 // checkout page's default selection agree.
+// deliveryDays: business days from dispatch, used for the estimated
+// delivery date shown on order tracking.
 export const SHIPPING_METHODS = [
   {
     id: "standard",
     name: "Standard Shipping",
     description: "5-7 business days",
     cost: FLAT_SHIPPING,
+    deliveryDays: { min: 5, max: 7 },
   },
   {
     id: "express",
     name: "Express Shipping",
     description: "2-3 business days",
     cost: 12000,
+    deliveryDays: { min: 2, max: 3 },
   },
   {
     id: "priority",
     name: "Priority Overnight",
     description: "Next business day",
     cost: 25000,
+    deliveryDays: { min: 1, max: 1 },
   },
 ] as const;
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Package, Wallet, Truck } from "lucide-react";
 import { verifySession } from "@/lib/dal";
-import { getOrderStats, getRecentOrders } from "@/lib/actions/orders.action";
+import { getOrderStats, getRecentOrders } from "@/lib/queries/orders";
 import { OrderCard } from "@/components/account/order-card";
 import { formatCurrency } from "@/lib/utils";
 

@@ -5,8 +5,10 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import {
   verifyPaystackTransaction,
   toKobo,
+  paystackChargedAmount,
   saveOrUpdatePaystackAuthorization,
 } from "@/lib/payments/paystack";
+import { isUuid } from "@/lib/uuid";
 import { markOrderPaidByReference } from "@/lib/payments/order-status";
 
 // Called by the client immediately after the Paystack popup reports
@@ -35,7 +37,7 @@ export async function POST(request: Request) {
     reference?: string;
   };
 
-  if (!reference) {
+  if (!reference || typeof reference !== "string" || (orderId && !isUuid(orderId))) {
     return NextResponse.json({ error: "Missing reference" }, { status: 400 });
   }
 
@@ -70,7 +72,7 @@ export async function POST(request: Request) {
     // fee-inclusive total actually charged, not what we asked for.
     // requested_amount is only absent on very old transactions, so amount
     // is a reasonable fallback rather than failing verification outright.
-    const chargedAmount = transaction.requested_amount ?? transaction.amount;
+    const chargedAmount = paystackChargedAmount(transaction);
 
     if (transaction.status !== "success" || chargedAmount !== toKobo(Number(order.total))) {
       console.error(
@@ -89,7 +91,7 @@ export async function POST(request: Request) {
       await prisma.order.update({ where: { id: order.id }, data: { paymentReference: reference } });
     }
 
-    const result = await markOrderPaidByReference(reference);
+    const result = await markOrderPaidByReference(reference, chargedAmount);
 
     if (!result.ok) {
       console.error(`[verify-payment] markOrderPaidByReference failed for reference=${reference}`);

@@ -13,7 +13,7 @@ interface LoginFormProps {
 export function LoginForm({ context = "user" }: LoginFormProps) {
   const isAdmin = context === "admin";
   const [errorMessage, formAction, isPending] = useActionState(
-    authenticate.bind(null, context),
+    authenticate,
     undefined,
   );
   const [showPassword, setShowPassword] = useState(false);
@@ -30,6 +30,7 @@ export function LoginForm({ context = "user" }: LoginFormProps) {
       </p>
 
       <form action={formAction} className="mt-8 space-y-5">
+        <input type="hidden" name="loginType" value={context} />
         <div>
           <label
             htmlFor="email"

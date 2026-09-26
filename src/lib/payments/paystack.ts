@@ -51,11 +51,13 @@ function formatCardBrand(brand: string | undefined) {
   return trimmed.charAt(0).toUpperCase() + trimmed.slice(1).toLowerCase();
 }
 
-// Converts a naira amount (what's stored on Order.total) to the kobo
-// integer Paystack's API expects. Rounded because Decimal -> Number can
-// carry float dust (e.g. 4999.9999999999).
-export function toKobo(nairaAmount: number) {
-  return Math.round(nairaAmount * 100);
+export { toKobo } from "./amount";
+
+// What Paystack actually charged for the order itself. When the merchant
+// passes its fee on to the customer, `amount` includes that fee and
+// `requested_amount` is what we asked for - compare the latter.
+export function paystackChargedAmount(transaction: { amount: number; requested_amount?: number }) {
+  return transaction.requested_amount ?? transaction.amount;
 }
 
 // Server-side verification against Paystack's own record of the charge -
@@ -97,6 +99,8 @@ interface PaystackChargeResponse {
     // check.
     status: string;
     reference: string;
+    amount?: number; // kobo
+    requested_amount?: number; // kobo
     display_text?: string;
     gateway_response?: string;
   };

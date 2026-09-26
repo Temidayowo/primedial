@@ -6,11 +6,12 @@ import bcrypt from "bcryptjs";
 import * as z from "zod";
 import { prisma } from "@/lib/prisma";
 import { Role } from "@/generated/prisma/enums";
-import { sendVerificationEmail } from "@/lib/actions/verify-email.action";
+import { sendVerificationEmail } from "@/lib/email/verification";
+import { normalizeEmail } from "@/lib/email-address";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 const credentialsSchema = z.object({
-  email: z.email(),
+  email: z.email().transform(normalizeEmail),
   password: z.string().min(8),
   loginType: z.enum(["user", "admin"]).optional(),
   remember: z.string().optional(),
@@ -96,7 +97,9 @@ export const {
           throw new RateLimitedError();
         }
 
-        const user = await prisma.user.findUnique({ where: { email } });
+        const user = await prisma.user.findFirst({
+          where: { email: { equals: email, mode: "insensitive" } },
+        });
 
         if (!user || !user.password) {
           return null;
@@ -160,8 +163,8 @@ export const {
     // a brand-new OAuth sign-in.
     async signIn({ user, account }) {
       if (account?.provider === "google" && user.email) {
-        const existing = await prisma.user.findUnique({
-          where: { email: user.email },
+        const existing = await prisma.user.findFirst({
+          where: { email: { equals: user.email, mode: "insensitive" } },
           select: { role: true },
         });
         if (existing?.role === Role.ADMIN) {

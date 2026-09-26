@@ -1,57 +1,48 @@
 import { NextResponse } from "next/server";
-import { verifyOpayWebhookSignature } from "@/lib/payments/opay";
-import { markOrderPaidByReference, markOrderFailedByReference } from "@/lib/payments/order-status";
+import { prisma } from "@/lib/prisma";
+import { PaymentProvider } from "@/generated/prisma/enums";
+import { syncOrderPaymentFromProvider } from "@/lib/payments/reconcile";
 
-// ⚠️ FLAG FOR REVIEW: the payload shape assumed below (a `payload` object
-// carrying `reference`/`status`, alongside a top-level `sha512` signature)
-// is OPay's commonly-documented webhook shape, but has not been confirmed
-// against this merchant account's actual current docs/sandbox - see the
-// larger flag comment in src/lib/payments/opay.ts. Log the raw body the
-// first time a real OPay webhook arrives in sandbox and adjust this parsing
-// to match before relying on it.
-interface OpayWebhookBody {
-  payload?: { reference?: string; status?: string };
-  sha512?: string;
+// OPay's callbackUrl. Its signature scheme has never been observed from a
+// real delivery, so the body is NOT trusted: it's only used to find which
+// order to check, and the payment's status and amount come from OPay's
+// status API (queryOpayPaymentStatus), which is authenticated with our
+// secret key. A forged callback can at most trigger that check.
+//
+// OPay's redirect flow means the customer may never come back to the site
+// after paying, so this is the main way OPay orders get confirmed; the
+// order page also checks when the customer does return.
+interface OpayCallbackBody {
+  payload?: { reference?: unknown };
+  reference?: unknown;
 }
 
-// Backup source of truth for OPay payments - the redirect flow means the
-// user's browser may never come back to this app at all (they could close
-// the OPay tab after paying), so unlike Paystack's popup flow, this
-// webhook is effectively the *primary* way OPay orders get confirmed, not
-// just a fallback. Configure this URL as the callbackUrl / webhook
-// endpoint in the OPay merchant dashboard.
 export async function POST(request: Request) {
-  const rawBody = await request.text();
-
-  let body: OpayWebhookBody;
+  let body: OpayCallbackBody;
   try {
-    body = JSON.parse(rawBody);
+    body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  // Signature may arrive as a header (checked first) or embedded in the
-  // body as `sha512` - see the flag above, confirm which one OPay actually
-  // sends for this account before trusting either path.
-  const headerSignature = request.headers.get("x-opay-signature");
-  const signature = headerSignature ?? body.sha512 ?? null;
-  const signedContent = headerSignature ? rawBody : JSON.stringify(body.payload ?? {});
-
-  if (!verifyOpayWebhookSignature(signedContent, signature)) {
-    return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
-  }
-
-  const reference = body.payload?.reference;
-  const status = body.payload?.status;
-
-  if (!reference) {
+  const reference = body.payload?.reference ?? body.reference;
+  if (typeof reference !== "string" || reference.length > 100) {
     return NextResponse.json({ error: "Missing reference" }, { status: 400 });
   }
 
-  if (status === "SUCCESS") {
-    await markOrderPaidByReference(reference);
-  } else if (status === "FAIL" || status === "FAILED" || status === "CLOSE") {
-    await markOrderFailedByReference(reference);
+  const order = await prisma.order.findUnique({
+    where: { paymentReference: reference },
+    select: {
+      id: true,
+      userId: true,
+      paymentStatus: true,
+      paymentProvider: true,
+      paymentReference: true,
+    },
+  });
+
+  if (order?.paymentProvider === PaymentProvider.OPAY) {
+    await syncOrderPaymentFromProvider(order);
   }
 
   return NextResponse.json({ received: true });

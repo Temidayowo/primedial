@@ -2,10 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { getOrderByIdAdmin } from "@/lib/actions/admin/orders.action";
+import { deleteOrderEvent, getOrderByIdAdmin } from "@/lib/actions/admin/orders.action";
 import { StatusBadge, PaymentStatusBadge } from "@/components/account/status-badge";
-import { OrderStatusSelect } from "@/components/admin/order-status-select";
+import { FulfilmentPanel } from "@/components/admin/fulfilment-panel";
+import { DeleteContentButton } from "@/components/admin/content/delete-content-button";
+import { OrderTracking } from "@/components/orders/order-tracking";
+import { buildTrackingView } from "@/lib/orders/tracking";
 import { formatCurrency } from "@/lib/utils";
+import { getOrderShippingDetails } from "@/lib/shipping-details";
 
 export const metadata: Metadata = {
   title: "Order Details",
@@ -20,6 +24,11 @@ export default async function AdminOrderDetailPage({
   const order = await getOrderByIdAdmin(id);
 
   if (!order) notFound();
+
+  // The copy saved with the order - still there if the customer has
+  // since deleted this address from their account.
+  const shipping = getOrderShippingDetails(order);
+  const tracking = buildTrackingView(order, shipping);
 
   return (
     <div className="max-w-3xl">
@@ -52,11 +61,30 @@ export default async function AdminOrderDetailPage({
         </div>
       </div>
 
-      <div className="mt-6 rounded-xl border border-gray-100 bg-white p-4">
-        <h2 className="text-sm font-semibold text-blue">Fulfillment Status</h2>
-        <div className="mt-3">
-          <OrderStatusSelect orderId={order.id} status={order.status} />
-        </div>
+      <div className="mt-6">
+        <FulfilmentPanel
+          orderId={order.id}
+          status={order.status}
+          isPaid={order.paymentStatus === "PAID"}
+          courierName={order.courierName}
+          trackingNumber={order.trackingNumber}
+          trackingUrl={order.trackingUrl}
+        />
+      </div>
+
+      <div className="mt-6">
+        <h2 className="mb-3 text-sm font-semibold text-blue">What the customer sees</h2>
+        <OrderTracking
+          view={tracking}
+          eventAction={(event) =>
+            event.source === "ADMIN" ? (
+              <DeleteContentButton
+                action={deleteOrderEvent.bind(null, event.id)}
+                itemName={`the "${event.label}" update`}
+              />
+            ) : null
+          }
+        />
       </div>
 
       <div className="mt-6 rounded-xl border border-gray-100 bg-white p-4">
@@ -116,29 +144,29 @@ export default async function AdminOrderDetailPage({
         </div>
       </div>
 
-      {order.shippingAddress && (
+      {shipping && (
         <div className="mt-6 rounded-xl border border-gray-100 bg-white p-4">
           <h2 className="text-sm font-semibold text-blue">Shipping Address</h2>
           <p className="mt-2 text-sm text-slate-500">
-            {order.shippingAddress.fullName}
+            {shipping.fullName}
             <br />
-            {order.shippingAddress.line1}
-            {order.shippingAddress.line2 && (
+            {shipping.line1}
+            {shipping.line2 && (
               <>
                 <br />
-                {order.shippingAddress.line2}
+                {shipping.line2}
               </>
             )}
             <br />
-            {order.shippingAddress.city}
-            {order.shippingAddress.state ? `, ${order.shippingAddress.state}` : ""}{" "}
-            {order.shippingAddress.postalCode}
+            {shipping.city}
+            {shipping.state ? `, ${shipping.state}` : ""}{" "}
+            {shipping.postalCode}
             <br />
-            {order.shippingAddress.country}
-            {order.shippingAddress.phone && (
+            {shipping.country}
+            {shipping.phone && (
               <>
                 <br />
-                {order.shippingAddress.phone}
+                {shipping.phone}
               </>
             )}
           </p>

@@ -7,7 +7,7 @@ import { resetPassword } from "@/lib/actions/password-reset.action";
 
 export function ResetPasswordForm({ token }: { token: string }) {
   const [state, formAction, isPending] = useActionState(
-    resetPassword.bind(null, token),
+    resetPassword,
     undefined,
   );
   const [showPassword, setShowPassword] = useState(false);
@@ -43,6 +43,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
       </p>
 
       <form action={formAction} className="mt-8 space-y-5">
+        <input type="hidden" name="token" value={token} />
         <div>
           <label
             htmlFor="password"

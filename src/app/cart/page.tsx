@@ -3,11 +3,12 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ProductList from "@/components/shared/product/productList";
 import { verifySession } from "@/lib/dal";
-import { getCart } from "@/lib/actions/cart.action";
+import { getCart } from "@/lib/queries/cart";
 import { getFeaturedProducts } from "@/lib/actions/products.action";
 import { CartItemRow } from "@/components/cart/cart-item-row";
 import { OrderSummary } from "@/components/cart/order-summary";
 import { EmptyCart } from "@/components/cart/empty-cart";
+import { isPurchasable } from "@/lib/product-availability";
 
 export const metadata: Metadata = {
   title: "Shopping Cart",
@@ -19,6 +20,10 @@ export default async function CartPage() {
     getCart(session.user.id),
     getFeaturedProducts(),
   ]);
+
+  const unavailableReason = (product: (typeof items)[number]["product"]) =>
+    isPurchasable(product) ? undefined : "Out of stock - remove to continue.";
+  const hasUnavailableItems = items.some((item) => !isPurchasable(item.product));
 
   const cartProductIds = new Set(items.map((item) => item.productId));
   const recommended = featured
@@ -58,11 +63,12 @@ export default async function CartPage() {
                     productImage={item.product.images[0]}
                     unitPrice={Number(item.product.price)}
                     quantity={item.quantity}
+                    unavailableReason={unavailableReason(item.product)}
                   />
                 ))}
               </div>
 
-              <OrderSummary subtotal={subtotal} />
+              <OrderSummary subtotal={subtotal} hasUnavailableItems={hasUnavailableItems} />
             </div>
           )}
         </div>

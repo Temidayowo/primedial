@@ -24,6 +24,7 @@ export function OrderSummarySidebar({
   items,
   subtotal,
   shippingCost,
+  shippingMethodId,
   selectedAddressId,
   paymentMethod,
   selectedSavedCardId,
@@ -31,6 +32,7 @@ export function OrderSummarySidebar({
   items: SummaryItem[];
   subtotal: number;
   shippingCost: number;
+  shippingMethodId: string;
   selectedAddressId: string | null;
   paymentMethod: PaymentMethodChoice;
   selectedSavedCardId: string | null;
@@ -52,30 +54,29 @@ export function OrderSummarySidebar({
 
     startPlaceOrder(async () => {
       try {
+        // Only the choices go to the server - it prices the order itself.
         const order = await createPendingOrder({
           addressId: selectedAddressId,
-          shippingCost,
+          shippingMethodId,
         });
+
+        if (!order.ok) {
+          setError(order.error);
+          return;
+        }
 
         await payForOrder({
           orderId: order.orderId,
           paymentMethod,
           savedCardId: selectedSavedCardId,
           onSuccess: () => router.push(`/account/orders/${order.orderId}`),
-          // Paystack's popup reported success but our own verify call
-          // couldn't confirm it (see /api/verify-payment) - the order is
-          // most likely actually paid. Send them to the order page
-          // instead of stranding them here with just an error banner and
-          // no next step - it already shows the pending status and a
-          // retry panel, which is a more honest and actionable place to
-          // land than checkout.
-          onError: () => router.push(`/account/orders/${order.orderId}`),
+          onError: setError,
           onCardCancelled: () =>
             setError("Payment was cancelled. Your order is saved - you can try again."),
-          // Same reasoning as onError above - closing the popup here
-          // isn't proof the transfer didn't happen, so this is just as
-          // ambiguous as a failed verify, not a clean cancel.
-          onBankTransferCancelled: () => router.push(`/account/orders/${order.orderId}`),
+          onBankTransferCancelled: () =>
+            setError(
+              "If you already sent the transfer, we'll confirm it automatically once it clears. Otherwise your order is saved - you can try again below.",
+            ),
           onOtpRequired: setOtpRequest,
         });
       } catch (err) {
@@ -149,7 +150,7 @@ export function OrderSummarySidebar({
           type="button"
           onClick={handlePlaceOrder}
           disabled={isPlacingOrder || !selectedAddressId}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-blue/95 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-500 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Lock className="size-4" />
           {isPlacingOrder ? "Placing Order..." : "Place Order"}

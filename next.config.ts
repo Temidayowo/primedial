@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   reactCompiler: true,
   images: {
+    // In dev, never serve stale optimized images after a file in /public is
+    // replaced under the same name. Production keeps the 4-hour default.
+    minimumCacheTTL: process.env.NODE_ENV === "development" ? 0 : 14400,
     remotePatterns: [
       {
         protocol: "https",

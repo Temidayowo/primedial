@@ -44,6 +44,15 @@ model Product {
   inStock      Boolean  @default(true)
   features     String[]
   specSheetUrl String?
+
+  // Packed shipping weight/dimensions (product + box), sent to the courier
+  // API for rate quotes and bookings. Optional so existing products keep
+  // working; fulfilment should refuse to auto-book an item missing them.
+  weightKg     Float?
+  lengthCm     Float?
+  widthCm      Float?
+  heightCm     Float?
+
   price        Decimal  @default(0.0) @db.Decimal(12, 2)
   isFeatured   Boolean  @default(false)
   createdAt    DateTime @default(now())
@@ -217,7 +226,68 @@ model Order {
   paymentReference String?          @unique
   paidAt           DateTime?
 
-  items OrderItem[]
+  // Price breakdown, fixed at order time. total = subtotal + tax +
+  // shippingCost. Null on orders placed before these were recorded.
+  subtotal       Decimal? @db.Decimal(12, 2)
+  tax            Decimal? @db.Decimal(12, 2)
+  shippingCost   Decimal? @db.Decimal(12, 2)
+  shippingMethod String? // SHIPPING_METHODS id in src/lib/cart-constants.ts
+
+  // Copy of the shipping address as it was when the order was placed.
+  // shippingAddressId above is cleared if the customer later deletes
+  // that saved address, so this is what order pages, emails and the
+  // admin use - fulfilment must never depend on the address book.
+  // Shape: ShippingDetails in src/lib/shipping-details.ts.
+  shippingDetails Json?
+
+  // Fulfilment. Timestamps are set the first time the order reaches each
+  // status (null on orders that reached it before these were recorded).
+  shippedAt      DateTime?
+  deliveredAt    DateTime?
+  cancelledAt    DateTime?
+  courierName    String?
+  trackingNumber String?
+  trackingUrl    String? // courier's own tracking page for this parcel
+
+  items  OrderItem[]
+  events OrderEvent[]
+}
+
+enum OrderEventType {
+  PLACED
+  PAID
+  PROCESSING // moved back to processing (a correction)
+  SHIPPED
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  NOTE // free-text update shown to the customer
+}
+
+// Who recorded an event. COURIER is reserved for the courier API
+// integration: its webhook/poller only has to append events here (and
+// move Order.status on delivery) for customers to see live tracking.
+enum OrderEventSource {
+  SYSTEM
+  ADMIN
+  COURIER
+}
+
+// The order's tracking timeline, shown to the customer newest first.
+model OrderEvent {
+  id         String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type       OrderEventType
+  source     OrderEventSource @default(SYSTEM)
+  message    String?
+  location   String?
+  occurredAt DateTime         @default(now())
+  createdAt  DateTime         @default(now())
+
+  orderId String @db.Uuid
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, occurredAt])
 }
 
 model OrderItem {
@@ -244,4 +314,137 @@ model CartItem {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([userId, productId])
+}
+
+// ---------------------------------------------------------------------------
+// CMS content - managed from /admin, rendered on the public site.
+// Every model has `sortOrder` (ascending; ties fall back to oldest first)
+// and `isPublished`, so the admin can reorder or hide an entry without
+// deleting it. Image fields hold a path under /public or a full URL, the
+// same convention Product.images uses.
+// ---------------------------------------------------------------------------
+
+enum SocialPlatform {
+  FACEBOOK
+  X
+  INSTAGRAM
+  LINKEDIN
+  YOUTUBE
+  TIKTOK
+  WHATSAPP
+}
+
+// Shown in the "Expertise In Action" section on /services.
+model Project {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  summary     String // sector and scope, e.g. "Cadastral - Land Documentation"
+  location    String
+  image       String
+  year        Int?
+  // Flags an illustrative entry that isn't a real completed job, so the
+  // card shows an "Example" badge instead of passing it off as real work.
+  isExample   Boolean  @default(false)
+  isPublished Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Shown in "Meet Our Team" on /about.
+model TeamMember {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  role        String
+  image       String?
+  linkedinUrl String?
+  email       String?
+  isPublished Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Shown in "What Our Clients Say" on the home page.
+model Testimonial {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  role        String // title and company, e.g. "Chief Surveyor, Meridian"
+  content     String
+  rating      Int      @default(5) // 1-5
+  isPublished Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Shown in the "Our Trusted Partners" logo marquee on the home page.
+model Partner {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  logo        String
+  websiteUrl  String?
+  isPublished Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Footer social icons. One row per platform.
+model SocialLink {
+  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  platform    SocialPlatform @unique
+  url         String
+  isPublished Boolean        @default(true)
+  sortOrder   Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+// Submissions from the public contact, consultation and service-request
+// forms. Stored (not just emailed) so nothing is lost if email delivery
+// fails, and so the team can track follow-up from /admin/inquiries.
+enum InquiryType {
+  CONTACT
+  CONSULTATION
+  SERVICE_REQUEST
+}
+
+enum InquiryStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+}
+
+model Inquiry {
+  id        String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type      InquiryType
+  status    InquiryStatus @default(NEW)
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  subject   String? // contact form
+  service   String? // consultation: service needed; service request: equipment type
+  model     String? // service request: equipment model
+  location  String? // consultation: project location
+  message   String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status, createdAt])
+}
+
+// Business contact details shown on the contact page and in the footer,
+// edited from /admin/settings. A single row with id "default".
+model SiteSettings {
+  id            String   @id @default("default")
+  address       String
+  phones        String[]
+  email         String
+  businessHours String
+  // Google Maps embed URL for the contact page map. When empty the map is
+  // generated from the address.
+  mapEmbedUrl   String?
+  updatedAt     DateTime @updatedAt
 }

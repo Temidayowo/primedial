@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { FaFileArrowDown } from "react-icons/fa6";
+import { Check } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Product } from "@/app/(site)/shop/productList";
 import QuantitySelector from "../counter";
@@ -28,6 +29,7 @@ const AboutProduct = ({
     | "category"
     | "price"
     | "description"
+    | "features"
     | "specSheetUrl"
     | "inStock"
   >;
@@ -36,6 +38,7 @@ const AboutProduct = ({
   const [api, setApi] = useState<CarouselApi>();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const images = product.images.length > 0 ? product.images : [];
+  const features = (product.features ?? []).filter((f) => f.trim() !== "");
 
   useEffect(() => {
     if (!api) return;
@@ -130,6 +133,26 @@ const AboutProduct = ({
             {formatCurrency(product.price)}
           </h2>
           <p className="text-gray-600">{product.description}</p>
+          {features.length > 0 && (
+            <div className="flex flex-col gap-3">
+              <h4 className="font-semibold font-clash-display text-lg text-blue">
+                Key Features
+              </h4>
+              <ul className="flex flex-col gap-2">
+                {features.map((feature, index) => (
+                  <li
+                    key={feature + index}
+                    className="flex items-start gap-2.5 text-gray-600"
+                  >
+                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-green/10 text-green">
+                      <Check className="size-3.5" strokeWidth={3} />
+                    </span>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="flex gap-6 items-center">
             {product.inStock && (
               <QuantitySelector value={quantity} onChange={setQuantity} />
@@ -141,14 +164,20 @@ const AboutProduct = ({
               className="flex-1 py-4 text-base rounded-2xl"
             />
           </div>
-          <a
-            href={product.specSheetUrl}
-            download
-            className="inline-flex gap-1.5 py-4 items-center justify-center rounded-lg bg-transparent text-sm font-medium text-blue border border-blue duration-300 transition-colors hover:bg-blue/90 hover:text-white"
-          >
-            <FaFileArrowDown className="text-lg"></FaFileArrowDown>
-            Download Spec Sheet
-          </a>
+          {product.specSheetUrl && (
+            <a
+              href={product.specSheetUrl}
+              // Browsers ignore `download` for other sites' files, so
+              // external spec sheets open in a new tab instead.
+              {...(product.specSheetUrl.startsWith("/")
+                ? { download: true }
+                : { target: "_blank", rel: "noopener noreferrer" })}
+              className="inline-flex gap-1.5 py-4 items-center justify-center rounded-lg bg-transparent text-sm font-medium text-blue border border-blue duration-300 transition-colors hover:bg-blue/90 hover:text-white"
+            >
+              <FaFileArrowDown className="text-lg"></FaFileArrowDown>
+              {product.specSheetUrl.startsWith("/") ? "Download Spec Sheet" : "View Spec Sheet"}
+            </a>
+          )}
         </div>
       </div>
     </section>

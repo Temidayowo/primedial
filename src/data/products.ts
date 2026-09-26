@@ -199,7 +199,7 @@ export const surveyingProducts: SurveyingProduct[] = [
     description:
       "The MTS-A1 features a 6-inch HD touchscreen with Android OS and surveying software, equipped with a high-resolution camera to improve efficiency and accuracy. MTS-A1 offers high-quality, high-accuracy and stable performance.",
     images: [
-      "/product-images/meridian-mts-a1/meridian-mts-a1-1.jpg",
+      "/product-images/meridian-mts-a1/meridian-mts-a1-1.png",
       "/product-images/meridian-mts-a1/meridian-mts-a1-2.jpg",
     ],
     features: [
@@ -298,8 +298,9 @@ export const surveyingProducts: SurveyingProduct[] = [
     description:
       "DJI Air 2S pairs a 1-inch CMOS sensor with 5.4K video and intelligent shooting modes in a compact, foldable body — a strong all-round aerial photography drone.",
     images: [
-      "/product-images/dji-air-2s/dji-air2s-1.jpg",
+      "/product-images/dji-air-2s/dji-air2s-1.png",
       "/product-images/dji-air-2s/dji-air2s-2.jpg",
+      "/product-images/dji-air-2s/dji-air2s-3.jpg",
     ],
     features: [
       "1-inch CMOS sensor, 20MP stills",

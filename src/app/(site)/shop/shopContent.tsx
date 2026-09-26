@@ -55,7 +55,7 @@ const ShopContent = async ({ searchParams }: ShopContentProps) => {
             variants={slideRight}
             className="hidden lg:col-span-3 lg:block"
           >
-            <aside className="h-fit rounded-xl border-[0.1px] border-blue bg-white px-4 py-8">
+            <aside className="sticky top-6 h-fit max-h-[calc(100vh-3rem)] overflow-y-auto rounded-xl border-[0.1px] border-blue bg-white px-4 py-8">
               <FilterSection categories={categories} brands={brands} />
             </aside>
           </AnimateOnScroll>

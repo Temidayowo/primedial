@@ -27,6 +27,9 @@ export function AddToCartButton({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [added, setAdded] = useState(false);
+  // Set briefly when the server refuses (e.g. the item just went out of
+  // stock) so the button never claims "Added!" for something that wasn't.
+  const [failed, setFailed] = useState<string | null>(null);
 
   if (!inStock) {
     return (
@@ -46,17 +49,22 @@ export function AddToCartButton({
   const handleClick = () => {
     // Only redirect once we're sure - "loading" (the brief window on
     // every fresh page load before the client-side session check
-    // resolves) is not the same as "unauthenticated", and treating it
-    // that way sent genuinely logged-in users to /login if they clicked
-    // fast. The button is disabled during "loading" below, so this only
-    // ever fires once status has actually settled.
+    // resolves) is not the same as "unauthenticated". The button is
+    // disabled during "loading" below, so this only fires once status
+    // has actually settled.
     if (status === "unauthenticated") {
       router.push("/login");
       return;
     }
 
+    setFailed(null);
     startTransition(async () => {
-      await addToCart(productId, quantity);
+      const result = await addToCart(productId, quantity);
+      if (!result.ok) {
+        setFailed(result.error);
+        setTimeout(() => setFailed(null), 2500);
+        return;
+      }
       notifyCartUpdated();
       setAdded(true);
       setTimeout(() => setAdded(false), 1500);
@@ -68,12 +76,13 @@ export function AddToCartButton({
       type="button"
       onClick={handleClick}
       disabled={isPending || status === "loading"}
+      title={failed ?? undefined}
       className={cn(
         "rounded-full bg-green px-4 py-2 text-sm font-medium text-white transition-colors duration-300 hover:bg-blue disabled:opacity-60",
         className,
       )}
     >
-      {isPending ? "Adding..." : added ? "Added!" : "Add to Cart"}
+      {isPending ? "Adding..." : failed ? "Couldn't add" : added ? "Added!" : "Add to Cart"}
     </button>
   );
 }

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { verifySession } from "@/lib/dal";
-import { getCart } from "@/lib/actions/cart.action";
-import { getAddresses } from "@/lib/actions/addresses.action";
-import { getPaymentMethods } from "@/lib/actions/payment-methods.action";
+import { getCart } from "@/lib/queries/cart";
+import { getAddresses } from "@/lib/queries/addresses";
+import { getPaymentMethods } from "@/lib/queries/payment-methods";
 import { CheckoutHeader } from "@/components/checkout/checkout-header";
 import { CheckoutFooter } from "@/components/checkout/checkout-footer";
 import { CheckoutClient } from "@/components/checkout/checkout-client";
+import { isPurchasable } from "@/lib/product-availability";
 
 export const metadata: Metadata = {
   title: "Checkout",
@@ -20,7 +21,9 @@ export default async function CheckoutPage() {
     getPaymentMethods(session.user.id),
   ]);
 
-  if (items.length === 0) {
+  // Nothing to buy, or something in the cart can't be bought any more -
+  // the cart page explains which item and why.
+  if (items.length === 0 || items.some((item) => !isPurchasable(item.product))) {
     redirect("/cart");
   }
 

@@ -1,7 +1,26 @@
 import type { Metadata } from "next";
 import { verifySession } from "@/lib/dal";
-import { getAllOrders } from "@/lib/actions/orders.action";
+import { getAllOrders } from "@/lib/queries/orders";
 import { OrderCard } from "@/components/account/order-card";
+import { formatTrackingDate } from "@/lib/orders/tracking";
+
+function deliverySummary(order: {
+  status: string;
+  courierName: string | null;
+  trackingNumber: string | null;
+  deliveredAt: Date | null;
+}) {
+  if (order.status === "DELIVERED") {
+    return order.deliveredAt
+      ? `Delivered on ${formatTrackingDate(order.deliveredAt.toISOString())}`
+      : "Delivered";
+  }
+  if (order.status === "SHIPPED") {
+    const via = order.courierName ? `Shipped with ${order.courierName}` : "Shipped";
+    return order.trackingNumber ? `${via} - tracking ${order.trackingNumber}` : via;
+  }
+  return null;
+}
 
 export const metadata: Metadata = {
   title: "Order History",
@@ -40,6 +59,7 @@ export default async function OrderHistoryPage() {
               itemSummary={order.items
                 .map((item) => item.product.name)
                 .join(", ")}
+              deliverySummary={deliverySummary(order)}
             />
           ))}
         </div>

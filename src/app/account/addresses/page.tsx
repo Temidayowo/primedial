@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { verifySession } from "@/lib/dal";
-import { getAddresses } from "@/lib/actions/addresses.action";
+import { getAddresses } from "@/lib/queries/addresses";
 import { ManageAddresses } from "@/components/account/manage-addresses";
 
 export const metadata: Metadata = {

@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../src/lib/prisma";
+import { seedContent } from "./seed-content";
 import {
   productBrands,
   productCategories,
@@ -148,7 +149,9 @@ async function main() {
       Date.now() - demoOrder.daysAgo * 24 * 60 * 60 * 1000,
     );
 
-    await prisma.order.create({
+    // Two inserts, not a nested `items: { create }` - the Neon HTTP
+    // driver can't run the transaction Prisma uses for nested writes.
+    const order = await prisma.order.create({
       data: {
         orderNumber: `PDS-${createdAt.getFullYear()}-${String(index + 1).padStart(5, "0")}`,
         status: demoOrder.status,
@@ -156,14 +159,15 @@ async function main() {
         createdAt,
         userId: testUser.id,
         shippingAddressId: homeAddress.id,
-        items: {
-          create: products.map((product) => ({
-            productId: product.id,
-            quantity: 1,
-            price: product.price,
-          })),
-        },
       },
+    });
+    await prisma.orderItem.createMany({
+      data: products.map((product) => ({
+        orderId: order.id,
+        productId: product.id,
+        quantity: 1,
+        price: product.price,
+      })),
     });
   }
 
@@ -183,6 +187,8 @@ async function main() {
       create: { userId: testUser.id, productId: product.id, quantity },
     });
   }
+
+  await seedContent();
 
   console.log("Seeding complete.");
 }

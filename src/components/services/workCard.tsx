@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { FaLocationDot } from "react-icons/fa6";
+import { imageProps } from "@/lib/images";
 
 interface WorkCardProps {
   image: string;
   name?: string;
   location?: string;
   about?: string;
-  year?: Date | string;
+  year?: number | null;
   isExample?: boolean;
 }
 
@@ -18,20 +19,19 @@ const WorkCard = ({
   year,
   isExample,
 }: WorkCardProps) => {
-  const formattedDate = year ? new Date(year).toLocaleDateString() : "New";
-
   return (
     <div className="rounded-xl group hover:shadow-xl shadow-gray-400 relative overflow-hidden bg-gray-100 border-[0.1px] border-gray-300">
+      {/* Fixed 3:2 frame so admin-uploaded photos of any shape line up. */}
       <Image
-        src={image}
+        {...imageProps(image)}
         alt={name || "Work card"}
         width={600}
         height={400}
-        className="group-hover:scale-105 object-cover transition duration-300"
+        className="aspect-3/2 w-full group-hover:scale-105 object-cover transition duration-300"
         priority
       />
       <span className="absolute top-3 left-3 z-20 bg-green rounded-full px-4 py-1 text-xs text-white">
-        {formattedDate}
+        {year ?? "New"}
       </span>
       {isExample && (
         <span className="absolute top-3 right-3 z-20 bg-amber-600 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-white">
