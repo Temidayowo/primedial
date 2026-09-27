@@ -10,6 +10,8 @@ import {
   toKobo,
   chargePaystackAuthorization,
   submitPaystackOtp,
+  verifyPaystackTransaction,
+  paystackChargedAmount,
   type PaystackChannel,
 } from "@/lib/payments/paystack";
 import { createOpayCashierCheckout } from "@/lib/payments/opay";
@@ -166,9 +168,19 @@ export async function payWithSavedCard(orderId: string, paymentMethodId: string)
     });
 
     if (charge.status === "success") {
+      // Don't trust charge_authorization's own amount/requested_amount -
+      // unlike the verify endpoint, it doesn't reliably send
+      // requested_amount back, so this fell through to `amount`, which is
+      // the fee-inclusive total on this account (fees are passed to the
+      // customer) and never equals order.total - every saved-card charge
+      // looked like an amount mismatch and reported a generic failure
+      // even though Paystack had genuinely charged the card. Verifying
+      // the transaction (same call the popup path already relies on)
+      // gives the authoritative, fee-normalized amount instead.
+      const transaction = await verifyPaystackTransaction(charge.reference);
       const result = await markOrderPaidByReference(
         reference,
-        charge.requested_amount ?? charge.amount ?? amountKobo,
+        paystackChargedAmount(transaction),
       );
       if (!result.ok) throw new Error(`markOrderPaidByReference failed: ${result.reason}`);
       return { status: "paid" as const, orderId: result.orderId };
@@ -203,9 +215,12 @@ export async function submitSavedCardOtp(orderId: string, reference: string, otp
       throw new PaymentError(charge.gateway_response || "Incorrect OTP.");
     }
 
+    // Same reasoning as the non-OTP success path above - verify rather
+    // than trusting the OTP response's own amount fields.
+    const transaction = await verifyPaystackTransaction(charge.reference);
     const result = await markOrderPaidByReference(
       reference,
-      charge.requested_amount ?? charge.amount ?? toKobo(Number(order.total)),
+      paystackChargedAmount(transaction),
     );
     if (!result.ok) throw new Error(`markOrderPaidByReference failed: ${result.reason}`);
     return { status: "paid" as const, orderId: result.orderId };

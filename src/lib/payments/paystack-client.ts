@@ -43,24 +43,45 @@ function loadPaystackScript(): Promise<void> {
   }
   if (window.PaystackPop) return Promise.resolve();
 
-  const existing = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
-  if (existing) {
+  let script = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
+
+  // A <script> tag's load/error event only ever fires once. If an
+  // earlier attempt this page session failed to load it (a transient
+  // network blip, a browser extension blocking js.paystack.co), every
+  // later checkout attempt found this same dead tag still sitting in the
+  // DOM and attached listeners that would never fire again - the popup
+  // just silently never appeared, with no error shown, until a full page
+  // reload. Drop a tag that's already known to have failed and issue a
+  // fresh request instead of reusing it.
+  if (script?.dataset.status === "failed") {
+    script.remove();
+    script = null;
+  }
+
+  if (script) {
     return new Promise((resolve, reject) => {
-      existing.addEventListener("load", () => resolve());
-      existing.addEventListener("error", () =>
+      script!.addEventListener("load", () => resolve());
+      script!.addEventListener("error", () =>
         reject(new Error("Failed to load Paystack")),
       );
     });
   }
 
   return new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-    script.id = SCRIPT_ID;
-    script.src = "https://js.paystack.co/v2/inline.js";
-    script.async = true;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error("Failed to load Paystack"));
-    document.body.appendChild(script);
+    const newScript = document.createElement("script");
+    newScript.id = SCRIPT_ID;
+    newScript.dataset.status = "loading";
+    newScript.src = "https://js.paystack.co/v2/inline.js";
+    newScript.async = true;
+    newScript.onload = () => {
+      newScript.dataset.status = "loaded";
+      resolve();
+    };
+    newScript.onerror = () => {
+      newScript.dataset.status = "failed";
+      reject(new Error("Failed to load Paystack"));
+    };
+    document.body.appendChild(newScript);
   });
 }
 
