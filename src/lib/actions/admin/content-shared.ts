@@ -1,7 +1,7 @@
 import "server-only";
 import * as z from "zod";
 import { revalidatePath } from "next/cache";
-import { isValidImageSrc } from "@/lib/images";
+import { isUploadedImageSrc } from "@/lib/storage";
 
 // Shared pieces for the CMS server actions (projects, team, testimonials,
 // partners, social links). Not a "use server" module itself - those can
@@ -37,10 +37,15 @@ export function requiredText(label: string, min = 2) {
     .min(min, { error: `${label} is required.` });
 }
 
+// The admin form only ever offers an upload button, so a submitted value
+// should be one of our own R2 URLs. A leading "/" is also accepted so
+// saving a record untouched doesn't reject its pre-migration local path
+// (e.g. /images/team/jane.jpg) - see isUploadedImageSrc in @/lib/storage.
 export function imageField(label = "Image") {
-  return requiredText(label, 1).refine(isValidImageSrc, {
-    error: "Use a path starting with / (e.g. /images/example.jpg) or a full https:// URL.",
-  });
+  return requiredText(label, 1).refine(
+    (value) => value.startsWith("/") || isUploadedImageSrc(value),
+    { error: "Upload an image using the button above." },
+  );
 }
 
 export const urlField = z.url({

@@ -41,6 +41,9 @@ let client: S3Client | undefined;
 function getClient() {
   client ??= new S3Client({
     region: "auto",
+    // Recent SDK versions bake a CRC32 checksum into presigned PUT URLs, which
+    // can't match the browser's body and makes R2 reject the upload.
+    requestChecksumCalculation: "WHEN_REQUIRED",
     endpoint: `https://${env("R2_ACCOUNT_ID")}.r2.cloudflarestorage.com`,
     credentials: {
       accessKeyId: env("R2_ACCESS_KEY_ID"),
@@ -69,4 +72,15 @@ export async function createUpload(kind: UploadKind, contentType: string) {
 
   const publicUrl = `${env("R2_PUBLIC_URL").replace(/\/+$/, "")}/${key}`;
   return { uploadUrl, publicUrl, maxBytes: config.maxBytes };
+}
+
+// Used to validate a CMS image field at write time: the admin UI only ever
+// offers an upload button (see ImageField in form-fields.tsx), so a freshly
+// submitted value should actually be one of our own R2 URLs, not just any
+// https:// URL a bypassed form submission could set. isValidImageSrc() in
+// @/lib/images stays permissive because it also has to keep rendering
+// existing records that still hold a pre-migration local /images/... path.
+export function isUploadedImageSrc(src: string) {
+  const prefix = `${env("R2_PUBLIC_URL").replace(/\/+$/, "")}/`;
+  return src.startsWith(prefix);
 }

@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { FaSatelliteDish, FaTools, FaChalkboardTeacher } from "react-icons/fa";
+import { FaTools, FaChalkboardTeacher } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
 import { IoSpeedometer } from "react-icons/io5";
-import IconCard from "./iconCard";
 import WhatWeOfferCard from "./whatWeOfferCard";
 import { StaggerContainer, StaggerItem } from "@/components/ui/MotionWrapper";
 
@@ -25,15 +24,6 @@ const equipmentCapabilities = [
     text: "Hands-on instrument training and ongoing technical support for survey teams and equipment operators.",
     icon: FaChalkboardTeacher,
   },
-];
-
-const equipmentActions = [
-  { name: "Repair a GNSS Receiver" },
-  { name: "Calibrate a Total Station" },
-  { name: "Service a Level" },
-  { name: "Repair a 3D Scanner" },
-  { name: "Service a Drone" },
-  { name: "Repair an Accessory" },
 ];
 
 const WhatWeService = () => {

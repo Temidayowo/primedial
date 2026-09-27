@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Poppins } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
+import { SessionSync } from "@/components/auth/session-sync";
 import "./globals.css";
 
 const clashDisplay = localFont({
@@ -80,7 +81,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${clashDisplay.variable} font-poppins ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <SessionProvider>{children}</SessionProvider>
+        <SessionProvider>
+          <SessionSync />
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );
