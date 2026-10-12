@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils"; // Import your cn utility here
@@ -11,6 +12,7 @@ interface PageHeroProps {
   backgroundImage?: string;
   className?: string; // Allows custom padding, margins, or background overrides
   align?: "left" | "center" | "right"; // Controls text alignment and auto-margins
+  action?: ReactNode;
 }
 
 export function PageHero({
@@ -20,6 +22,7 @@ export function PageHero({
   backgroundImage,
   className,
   align = "center", // Defaults to center if not provided
+  action,
 }: PageHeroProps) {
   return (
     <section
@@ -83,6 +86,7 @@ export function PageHero({
         >
           {subheading}
         </motion.p>
+        {action && <div className="mt-8">{action}</div>}
       </div>
     </section>
   );

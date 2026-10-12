@@ -3,8 +3,9 @@ import Header from "@/components/header"
 import ServicesContent from "./servicesContent"
 
 export const metadata: Metadata = {
-  title: "Services",
-  description: "What we offer",
+  title: "Survey Services | Primedial Geospatial Solutions",
+  description:
+    "Explore Primedial's cadastral, topographical, engineering, hydrographic, and geophysical survey services.",
 };
 
 const ServicesPage = () => {

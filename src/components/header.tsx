@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { FaCartShopping, FaUser } from "react-icons/fa6";
 import { cn } from "@/lib/utils"; // Adjust this import path to where your cn function lives
@@ -236,9 +238,49 @@ interface HeaderProps {
 }
 
 const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+  const [isServicesMenuOpen, setIsServicesMenuOpen] = useState(false);
+  const ignoreNextServicesFocus = useRef(false);
+  const servicesMenuRef = useRef<HTMLDivElement>(null);
+  const servicesMenuButtonRef = useRef<HTMLButtonElement>(null);
 
-  const closeMenu = () => setIsMobileMenuOpen(false);
+  const closeMenu = () => {
+    setIsMobileMenuOpen(false);
+    setIsMobileServicesOpen(false);
+  };
+  const isServicesActive =
+    pathname === "/services" || pathname === "/equipment-support";
+
+  useEffect(() => {
+    if (!isServicesMenuOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        event.target instanceof Node &&
+        !servicesMenuRef.current?.contains(event.target)
+      ) {
+        setIsServicesMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsServicesMenuOpen(false);
+        if (document.activeElement !== servicesMenuButtonRef.current) {
+          ignoreNextServicesFocus.current = true;
+          servicesMenuButtonRef.current?.focus();
+        }
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isServicesMenuOpen]);
 
   const isDark = theme === "dark";
   const textColorClass = isDark ? "text-white" : "text-blue";
@@ -289,9 +331,69 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
             <Link href="/shop" className={animatedLinkClasses}>
               Shop
             </Link>
-            <Link href="/services" className={animatedLinkClasses}>
-              Services
-            </Link>
+            <div
+              ref={servicesMenuRef}
+              className="relative inline-block"
+              onMouseEnter={() => setIsServicesMenuOpen(true)}
+              onMouseLeave={() => setIsServicesMenuOpen(false)}
+              onBlur={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) {
+                  setIsServicesMenuOpen(false);
+                }
+              }}
+            >
+              <button
+                ref={servicesMenuButtonRef}
+                type="button"
+                className={cn(
+                  animatedLinkClasses,
+                  "inline-flex items-center gap-1",
+                  isServicesActive && "font-semibold after:w-full",
+                )}
+                aria-haspopup="true"
+                aria-expanded={isServicesMenuOpen}
+                onFocus={() => {
+                  if (ignoreNextServicesFocus.current) {
+                    ignoreNextServicesFocus.current = false;
+                    return;
+                  }
+                  setIsServicesMenuOpen(true);
+                }}
+                onClick={() => setIsServicesMenuOpen(true)}
+                aria-current={isServicesActive ? "page" : undefined}
+              >
+                Services
+                <ChevronDown
+                  aria-hidden="true"
+                  className={cn(
+                    "size-3 transition-transform duration-200",
+                    isServicesMenuOpen && "rotate-180",
+                  )}
+                />
+              </button>
+              {isServicesMenuOpen && (
+                <div className="absolute left-0 top-full z-50 min-w-52 rounded-lg border border-gray-100 bg-white py-2 text-blue shadow-xl">
+                  <Link
+                    href="/services"
+                    aria-current={pathname === "/services" ? "page" : undefined}
+                    onClick={() => setIsServicesMenuOpen(false)}
+                    className="block px-4 py-2 text-sm hover:bg-gray-50"
+                  >
+                    Survey Services
+                  </Link>
+                  <Link
+                    href="/equipment-support"
+                    aria-current={
+                      pathname === "/equipment-support" ? "page" : undefined
+                    }
+                    onClick={() => setIsServicesMenuOpen(false)}
+                    className="block px-4 py-2 text-sm hover:bg-gray-50"
+                  >
+                    Equipment Support
+                  </Link>
+                </div>
+              )}
+            </div>
             <Link href="/contact" className={animatedLinkClasses}>
               Contact
             </Link>
@@ -336,7 +438,10 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
             />
 
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => {
+                if (isMobileMenuOpen) setIsMobileServicesOpen(false);
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+              }}
               className="relative w-10 h-10 flex items-center justify-center focus:outline-none"
               aria-label="Toggle Menu"
             >
@@ -380,13 +485,54 @@ const Header = ({ theme, className, mobileClassName }: HeaderProps) => {
             >
               Shop
             </Link>
-            <Link
-              href="/services"
-              onClick={closeMenu}
-              className={mobileLinkClasses}
-            >
-              Services
-            </Link>
+            <div>
+              <button
+                type="button"
+                aria-expanded={isMobileServicesOpen}
+                aria-controls="mobile-services-submenu"
+                aria-current={isServicesActive ? "page" : undefined}
+                onClick={() => setIsMobileServicesOpen((open) => !open)}
+                className={cn(
+                  mobileLinkClasses,
+                  "inline-flex items-center gap-1",
+                  isServicesActive && "font-semibold after:w-full",
+                )}
+              >
+                Services
+                <ChevronDown
+                  aria-hidden="true"
+                  className={cn(
+                    "size-3 transition-transform duration-200",
+                    isMobileServicesOpen && "rotate-180",
+                  )}
+                />
+              </button>
+              {isMobileServicesOpen && (
+                <div
+                  id="mobile-services-submenu"
+                  className="mt-3 flex flex-col gap-3 border-l-2 border-green pl-4"
+                >
+                  <Link
+                    href="/services"
+                    onClick={closeMenu}
+                    aria-current={pathname === "/services" ? "page" : undefined}
+                    className={mobileLinkClasses}
+                  >
+                    Survey Services
+                  </Link>
+                  <Link
+                    href="/equipment-support"
+                    onClick={closeMenu}
+                    aria-current={
+                      pathname === "/equipment-support" ? "page" : undefined
+                    }
+                    className={mobileLinkClasses}
+                  >
+                    Equipment Support
+                  </Link>
+                </div>
+              )}
+            </div>
             <Link
               href="/contact"
               onClick={closeMenu}

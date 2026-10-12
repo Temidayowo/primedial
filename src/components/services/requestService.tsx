@@ -36,13 +36,12 @@ const RequestService = () => {
   ];
 
   return (
-    <section id="request-service" className="overflow-hidden">
+    <section id="request-service" className="scroll-mt-24 overflow-hidden">
       <div className="section-container grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
         <StaggerContainer className="md:pr-4">
           <StaggerItem>
             <h4 className="uppercase text-sm text-green font-semibold">
-              {" "}
-              Request Equipment Repair, Calibration
+              Request Equipment Repair or Calibration
             </h4>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold font-clash-display text-blue">
               Why Request Through Us

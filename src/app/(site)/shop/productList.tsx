@@ -73,7 +73,7 @@ const ProductList = ({ data, total, firstIndex }: ProductGridProps) => {
 export const ServiceCenterBanner = () => (
   <AnimateOnScroll>
     <Link
-      href="/services#request-service"
+      href="/equipment-support#request-service"
       className="mt-10 flex flex-col items-center gap-1 rounded-xl border-[0.1px] border-gray-300 bg-white px-6 py-6 text-center transition-colors duration-300 hover:border-blue"
     >
       <p className="font-clash-display text-sm font-semibold text-blue">

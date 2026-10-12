@@ -1,5 +1,5 @@
 import { FaMapLocationDot, FaCompassDrafting } from "react-icons/fa6";
-import { PiDroneFill } from "react-icons/pi";
+import { PiDroneFill as DroneIcon } from "react-icons/pi";
 import { GiOilRig, GiMineTruck } from "react-icons/gi";
 import { LuWaves } from "react-icons/lu";
 import { HiSquare3Stack3D } from "react-icons/hi2";
@@ -13,7 +13,7 @@ const WhatWeOffer = () => {
       id: 1,
       header: "Aerial Mapping & Drone Services",
       text: "LiDAR, UAV, and manned-aircraft aerial surveys for large-area mapping, volumetrics, and orthophoto generation.",
-      icon: PiDroneFill,
+      icon: DroneIcon,
     },
     {
       id: 2,
@@ -44,8 +44,7 @@ const WhatWeOffer = () => {
       header: "Oil & Gas / Offshore Positioning Services",
       text: "Offshore positioning and survey support for oil & gas exploration, platform installation, and marine construction.",
       icon: GiOilRig,
-    },
-    {
+    },{
       id: 7,
       header: "Pipeline, Route & Mining Surveys",
       text: "Route alignment surveys for pipelines and infrastructure corridors, plus mine site and stockpile surveys.",
@@ -70,7 +69,7 @@ const WhatWeOffer = () => {
             Field &amp; Aerial Survey Services
           </h2>
         </StaggerItem>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+        <div className="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2 lg:grid-cols-4">
           {whatWeOfferArray.map((item) => (
             <StaggerItem key={item.id}>
               <WhatWeOfferCard

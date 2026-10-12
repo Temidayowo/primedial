@@ -53,7 +53,10 @@ const Footer = async () => {
                 <Link href="/shop" className={animatedLinkClasses}>Shop</Link>
               </li>
               <li>
-                <Link href="/Services" className={animatedLinkClasses}>Services</Link>
+                <Link href="/services" className={animatedLinkClasses}>Survey Services</Link>
+              </li>
+              <li>
+                <Link href="/equipment-support" className={animatedLinkClasses}>Equipment Support</Link>
               </li>
             </ul>
           </div>

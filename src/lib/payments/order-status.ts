@@ -104,10 +104,11 @@ export async function markOrderFailedByReference(reference: string) {
 // lands after the customer retried with OPay. That reference is no longer
 // on the order, but its order number still identifies the order, so the
 // payment is never orphaned. The amount check in the caller still applies.
-const REFERENCE_PATTERN = /^(PDS-\d{4}-[0-9A-F]{6})-[0-9A-F]{8}$/;
+const REFERENCE_PATTERN = /^(PDS-\d{4}-[0-9A-F]{6})-[0-9A-F]{8}$/i;
 
 export function orderNumberFromReference(reference: string) {
-  return REFERENCE_PATTERN.exec(reference)?.[1] ?? null;
+  const normalized = reference.trim().toUpperCase();
+  return REFERENCE_PATTERN.exec(normalized)?.[1] ?? null;
 }
 
 async function findOrderForReference(reference: string) {

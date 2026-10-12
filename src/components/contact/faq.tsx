@@ -27,6 +27,26 @@ const Faq = () => {
       answer:
         'Absolutely — select "Request a Quote" as your subject above and include your project details. Our sales team handles enterprise and fleet orders directly.',
     },
+    {
+      question: "Which equipment can I submit for repair?",
+      answer:
+        "We support survey instruments including GNSS receivers, total stations, 3D scanners, and other equipment. Include the make, model, and issue in your request so our team can assess it.",
+    },
+    {
+      question: "Can I request calibration without a repair?",
+      answer:
+        "Yes. Submit a request for calibration and include the instrument type and model. We will confirm the assessment and service details with you.",
+    },
+    {
+      question: "Will I receive calibration documentation?",
+      answer:
+        "Calibration services include traceable documentation or a calibration certificate, as applicable to the instrument and service performed.",
+    },
+    {
+      question: "How do I get started with equipment repair or calibration?",
+      answer:
+        "Use the Request Service form on our Equipment Support page. Share your contact details and describe the repair or calibration needed, and our team will follow up.",
+    },
   ];
 
   return (

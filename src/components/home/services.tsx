@@ -33,9 +33,10 @@ const homeServices = [
     icon: GiMineTruck,
   },
   {
-    header: "Equipment Repair, Calibration & Training",
+    header: "Equipment Repair & Calibration",
     text: "Certified technicians, NIST-traceable",
     icon: FaTools,
+    href: "/equipment-support",
   },
 ];
 
@@ -65,7 +66,11 @@ const Services = () => {
             return (
               <StaggerItem key={service.header}>
                 <Link
-                  href="/services"
+                  href={
+                    service.header === "Equipment Repair & Calibration"
+                      ? "/equipment-support"
+                      : "/services"
+                  }
                   className="group flex items-start gap-4 rounded-xl border-[0.1px] border-gray-300 bg-gray-50 p-6 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl"
                 >
                   <div className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-gray-100 p-4 transition-all duration-300 ease-out group-hover:rotate-3 group-hover:bg-blue">

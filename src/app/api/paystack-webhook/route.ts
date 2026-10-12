@@ -31,17 +31,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  let event: PaystackWebhookEvent;
+  let event: unknown;
   try {
     event = JSON.parse(rawBody);
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const reference = event.data?.reference;
+  if (!event || typeof event !== "object" || Array.isArray(event)) {
+    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+  }
+
+  const payload = event as Partial<PaystackWebhookEvent>;
+  const reference = typeof payload.data?.reference === "string" ? payload.data.reference : null;
   if (!reference) return NextResponse.json({ received: true });
 
-  switch (event.event) {
+  const eventName = typeof payload.event === "string" ? payload.event : "";
+
+  switch (eventName) {
     case "charge.success": {
       const order = await findOrderForWebhook(reference);
       if (order) {
